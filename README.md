@@ -1,10 +1,10 @@
-# [Título del trabajo]
+# Proyecto Buque Insignia
 
-[Descripción breve del proyecto a realizar (2-3 frases).]
+El clásico juego de barcos y coordenadas, programado en C.
 
 ## Integrantes del equipo
 
-[Nombres, apellidos, y usuario GitHub de los integrantes del equipo.]
+- Adrián Teixeira de Uña (@AdriTeixeHax)
 
 ## Objetivos del trabajo
 

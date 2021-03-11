@@ -5,6 +5,7 @@ El clásico juego de barcos y coordenadas, programado en C.
 ## Integrantes del equipo
 
 - Adrián Teixeira de Uña (@AdriTeixeHax)
+- Matías Gabriel Polo Reyes (@matiaspolo)
 
 ## Objetivos del trabajo
 

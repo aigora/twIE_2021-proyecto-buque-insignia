@@ -20,16 +20,17 @@
 
 
 #include <stdio.h>
+void volveratras(int decision);
 
 int main()
 {
     char caracter;
-    int condicion, respuestas, dificultad;
+    int inicio, respuestas, dificultad, decision;
     start:
         printf("inicio del juego.\n");
         printf(" ¿A donde quieres ir? Selecciona entre personalizar barco (1), menu principal (2) y puntuacion (3). \n");
-        scanf(" %i",&condicion);
-            switch (condicion)
+        scanf(" %i",&inicio);
+            switch (inicio)
             {
             case 1:
                 printf("has seleccionado personalizar barco, ¿quieres volver a atras?\n");
@@ -66,7 +67,17 @@ int main()
                     goto start;
                     }
                 break;
-            }
 
     return 0;
 }
+
+void volveratras(int decision)
+    {
+        printf("¿quieres volver a atras?\n");
+        scanf("%i",&decision);
+        if (decision == 1)
+            {
+             decision = 0;
+             goto start;
+            }
+    }

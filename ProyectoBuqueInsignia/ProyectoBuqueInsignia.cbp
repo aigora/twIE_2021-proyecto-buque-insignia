@@ -31,13 +31,13 @@
 		<Compiler>
 			<Add option="-Wall" />
 		</Compiler>
-		<Unit filename="../Fichero 1.c">
-			<Option compilerVar="CC" />
-		</Unit>
 		<Unit filename="../funcionesTexto.c">
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="../funcionesTexto.h" />
+		<Unit filename="../menu_principal.c">
+			<Option compilerVar="CC" />
+		</Unit>
 		<Extensions />
 	</Project>
 </CodeBlocks_project_file>

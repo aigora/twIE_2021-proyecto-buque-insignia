@@ -1,11 +1,12 @@
 # depslib dependency file v1.0
-1617372126 source:c:\users\adriteixehax\documents\github\twie_2021-proyecto-buque-insignia\fichero 1.c
+1617873869 source:c:\users\adriteixehax\documents\github\twie_2021-proyecto-buque-insignia\fichero 1.c
 	<stdio.h>
+	<string.h>
 	"funcionesTexto.h"
 
-1617371388 c:\users\adriteixehax\documents\github\twie_2021-proyecto-buque-insignia\funcionestexto.h
+1617873724 c:\users\adriteixehax\documents\github\twie_2021-proyecto-buque-insignia\funcionestexto.h
 
-1617371388 source:c:\users\adriteixehax\documents\github\twie_2021-proyecto-buque-insignia\funcionestexto.c
+1617873724 source:c:\users\adriteixehax\documents\github\twie_2021-proyecto-buque-insignia\funcionestexto.c
 	<stdio.h>
 	"funcionesTexto.h"
 

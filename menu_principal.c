@@ -1,10 +1,12 @@
 #include <stdio.h>
 #include <string.h>
 #include "funcionesTexto.h"
+#include "estructuras.h"
 
 int main()
 {
-    char volver[6], atras[6] = "atras", condjugar[6] = "jugar";
+    char volver[6];
+    const char atras[6] = "atras", condjugar[6] = "jugar";
     int condicion, dificultad;
     start:
         condicion = inicioPrograma(condicion);
@@ -35,6 +37,13 @@ int main()
             }
             //abrir otro archivo con la puntuación
             break;
+
+        default:
+            error();
+            goto end;
+            break;
         }
+
+    end:
         return 0;
 }

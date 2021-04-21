@@ -31,6 +31,14 @@
 		<Compiler>
 			<Add option="-Wall" />
 		</Compiler>
+		<Unit filename="../estructuras.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../estructuras.h" />
+		<Unit filename="../funcionesModoBatalla.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../funcionesModoBatalla.h" />
 		<Unit filename="../funcionesTexto.c">
 			<Option compilerVar="CC" />
 		</Unit>

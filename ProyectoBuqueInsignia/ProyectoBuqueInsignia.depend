@@ -6,7 +6,12 @@
 
 1617873724 c:\users\adriteixehax\documents\github\twie_2021-proyecto-buque-insignia\funcionestexto.h
 
-1617873724 source:c:\users\adriteixehax\documents\github\twie_2021-proyecto-buque-insignia\funcionestexto.c
+1619023827 source:c:\users\adriteixehax\documents\github\twie_2021-proyecto-buque-insignia\funcionestexto.c
 	<stdio.h>
+	"funcionesTexto.h"
+
+1619023181 source:c:\users\adriteixehax\documents\github\twie_2021-proyecto-buque-insignia\menu_principal.c
+	<stdio.h>
+	<string.h>
 	"funcionesTexto.h"
 

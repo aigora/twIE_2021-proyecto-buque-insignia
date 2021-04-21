@@ -9,14 +9,14 @@ int inicioPrograma(int x) {
 }
 
 void error(void) {
-    printf("Escribe un caracter valido.\n");
+    printf("Caracter v%clido. Vuelve a intentarlo.\n", 160);
 }
 
 int jugar(void) {
     int radioSonar;
     char x[8];
     printf("¡Vamos a jugar! \n");
-    printf("Elige el nivel de dificultad:\nEscribe facil, medio o dificil.\n");
+    printf("Elige el nivel de dificultad:\nEscribe 'facil', 'medio' o 'dificil'.\n");
     scanf(" %s", x);
     switch (x[0]) {
     case 'f':

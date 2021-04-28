@@ -3,7 +3,7 @@
 
 typedef struct
 {
-    int numeroAcciones, totalDamage, puntuacion, victoria, barcosHundidos;
+    int numeroAcciones, totalDamageRecibido, totalDamageOcasionado, puntuacion, victoria, barcosHundidos;
 } puntuacion;
 
 typedef struct

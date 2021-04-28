@@ -36,3 +36,8 @@ int jugar(void) {
         printf("El radio del sonar esta establecido a %i.", radioSonar);
     return radioSonar;
 }
+
+void puntuaciones(int linea)
+{
+
+}

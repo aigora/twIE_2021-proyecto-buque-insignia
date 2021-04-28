@@ -4,6 +4,7 @@
 int inicioPrograma(int x);
 void error(void);
 int jugar(void);
+void puntuaciones(int linea);
 
 #endif // header guard
 

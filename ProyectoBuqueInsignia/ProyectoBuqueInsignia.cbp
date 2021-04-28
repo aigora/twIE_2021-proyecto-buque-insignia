@@ -46,6 +46,9 @@
 		<Unit filename="../menu_principal.c">
 			<Option compilerVar="CC" />
 		</Unit>
+		<Unit filename="../modoBatalla.c">
+			<Option compilerVar="CC" />
+		</Unit>
 		<Extensions />
 	</Project>
 </CodeBlocks_project_file>

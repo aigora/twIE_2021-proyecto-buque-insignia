@@ -1,33 +1,57 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include "estructuras.h"
+#include "funcionesTexto.h"
 #define NECESARIO_R 25
 #define FACTOR_R 0.75
+#define LONG_PUNTUACION_CSV 7
 
-float calculoDificultad(void) //AVISO: PROVISIONAL
+float calculoDificultad(void)
 {
-    int cerrar;
     float factor;
     float r = 0.1;
-    puntuacionGlobal global;
+    int totalPartidas = puntuaciones('n');
+    int totalVictorias = puntuaciones('v');
 
-/// Leer y cerrar fichero
-    FILE *leerPuntuacion;
-    leerPuntuacion = fopen("puntuacion.csv", "r");
-    if (leerPuntuacion == NULL)
-        printf("Error al abrir el fichero.\n");
-    else
-        printf("Fichero abierto correctamente.\n");
-    cerrar = fclose(leerPuntuacion);
-    if (cerrar == EOF)
-        printf("Error al cerrar el fichero.\n");
-    if (cerrar == 0)
-        printf("Fichero cerrado correctamente.\n");
-/// Fin de lectura del fichero
-
-    if (global.totalPartidas < NECESARIO_R)      //esto se hace para que cuando se hayan jugado pocas partidas no se vuelva muy dificil el juego, aumentando progresivamente
-        r = global.totalPartidas/10;             //hasta que se hayan jugado ciertas partidas. Es entonces cuando la dificultad global aumenta segun el ratio de
-    else                                         //partidas ganadas y partidas jugadas
+    if (totalPartidas < NECESARIO_R)                //Esto se hace para que cuando se hayan jugado pocas partidas no se vuelva muy dificil el juego, aumentando progresivamente
+        r = totalPartidas / 10;                     //hasta que se hayan jugado ciertas partidas. Es entonces cuando la dificultad global aumenta segun el ratio de
+    else                                            //partidas ganadas y partidas jugadas
         r = FACTOR_R;
-    factor = 1 + r*global.totalGanadas / global.totalPartidas;
+    factor = 1 + r * totalVictorias / totalPartidas;
     return factor;
+}
+
+int ataque(estadisticas atacante, estadisticas defensor)
+{
+    int total = 0;
+    float n = random1(), totalf;
+    if (n*atacante.precision <= 0.25)
+        printf("El ataque falló.\n");
+    else {
+        totalf = atacante.ataque / defensor.defensa * 50;
+        total = (int)totalf;
+    }
+    return total;
+}
+
+void imprimeVida(int vida)
+{
+    int i = 0;
+    char health[11] = "__________";
+    for (i = 0; i < vida; i++)
+        health[i] = '*';
+    printf("%i%c %s", vida, 37, health);
+    system("pause");
+}
+
+int cpuHabilidad(void)
+{
+    if (random() > 0 && random() <= 25)
+        return 1;
+    if (random() > 25 && random() <= 50)
+        return 2;
+    if (random() > 50 && random() <= 75)
+        return 3;
+    if (random() > 75 && random() <= 100)
+        return 4;
 }

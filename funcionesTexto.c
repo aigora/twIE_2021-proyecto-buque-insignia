@@ -1,19 +1,24 @@
 #include <stdio.h>
+#include <time.h>
+#include <stdlib.h>
 #include "funcionesTexto.h"
 #define LONG_PUNTUACION_CSV 8
 
-int inicioPrograma(int x) {
+int inicioPrograma(int x)
+{
     printf("Bienvenido a la pagina de inicio de Proyecto Buque Insignia.\nEscribe 'atras' en cualquier momento para volver a la pagina anterior.\n\n");
     printf("%cQue quieres hacer? Selecciona entre:\n(1) Personalizar barco\n(2) Jugar\n(3) Puntuacion\n", 168);
     scanf(" %i", &x);
     return x;
 }
 
-void error(void) {
+void error(void)
+{
     printf("Caracter v%clido. Vuelve a intentarlo.\n", 160);
 }
 
-int jugar(void) {
+int jugar(void)
+{
     int radioSonar;
     char x[8];
     printf("¡Vamos a jugar! \n");
@@ -51,7 +56,7 @@ int puntuaciones(char dato)
     else
         printf("Fichero abierto correctamente.\n");
 
-    leerPuntuacion = fscanf(abrirPuntuacion, "%i, %i, %i, %i, %i, %i, %i\n", &leerPuntuacion[1], &leerPuntuacion[2],
+    fscanf(abrirPuntuacion, "%i, %i, %i, %i, %i, %i, %i", &leerPuntuacion[1], &leerPuntuacion[2],
                 &leerPuntuacion[3], &leerPuntuacion[4], &leerPuntuacion[5], &leerPuntuacion[6], &leerPuntuacion[7]);
 
     cerrar = fclose(abrirPuntuacion);
@@ -88,3 +93,23 @@ int puntuaciones(char dato)
         break;
     }
 }
+
+int random(void)
+{
+
+  int n;
+  srand(time(NULL));
+  n = rand() % 100 + 1;
+  return n;
+}
+
+float random1(void)
+{
+
+  float n;
+  srand(time(NULL));
+  n = (rand() % 100 + 1) * 0.01;
+  return n;
+}
+
+

@@ -8,8 +8,7 @@ typedef struct
 
 typedef struct
 {
-    float precision, ataque, defensa, velocidad;
-    int efectividad;
+    int precision, ataque, defensa, velocidad, vida;
 } estadisticas;
 
 typedef struct

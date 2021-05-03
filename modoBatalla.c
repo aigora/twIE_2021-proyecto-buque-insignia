@@ -3,6 +3,7 @@
 #include <string.h>
 #include "funcionesTexto.h"
 #include "estructuras.h"
+#include "funcionesModoBatalla.h"
 
 int main()
 {

@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include "funcionesTexto.h"
+#define LONG_PUNTUACION_CSV 8
 
 int inicioPrograma(int x) {
     printf("Bienvenido a la pagina de inicio de Proyecto Buque Insignia.\nEscribe 'atras' en cualquier momento para volver a la pagina anterior.\n\n");
@@ -37,7 +38,53 @@ int jugar(void) {
     return radioSonar;
 }
 
-void puntuaciones(int linea)
+int puntuaciones(char dato)
 {
+    /// Leer y cerrar fichero
+    FILE *abrirPuntuacion;
+    int cerrar, leerPuntuacion[LONG_PUNTUACION_CSV];
+    abrirPuntuacion = fopen("puntuacionTotal.csv", "r");
+    if (abrirPuntuacion == NULL) {
+        printf("Error al abrir el fichero.\n");
+        return -1;
+    }
+    else
+        printf("Fichero abierto correctamente.\n");
 
+    leerPuntuacion = fscanf(abrirPuntuacion, "%i, %i, %i, %i, %i, %i, %i\n", &leerPuntuacion[1], &leerPuntuacion[2],
+                &leerPuntuacion[3], &leerPuntuacion[4], &leerPuntuacion[5], &leerPuntuacion[6], &leerPuntuacion[7]);
+
+    cerrar = fclose(abrirPuntuacion);
+    if (cerrar == EOF) {
+        printf("Error al cerrar el fichero.\n");
+        return -1;
+    }
+    if (cerrar == 0)
+        printf("Fichero cerrado correctamente.\n");
+    /// Fin de lectura del fichero
+
+    switch (dato)
+    {
+    case 'n':
+        return leerPuntuacion[1];
+        break;
+    case 'p':
+        return leerPuntuacion[2];
+        break;
+    case 'm':
+        return leerPuntuacion[3];
+        break;
+    case 'd':
+        return leerPuntuacion[4];
+        break;
+    case 'o':
+        return leerPuntuacion[5];
+        break;
+    case 'h':
+        return leerPuntuacion[6];
+        break;
+    case 'v':
+        return leerPuntuacion[7];
+        break;
+    }
 }

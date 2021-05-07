@@ -37,11 +37,11 @@ int ataque(estadisticas atacante, estadisticas defensor)
 void imprimeVida(int vida)
 {
     int i = 0;
-    char health[11] = "__________";
-    for (i = 0; i < vida; i++)
-        health[i] = '*';
-    printf("%i%c %s", vida, 37, health);
-    system("pause");
+    char healthbar[11] = "          ", any;
+    for (i = 0; i < vida/10; i++)
+        healthbar[i] = 254;
+    printf("\n%i%c %s\n\n\n", vida, 37, healthbar);
+    scanf(" %[\n]", &any);
 }
 
 int cpuHabilidad(void)

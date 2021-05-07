@@ -35,6 +35,7 @@ int main()
     /// Fin de lectura del fichero
     int seleccion, cpudamage, userdamage;
     printf("La lancha ha sido destruida. ¡Que comience la batalla!\n");
+    getchar();
     while (cpu.vida != 0 || user.vida != 0)
     {
         system("cls");
@@ -53,17 +54,18 @@ int main()
                     user.vida -= userdamage;
                     printf("Tu vida ha disminuido en %i puntos.\nTu vida: ", userdamage);
                     imprimeVida(user.vida);
-
+                    goto attack;
                 }
                 if (cpu.velocidad > user.velocidad) {
                     cpudamage = ataque(user, cpu);
                     userdamage = ataque(cpu, user);
                     user.vida -= userdamage;
-                    printf("Tu vida ha disminuido en %i puntos.\nTu vida: ", userdamage);
+                    printf("Tu vida ha disminuido en %i puntos.\nTu vida:\t\t", userdamage);
                     imprimeVida(user.vida);
                     cpu.vida -= cpudamage;
-                    printf("La vida del enemigo ha disminuido en %i puntos.\nVida CPU: ", cpudamage);
+                    printf("La vida del enemigo ha disminuido en %i puntos.\nVida CPU:\t\t", cpudamage);
                     imprimeVida(cpu.vida);
+                    goto attack;
                 }
                 if (cpu.velocidad == user.velocidad) {
                     if (random() > 50)
@@ -84,24 +86,33 @@ int main()
                 {
                 case 1:
                     cpu.precision = cpu.precision * 0.75 * dificultad;
+                    break;
                 case 2:
                     cpu.velocidad = cpu.velocidad * 0.75 * dificultad;
+                    break;
                 case 3:
                     user.ataque = user.ataque * 1.25 * (2 - dificultad);
+                    break;
                 case 4:
                     user.velocidad = user.velocidad * 1.25 * (2 - dificultad);
+                    break;
                 }
                 switch (cpuHabilidad())
                 {
                 case 1:
                     user.precision = user.precision * 0.75 * (2 - dificultad);
+                    break;
                 case 2:
                     user.velocidad = user.velocidad * 0.75 * (2 - dificultad);
+                    break;
                 case 3:
                     cpu.ataque = cpu.ataque * 1.25 * dificultad;
+                    break;
                 case 4:
                     cpu.velocidad = cpu.velocidad * 1.25 * dificultad;
+                    break;
                 }
+            goto attack;
             }
     }
     if (cpu.vida != 0 && user.vida == 0)

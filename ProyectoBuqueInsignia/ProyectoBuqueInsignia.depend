@@ -4,26 +4,27 @@
 	<string.h>
 	"funcionesTexto.h"
 
-1620056482 c:\users\adriteixehax\documents\github\twie_2021-proyecto-buque-insignia\funcionestexto.h
+1620381774 c:\users\adriteixehax\documents\github\twie_2021-proyecto-buque-insignia\funcionestexto.h
 
-1620056482 source:c:\users\adriteixehax\documents\github\twie_2021-proyecto-buque-insignia\funcionestexto.c
+1620381774 source:c:\users\adriteixehax\documents\github\twie_2021-proyecto-buque-insignia\funcionestexto.c
 	<stdio.h>
 	<time.h>
 	<stdlib.h>
 	"funcionesTexto.h"
 
-1620038960 source:c:\users\adriteixehax\documents\github\twie_2021-proyecto-buque-insignia\menu_principal.c
+1620382478 source:c:\users\adriteixehax\documents\github\twie_2021-proyecto-buque-insignia\menu_principal.c
 
-1620038960 source:c:\users\adriteixehax\documents\github\twie_2021-proyecto-buque-insignia\estructuras.c
+1620381774 source:c:\users\adriteixehax\documents\github\twie_2021-proyecto-buque-insignia\estructuras.c
 
-1620056871 source:c:\users\adriteixehax\documents\github\twie_2021-proyecto-buque-insignia\funcionesmodobatalla.c
+1620388196 source:c:\users\adriteixehax\documents\github\twie_2021-proyecto-buque-insignia\funcionesmodobatalla.c
 	<stdio.h>
+	<stdlib.h>
 	"estructuras.h"
 	"funcionesTexto.h"
 
-1620058544 c:\users\adriteixehax\documents\github\twie_2021-proyecto-buque-insignia\estructuras.h
+1620381774 c:\users\adriteixehax\documents\github\twie_2021-proyecto-buque-insignia\estructuras.h
 
-1620058525 source:c:\users\adriteixehax\documents\github\twie_2021-proyecto-buque-insignia\modobatalla.c
+1620387847 source:c:\users\adriteixehax\documents\github\twie_2021-proyecto-buque-insignia\modobatalla.c
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
@@ -32,5 +33,5 @@
 	"estructuras.h"
 	"funcionesModoBatalla.h"
 
-1620056397 c:\users\adriteixehax\documents\github\twie_2021-proyecto-buque-insignia\funcionesmodobatalla.h
+1620381774 c:\users\adriteixehax\documents\github\twie_2021-proyecto-buque-insignia\funcionesmodobatalla.h
 

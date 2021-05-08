@@ -26,7 +26,7 @@ int ataque(estadisticas atacante, estadisticas defensor)
     int total = 0;
     float n = random1(), totalf;
     if (n*atacante.precision <= 0.25)
-        printf("El ataque falló.\n");
+        printf("El ataque fall%c.\n", 162);
     else {
         totalf = atacante.ataque / defensor.defensa * 50;
         total = (int)totalf;
@@ -36,12 +36,12 @@ int ataque(estadisticas atacante, estadisticas defensor)
 
 void imprimeVida(int vida)
 {
-    int i = 0;
-    char healthbar[11] = "          ", any;
+    int i = 0, intro;
+    char healthbar[11] = "          ";
     for (i = 0; i < vida/10; i++)
         healthbar[i] = 254;
     printf("\n%i%c %s\n\n\n", vida, 37, healthbar);
-    scanf(" %[\n]", &any);
+    enter();
 }
 
 int cpuHabilidad(void)

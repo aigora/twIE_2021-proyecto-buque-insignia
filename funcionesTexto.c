@@ -112,4 +112,17 @@ float random1(void)
   return n;
 }
 
+int enter(void)
+{
+    char ch;
+    ch = getchar();
+    if (ch == '\n')
+        return 1;
+    else
+    {
+        printf("Pulsa ENTER para continuar...");
+        return 0;
+    }
+}
+
 

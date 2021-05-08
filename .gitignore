@@ -56,3 +56,5 @@ dkms.conf
 ProyectoBuqueInsignia/ProyectoBuqueInsignia.layout
 ProyectoBuqueInsignia/ProyectoBuqueInsignia.depend
 ProyectoBuqueInsignia/ProyectoBuqueInsignia.depend
+*.layout
+*.depend

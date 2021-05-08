@@ -45,16 +45,16 @@ int jugar(void)
 
 int puntuaciones(char dato)
 {
-    /// Leer y cerrar fichero
+    /// Leer fichero
     FILE *abrirPuntuacion;
-    int cerrar, leerPuntuacion[LONG_PUNTUACION_CSV];
+    int cerrar, leerPuntuacion[LONG_PUNTUACION_CSV], solucion;
     abrirPuntuacion = fopen("puntuacionTotal.csv", "r");
     if (abrirPuntuacion == NULL) {
         printf("Error al abrir el fichero.\n");
         return -1;
     }
-    else
-        printf("Fichero abierto correctamente.\n");
+//    else
+//        printf("Fichero abierto correctamente.\n");
 
     fscanf(abrirPuntuacion, "%i, %i, %i, %i, %i, %i, %i", &leerPuntuacion[1], &leerPuntuacion[2],
                 &leerPuntuacion[3], &leerPuntuacion[4], &leerPuntuacion[5], &leerPuntuacion[6], &leerPuntuacion[7]);
@@ -64,34 +64,35 @@ int puntuaciones(char dato)
         printf("Error al cerrar el fichero.\n");
         return -1;
     }
-    if (cerrar == 0)
-        printf("Fichero cerrado correctamente.\n");
+//    if (cerrar == 0)
+//        printf("Fichero cerrado correctamente.\n");
     /// Fin de lectura del fichero
 
     switch (dato)
     {
     case 'n':
-        return leerPuntuacion[1];
+        solucion = leerPuntuacion[1];
         break;
     case 'p':
-        return leerPuntuacion[2];
+        solucion = leerPuntuacion[2];
         break;
     case 'm':
-        return leerPuntuacion[3];
+        solucion = leerPuntuacion[3];
         break;
     case 'd':
-        return leerPuntuacion[4];
+        solucion = leerPuntuacion[4];
         break;
     case 'o':
-        return leerPuntuacion[5];
+        solucion = leerPuntuacion[5];
         break;
     case 'h':
-        return leerPuntuacion[6];
+        solucion = leerPuntuacion[6];
         break;
     case 'v':
-        return leerPuntuacion[7];
+        solucion = leerPuntuacion[7];
         break;
     }
+    return solucion;
 }
 
 int random(void)

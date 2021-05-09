@@ -3,13 +3,12 @@
 
 typedef struct
 {
-    int numeroAcciones, totalDamage, puntuacion, victoria, barcosHundidos;
+    int numeroAcciones, totalDamageRecibido, totalDamageOcasionado, puntuacion, victoria, barcosHundidos;
 } puntuacion;
 
 typedef struct
 {
-    float precision, ataque, defensa, velocidad;
-    int efectividad;
+    int precision, ataque, defensa, velocidad, vida;
 } estadisticas;
 
 typedef struct

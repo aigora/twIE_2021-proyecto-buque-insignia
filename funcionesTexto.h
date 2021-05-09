@@ -4,6 +4,10 @@
 int inicioPrograma(int x);
 void error(void);
 int jugar(void);
+int puntuaciones(char dato);
+int random(void);
+float random1(void);
+int enter(void);
 
 #endif // header guard
 

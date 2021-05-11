@@ -237,94 +237,84 @@ int comprobarCabeBarco(int tam, int fila, int columna, int direccion, int matriz
 
 int sucoordenada(int fi, int co, int SuMatriz[][10], int TuMatriz[][10])
 {
-    SuMatriz[fi][co] = 1;
-    if(SuMatriz[fi][co] == TuMatriz[fi][co])
-    {
+    SuMatriz[fi][co] = TuMatriz[fi][co];
+    if(SuMatriz[fi][co] == 1){
         printf("Te han dado a un barco, este es su resultado:\n");
         imprimirMatrizdeBarcos(SuMatriz, 10, 10);
         return 1;
     }
-    else{
-    if(TuMatriz[fi][co]=3)
-    {
-        SuMatriz[fi][co] = 3;
-        Printf("Te han dañado al barco especial, este es su resultado:\n");
-        imprimirMatrizdeBarcos(SuMatriz, 10, 10);
-        return 1;
-        //Entramos aqui en el modo batalla especial entre barcos.
-    }
-        Printf("No te han dañado ningun barco, este es su resultado:\n");
-        SuMatriz[fi][co] = 2;
+    else if (SuMatriz[fi][co] == 2){
+        printf("No te han dado ningun barco, este es su resultado:\n");
         imprimirMatrizdeBarcos(SuMatriz, 10, 10);
         return 0;
     }
+    else if(SuMatriz[fi][co] == 3) {
+        printf("Te han dado al barco especial, este es su resultado:\n");
+        imprimirMatrizdeBarcos(SuMatriz, 10, 10);
+        //Entramos aqui en el modo batalla especial entre barcos.
 
+        return 1;
+    }
 }
 
-
-int tucoordenada(char letra, int numero, int tuMatriz[][10], int suMatriz[][10])
+int tucoordenada(int columna, int fila, int tuMatriz[][10], int suMatriz[][10])
 {
+
+    tuMatriz[fila][columna] = suMatriz[fila][columna];
+
+    if(tuMatriz[fila][columna] == 1){
+        printf("Has dado a un barco\n");
+        return 1;
+    }
+    else if (tuMatriz[fila][columna] == 2){
+        printf("No has dado a ningun barco\n");
+        return 0;
+    }
+    else if(tuMatriz[fila][columna] == 3) {
+        printf("Has dado al barco especial\n");
+        //Entramos aqui en el modo batalla especial entre barcos.
+        return 1;
+    }
+}
+
+int traducirletra(char letra){
     switch(letra)
     {
-    case 'A':
-        y = 0;
-        break;
-    case 'B':
-        y = 1;
-        break;
-    case 'C':
-        y = 2;
-        break;
-    case 'D':
-        y = 3;
-        break;
-    case 'E':
-        y = 4;
-        break;
-    case 'F':
-        y = 5;
-        break;
-    case 'G':
-        y = 6;
-        break;
-    case 'H':
-        y = 7;
-        break;
-    case 'I':
-        y = 8;
-        break;
-    case 'J':
-        y = 9;
-        break;
-    default:
-        printf("Vuelva a introducir la coordenada.\n");
-        break;
+        case 'A':
+            return 0;
+            break;
+        case 'B':
+            return 1;
+            break;
+        case 'C':
+            return 2;
+            break;
+        case 'D':
+            return 3;
+            break;
+        case 'E':
+            return 4;
+            break;
+        case 'F':
+            return 5;
+            break;
+        case 'G':
+            return 6;
+            break;
+        case 'H':
+            return 7;
+            break;
+        case 'I':
+            return 8;
+            break;
+        case 'J':
+            return 9;
+            break;
+        default:
+            return -1;
+            break;
     }
-    tuMatriz[numero][y] = 1;
-    if(tuMatriz[numero][y] == suMatriz[numero][y])
-    {
-        printf("Has dado a un barco, este es tu resulatdo:\n");
-        imprimirMatrizdeBarcos(tuMatriz, 10, 10);
-        return 1;
-    }
-    else{
-    if(suMatriz[numero][y]=3)
-    {
-        tuMatriz[numero][y] = 3;
-        Printf("Has dañado al barco especial, este es tu resultado:\n");
-        imprimirMatrizdeBarcos(tuMatriz, 10, 10);
-        return 1;
-        //Entramos aqui en el modo batalla especial entre barcos.
-    }
-        Printf("No has dañado ningun barco, este es tu resultado:\n");
-        tuMatriz[numero][y] = 2;
-        imprimirMatrizdeBarcos(tuMatriz, 10, 10);
-        return 0;
-    }
-
 }
-
-
 
 void ganador(int tu, int cpu)
 {
@@ -336,3 +326,12 @@ printf("El ganador es la cpu.\n");
 else
     printf("El ganador has sido tu.\n");
 }
+
+
+
+
+
+
+
+
+

@@ -51,7 +51,6 @@
 		</Unit>
 		<Unit filename="desbloqueables.csv" />
 		<Unit filename="estadisticas.csv" />
-		<Unit filename="puntuacionPartida.csv" />
 		<Unit filename="puntuacionTotal.csv" />
 		<Extensions />
 	</Project>

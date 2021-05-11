@@ -13,6 +13,7 @@ int main()
     int cerrar, seleccion, cpudamage, userdamage, opcionVida, calculoCPU = cpuHabilidad();
     int objCountUSER[4] = {1,1,1,1};
     int objCountCPU[4] = {1,1,1,1};
+    puntuacion puntosBatalla;
     dificultad = calculoDificultad();
     estadisticas cpu, user;
     printf("%f", dificultad);
@@ -59,7 +60,7 @@ int main()
             cpudamage = ataque(user, cpu);
             userdamage = ataque(cpu, user);
             damage:
-                if (user.velocidad > cpu.velocidad)
+                if (user.velocidad < cpu.velocidad)
                 {
                     opcionVida = -1;
                     user.vida -= userdamage;
@@ -75,7 +76,7 @@ int main()
                         return 1;
                     }
                 }
-                if (cpu.velocidad > user.velocidad)
+                if (cpu.velocidad < user.velocidad)
                 {
                     opcionVida = 1;
                     cpu.vida -= cpudamage;
@@ -87,7 +88,8 @@ int main()
                     user.vida -= userdamage;
                     if (user.vida <= 0)
                     {
-                        printf("El enemigo ha ganado. Tiene ahora %i turnos adicionales.\n", TURNOS_ADICIONALES);
+                        printf("El enemigo ha ganado. Tiene ahora %i turnos adicionales.\nSe han añadido %i puntos a la puntuación total.\n\
+Recuerda que puedes ver el historial de puntuaciones en el menú principal.", TURNOS_ADICIONALES, );
                         return 0;
                     }
                 }

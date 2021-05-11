@@ -11,20 +11,50 @@ int Matriz(int x) {
     int susbarcosrellenos [10][10] = {{0,0,0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0,0,0}};
 
     rellenarTodosLosBarcos(misBarcos);
-    rellenarTodosLosBarcos(cpuBarcos);
+    //imprimirMatrizdeBarcos(misBarcos, 10, 10);
 
-    while(mbarcos <21||sbarcos<21)
+    rellenarTodosLosBarcos(cpuBarcos);
+    //imprimirMatrizdeBarcos(cpuBarcos, 10, 10);
+
+
+    while(mbarcos<21 && sbarcos<21)
     {
-        printf("Introduzca la coordenada de la casilla que desea atacar: (letra en mayusculas seguido de su numero)\n");
+        printf("\n\nTU TURNO: la situacion actual es: \n");
         imprimirMatrizdeBarcos(misbarcosrellenos, 10, 10);
-        scanf("%c %i", &l, &n);
-        mbarcos+=tucoordenada(char letra, int numero, int x, int misbarcosrellenos[][10], int cpuBarcos[][10]);
-        printf("Ahora le toca a tu rival.\n");
-        y = rand() %10;
-        x = rand() %10;
-        sbarcos+=sucoordenada(int x, int y, int susbarcosrellenos, int misBarcos[][10]);
+
+        scan:
+            printf("Introduzca la columna de la casilla que desea atacar: (A-J):");
+            char letra;
+            scanf(" %c", &letra);
+            int columna = traducirletra(letra);
+
+            printf("Introduzca la fila de la casilla que desea atacar: (0-9):");
+            int numero;
+            scanf("%d", &numero);
+
+            if (misbarcosrellenos[numero][columna]>0){
+                printf("La casilla ya esta seleccionada. Elige otra\n");
+                goto scan;
+            }
+
+        mbarcos = mbarcos + tucoordenada(columna, numero, misbarcosrellenos, cpuBarcos);
+        printf("Casillas de barcos acertadas por ti: %d\n", mbarcos);
+
+        printf("\n\nCPU TURNO.\n");
+        int y = rand() %10;
+        int x = rand() %10;
+        while (susbarcosrellenos[x][y]>0){
+            y = rand() %10;
+            x = rand() %10;
+        }
+        sbarcos = sbarcos + sucoordenada(x, y, susbarcosrellenos, misBarcos);
+        printf("Casillas de barcos acertadas por CPU: %d\n", sbarcos);
     }
     ganador(mbarcos,sbarcos);
+    printf("Estos han sido tus resultados\n");
+    imprimirMatrizdeBarcos(misbarcosrellenos, 10, 10);
+    printf("Estos han sido sus resultados\n");
+    imprimirMatrizdeBarcos(susbarcosrellenos, 10, 10);
     return 0;
 }
 
@@ -318,14 +348,16 @@ int traducirletra(char letra){
 
 void ganador(int tu, int cpu)
 {
-printf ("Se acabo la partida.\n");
-if(tu<cpu)
-{
-printf("El ganador es la cpu.\n");
+    printf ("Se acabo la partida.\n");
+    if(tu<cpu)
+    {
+        printf("El ganador es la cpu.\n");
+    }
+    else
+        {printf("El ganador has sido tu.\n");}
+    printf("Tu has acertado %d barcos y la cpu ha acertado %d barcos.\n", tu, cpu);
 }
-else
-    printf("El ganador has sido tu.\n");
-}
+
 
 
 

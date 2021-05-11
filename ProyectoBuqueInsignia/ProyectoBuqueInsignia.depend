@@ -4,9 +4,9 @@
 	<string.h>
 	"funcionesTexto.h"
 
-1620519090 c:\users\adriteixehax\documents\github\twie_2021-proyecto-buque-insignia\funcionestexto.h
+1620755831 c:\users\adriteixehax\documents\github\twie_2021-proyecto-buque-insignia\funcionestexto.h
 
-1620519090 source:c:\users\adriteixehax\documents\github\twie_2021-proyecto-buque-insignia\funcionestexto.c
+1620756032 source:c:\users\adriteixehax\documents\github\twie_2021-proyecto-buque-insignia\funcionestexto.c
 	<stdio.h>
 	<time.h>
 	<stdlib.h>
@@ -16,14 +16,16 @@
 
 1620381774 source:c:\users\adriteixehax\documents\github\twie_2021-proyecto-buque-insignia\estructuras.c
 
-1620519090 source:c:\users\adriteixehax\documents\github\twie_2021-proyecto-buque-insignia\funcionesmodobatalla.c
+1620756054 source:c:\users\adriteixehax\documents\github\twie_2021-proyecto-buque-insignia\funcionesmodobatalla.c
 	<stdio.h>
 	<stdlib.h>
+	<string.h>
+	<time.h>
 	"estructuras.h"
 	"funcionesTexto.h"
 	"funcionesModoBatalla.h"
 
-1620519090 c:\users\adriteixehax\documents\github\twie_2021-proyecto-buque-insignia\estructuras.h
+1620755241 c:\users\adriteixehax\documents\github\twie_2021-proyecto-buque-insignia\estructuras.h
 
 1620519090 source:c:\users\adriteixehax\documents\github\twie_2021-proyecto-buque-insignia\modobatalla.c
 	<stdio.h>
@@ -34,5 +36,5 @@
 	"estructuras.h"
 	"funcionesModoBatalla.h"
 
-1620519090 c:\users\adriteixehax\documents\github\twie_2021-proyecto-buque-insignia\funcionesmodobatalla.h
+1620755655 c:\users\adriteixehax\documents\github\twie_2021-proyecto-buque-insignia\funcionesmodobatalla.h
 

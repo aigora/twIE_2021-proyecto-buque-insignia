@@ -46,9 +46,6 @@
 		<Unit filename="../menu_principal.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="../modoBatalla.c">
-			<Option compilerVar="CC" />
-		</Unit>
 		<Unit filename="desbloqueables.csv" />
 		<Unit filename="estadisticas.csv" />
 		<Unit filename="puntuacionTotal.csv" />

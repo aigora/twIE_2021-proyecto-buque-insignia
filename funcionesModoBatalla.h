@@ -7,5 +7,6 @@ void imprimeVida(int vidaUSER, int vidaCPU, int diferenciaUser, int diferenciaCP
 int cpuHabilidad(void);
 int accionHabilidades(estadisticas usuario, estadisticas oponente, float dificultad, int obj[4], int selector);
 int efectoHabilidad (int stat, float factor, float dificultad, float minuendo);
+int modoBatalla(void);
 #endif // header guard
 

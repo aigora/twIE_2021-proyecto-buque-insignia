@@ -4,10 +4,12 @@
 #include "funcionesTexto.h"
 #define LONG_PUNTUACION_CSV 8
 
-int inicioPrograma(int x)
+int inicioPrograma(void)
 {
+    int x = 0;
     printf("Bienvenido a la pagina de inicio de Proyecto Buque Insignia.\nEscribe 'atras' en cualquier momento para volver a la pagina anterior.\n\n");
     printf("%cQue quieres hacer? Selecciona entre:\n(1) Personalizar barco\n(2) Jugar\n(3) Puntuacion\n", 168);
+    printf("\nEXPERIMENTAL\n(4) Modo Batalla");//Provisional
     scanf(" %i", &x);
     return x;
 }
@@ -15,6 +17,8 @@ int inicioPrograma(int x)
 void error(void)
 {
     printf("Caracter v%clido. Vuelve a intentarlo.\n", 160);
+    enter();
+    enter();
 }
 
 int jugar(void)

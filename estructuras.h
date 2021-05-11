@@ -11,11 +11,6 @@ typedef struct
     int precision, ataque, defensa, velocidad, vida;
 } estadisticas;
 
-typedef struct
-{
-    int totalGanadas, totalPerdidas, totalAcciones, totalPartidas;
-} puntuacionGlobal;
-
 
 #endif // header guard
 

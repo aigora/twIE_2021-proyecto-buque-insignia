@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <Matriz.h>
+#include "Matriz.h"
 
 int Matriz(int x) {
     int mbarcos = 0;
@@ -17,1601 +17,244 @@ int Matriz(int x) {
     {
         printf("Introduzca la coordenada de la casilla que desea atacar: (letra en mayusculas seguido de su numero)\n");
         imprimirMatrizdeBarcos(misbarcosrellenos, 10, 10);
-        scanf("%c %i", &l, &n)
-        mbarcos+=tucoordenada(char letra, int numero, int misbarcosrellenos[][10], int cpuBarcos[][10]);
-        printf("Ahora le toca a tu rival.\n")
+        scanf("%c %i", &l, &n);
+        mbarcos+=tucoordenada(char letra, int numero, int x, int misbarcosrellenos[][10], int cpuBarcos[][10]);
+        printf("Ahora le toca a tu rival.\n");
         y = rand() %10;
         x = rand() %10;
-        sbarcos+=sucoordenada(int x, int y, int susbarcosrellenos, int misBarcos[][10]))
+        sbarcos+=sucoordenada(int x, int y, int susbarcosrellenos, int misBarcos[][10]);
     }
-    printf ("Se acabo la partida.\n")
+    ganador(mbarcos,sbarcos);
     return 0;
 }
-void imprimirMatrizdeBarcos(int MatBarcos[][10], int fila, int column) {
+
+void imprimirMatrizdeBarcos(int matrizBarcos[][10], int fila, int column) {
     printf("- A B C D E F G H I J\n");
     for (int x=0; x<fila; x++) {
         printf("%d ", x);
         for(int y=0; y<column; y++) {
-            printf("%d ", MatBarcos[x][y]);
+            if (matrizBarcos[x][y] == 1){
+                printf("# ");
+            } else if (matrizBarcos[x][y] == 2){
+                printf(". ");
+            } else if (matrizBarcos[x][y] == 3){
+                printf("@ ");
+            } else {
+                printf("? ");
+            }
         }
         printf("\n");
     }
 }
 
-void rellenarBarco(int tam, int esEspecial, int MatrizBarcos[][10]) {
-    //Miramos si es Horizontal (0) o Vertical (1)
-    int direccion = rand() % 2;
-    //printf("Direccion del barco vale %d\n", direccion);
 
+void rellenarBarco(int tam, int fila, int columna, int direccion, int esEspecial, int matrizBarcos[][10]) {
+    int tipoBarco = 1;
+    if (esEspecial == 1) {
+        tipoBarco = 3;
+    }
+
+    //Rellenamos el barco
+    for(int i=0; i<tam;i++){
+        if (direccion == 0){
+            matrizBarcos[fila][columna+i] = tipoBarco;
+        } else {
+            matrizBarcos[fila+i][columna] = tipoBarco;
+        }
+    }
+
+    //Rellenamos las casillas adyacentes
     if (direccion == 0) {
-        int x=0;
-        int y=0;
-         switch (size) {
-            case 4:
-                x = rand() %10;
-                y = rand() %7;
-                //printf("El barco de 4 Horizontal comienza en (%d,%d)\n", x, y);
-                //En la matriz (1) significa barco, (2) agua, (3) barco especial y (0) casilla aun no rellenada.
-                 if(x=0&&y=6)
-                {
-                    Matrizbarcos[x][y-1] = 2;
-                    Matrizbarcos[x+1][y-1]=2;
-                    for(int i=0; i<4;i++){
-                        Matrizbarcos[x][y] = 1;
-                        Matrizbarcos[x+1][y]=2;
-                        y++
-                    }
+        for(int i=-1; i<2; i++){
+            for(int j=-1; j<tam+1; j++){
+                int selecfila = fila + i;
+                int seleccolumna = columna + j;
+
+                if (selecfila <0 || selecfila > 9 || seleccolumna <0 || seleccolumna >9
+                    || matrizBarcos[selecfila][seleccolumna] == 1 || matrizBarcos[selecfila][seleccolumna] == 3) {
+                    continue;
+                } else {
+                    matrizBarcos[selecfila][seleccolumna] = 2;
                 }
-
-                if(x=9&&y=6)
-                {
-                    Matrizbarcos[x][y-1] = 2;
-                    Matrizbarcos[x-1][y-1]=2;
-                    for(int i=0; i<4;i++){
-                        Matrizbarcos[x][y] = 1;
-                        Matrizbarcos[x-1][y]=2;
-                    y++
-                    }
-                }
-
-                if(x=9)
-                {
-                    Matrizbarcos[x][y-1] = 2;
-                    Matrizbarcos[x-1][y-1]=2;
-                    for(int i=0; i<4;i++){
-                        Matrizbarcos[x][y] = 1;
-                        Matrizbarcos[x-1][y] = 2;
-                        y++
-                    }
-                    Matrizbarcos[x][y+1] = 2;
-                    Matrizbarcos[x-1][y+1] = 2;
-                }
-
-
-                if(x=0&&y=0)
-                {
-                    for(int i=0; i<4; i++) {
-                        Matrizbarcos[x][y] = 1;
-                        Matrizbarcos[x+1][y] = 2;
-                        y+=1;
-                    }
-                    Matrizbarcos[x][y+1] = 2;
-                    Matrizbarcos[x+1][y+1] = 2;
-                }
-
-                if(y=6)
-                {
-                    Matrizbarcos[x][y-1] = 2;
-                    Matrizbarcos[x+1][y-1]=2;
-                    Matrizbarcos[x-1][y-1]=2;
-                    for(int i=0; i<4; i++) {
-                        Matrizbarcos[x][y] = 1;
-                        Matrizbarcos[x+1][y]=2;
-                        Matrizbarcos[x-1][y]=2;
-                        y+=1;
-                    }
-                }
-
-                if(x=9&&y=0)
-                {
-                    for(int i=0; i<4; i++) {
-                        Matrizbarcos[x][y] = 1;
-                        Matrizbarcos[x-1][y] = 2;
-                        y+=1;
-                    }
-                    Matrizbarcos[x][y+1] = 2;
-                    Matrizbarcos[x-1][y+1] = 2;
-                }
-
-                if(x=0)
-                {
-                    Matrizbarcos[x][y-1] = 2;
-                    Matrizbarcos[x+1][y-1]=2;
-                    for(int i=0; i<4; i++) {
-                        Matrizbarcos[x][y] = 1;
-                        Matrizbarcos[x+1][y] = 2;
-                        y+=1;
-                    }
-                    Matrizbarcos[x][y+1] = 2;
-                    Matrizbarcos[x+1][y+1] = 2;
-                }
-
-                if(y=0)
-                {
-                    for(int i=0; i<4; i++) {
-                        Matrizbarcos[x][y] = 1;
-                        Matrizbarcos[x-1][y] = 2;
-                        Matrizbarcos[x+1][y] = 2;
-                        y+=1;
-                    }
-                    Matrizbarcos[x][y+1] = 2;
-                    Matrizbarcos[x-1][y+1] = 2;
-                    Matrizbarcos[x+1][y+1] = 2;
-                }
-
-                Matrizbarcos[x][y-1] = 2;
-                Matrizbarcos[x+1][y-1]=2;
-                Matrizbarcos[x-1][y-1]=2;
-                for(int i=0; i<4; i++) {
-                    Matrizbarcos[x][y] = 1;
-                    Matrizbarcos[x+1][y]=2;
-                    Matrizbarcos[x-1][y]=2;
-                    y+=1;
-                }
-                Matrizbarcos[x][y+1] = 2;
-                Matrizbarcos[x+1][y+1]=2;
-                Matrizbarcos[x-1][y+1]=2;
-                //printf("El barco de 4 Horizontal comienza en (%d,%d)\n", x, y);
-
-                break;
-            case 3:
-                Alt:
-                x = rand() %10;
-                y = rand() %8;
-
-                if(MatrizBarcos[x][y]=1||MatrizBarcos[x][y]=2) {
-                    goto Alt;
-                }
-
-                 if(x=0&&y=7)
-                {
-                    if(MatrizBarcos[x][y-1]=1||MatrizBarcos[x+1][y-1]=1) {
-                        goto Alt;}
-                    Matrizbarcos[x][y-1] = 2;
-                    Matrizbarcos[x+1][y-1]=2;
-                    for(int i=0; i<3;i++){
-                        if(MatrizBarcos[x][y]=1||MatrizBarcos[x][y]=2) {
-                            goto Alt;
-                        }
-                        if(MatrizBarcos[x+1][y]=1)
-                            { goto Alt;}
-                        Matrizbarcos[x][y] = 1;
-                        Matrizbarcos[x+1][y]=2;
-                        y++
-                    }
-                }
-
-                if(x=9&&y=7)
-                {
-                    if(MatrizBarcos[x][y-1]=1||MatrizBarcos[x-1][y-1]=1) {
-                        goto Alt;}
-                    Matrizbarcos[x][y-1] = 2;
-                    Matrizbarcos[x-1][y-1]=2;
-                    for(int i=0; i<3;i++){
-                        if(MatrizBarcos[x][y]=1||MatrizBarcos[x][y]=2) {
-                            goto Alt;
-                        }
-                        if(MatrizBarcos[x-1][y]=1)
-                            { goto Alt;}
-                        Matrizbarcos[x][y] = 1;
-                        Matrizbarcos[x-1][y]=2;
-                    y++
-                    }
-                }
-
-                if(x=9)
-                {
-                    if(MatrizBarcos[x][y-1]=1||MatrizBarcos[x-1][y-1]=1) {
-                        goto Alt;}
-                    Matrizbarcos[x][y-1] = 2;
-                    Matrizbarcos[x-1][y-1]=2;
-                    for(int i=0; i<3;i++){
-                        if(MatrizBarcos[x][y]=1||MatrizBarcos[x][y]=2) {
-                            goto Alt;
-                        }
-                        if(MatrizBarcos[x-1][y]=1)
-                        {
-                            goto Alt;
-                        }
-                        Matrizbarcos[x][y] = 1;
-                        Matrizbarcos[x-1][y] = 2;
-                        y++
-                    }
-                    if(MatrizBarcos[x][y+1]=1||MatrizBarcos[x-1][y+1]=1)
-                    {
-                        goto Alt;
-                    }
-                    Matrizbarcos[x][y+1] = 2;
-                    Matrizbarcos[x-1][y+1] = 2;
-                }
-
-
-                if(x=0&&y=0)
-                {
-                    for(int i=0; i<3; i++) {
-                        if(MatrizBarcos[x][y]=1||MatrizBarcos[x][y]=2) {
-                            goto Alt;
-                            }
-                        if(MatrizBarcos[x+1][y]=1)
-                        {
-                            goto Alt;
-                        }
-                        Matrizbarcos[x][y] = 1;
-                        Matrizbarcos[x+1][y] = 2;
-                        y+=1;
-                    }
-                    if(MatrizBarcos[x][y+1]=1||MatrizBarcos[x+1][y+1]=1)
-                    {
-                        goto Alt;
-                    }
-                    Matrizbarcos[x][y+1] = 2;
-                    Matrizbarcos[x+1][y+1] = 2;
-                }
-
-                if(y=7)
-                {
-                    if(MatrizBarcos[x][y-1]=1||MatrizBarcos[x+1][y-1]=1) {
-                        goto Alt;}
-                    if(MatrizBarcos[x-1][y-1]=1)
-                    {
-                        goto Alt;
-                    }
-                    Matrizbarcos[x][y-1] = 2;
-                    Matrizbarcos[x+1][y-1]=2;
-                    Matrizbarcos[x-1][y-1]=2;
-                    for(int i=0; i<3; i++) {
-                        if(MatrizBarcos[x][y]=1||MatrizBarcos[x][y]=2) {
-                            goto Alt;
-                        }
-                        if(MatrizBarcos[x-1][y]=1||MatrizBarcos[x+1][y]=1)
-                            { goto Alt;}
-                        Matrizbarcos[x][y] = 1;
-                        Matrizbarcos[x+1][y]=2;
-                        Matrizbarcos[x-1][y]=2;
-                        y+=1;
-                    }
-                }
-
-                if(x=9&&y=0)
-                {
-                    for(int i=0; i<3; i++) {
-                        if(MatrizBarcos[x][y]=1||MatrizBarcos[x][y]=2) {
-                            goto Alt;
-                        }
-                        if(MatrizBarcos[x-1][y]=1)
-                        {
-                            goto Alt;
-                        }
-                        Matrizbarcos[x][y] = 1;
-                        Matrizbarcos[x-1][y] = 2;
-                        y+=1;
-                    }
-                    if(MatrizBarcos[x][y+1]=1||MatrizBarcos[x-1][y+1]=1)
-                    {
-                        goto Alt;
-                    }
-                    Matrizbarcos[x][y+1] = 2;
-                    Matrizbarcos[x-1][y+1] = 2;
-                }
-
-                if(x=0)
-                {
-                    if(MatrizBarcos[x][y-1]=1||MatrizBarcos[x+1][y-1]=1) {
-                        goto Alt;}
-                    Matrizbarcos[x][y-1] = 2;
-                    Matrizbarcos[x+1][y-1]=2;
-                    for(int i=0; i<3; i++) {
-                        if(MatrizBarcos[x][y]=1||MatrizBarcos[x][y]=2) {
-                            goto Alt;
-                        }
-                        if(MatrizBarcos[x+1][y]=1)
-                        {
-                            goto Alt;
-                        }
-                        Matrizbarcos[x][y] = 1;
-                        Matrizbarcos[x+1][y] = 2;
-                        y+=1;
-                    }
-                    if(MatrizBarcos[x][y+1]=1||MatrizBarcos[x+1][y+1]=1)
-                    {
-                        goto Alt;
-                    }
-                    Matrizbarcos[x][y+1] = 2;
-                    Matrizbarcos[x+1][y+1] = 2;
-                }
-
-                if(y=0)
-                {
-                    for(int i=0; i<3; i++) {
-                        if(MatrizBarcos[x][y]=1||MatrizBarcos[x][y]=2) {
-                            goto Alt;
-                        }
-                        if(MatrizBarcos[x-1][y]=1||MatrizBarcos[x+1][y]=1)
-                        {
-                            goto Alt;
-                        }
-                        Matrizbarcos[x][y] = 1;
-                        Matrizbarcos[x-1][y] = 2;
-                        Matrizbarcos[x+1][y] = 2;
-                        y+=1;
-                    }
-                    if(MatrizBarcos[x][y+1]=1||MatrizBarcos[x+1][y+1]=1) {
-                        goto Alt;}
-                    if(MatrizBarcos[x-1][y+1]=1)
-                    {
-                        goto Alt;
-                    }
-                    Matrizbarcos[x][y+1] = 2;
-                    Matrizbarcos[x-1][y+1] = 2;
-                    Matrizbarcos[x+1][y+1] = 2;
-                }
-
-                if(MatrizBarcos[x][y-1]=1||MatrizBarcos[x+1][y-1]=1) {
-                    goto Alt;}
-                if(MatrizBarcos[x-1][y-1]=1)
-                {
-                    goto Alt;
-                }
-                Matrizbarcos[x][y-1] = 2;
-                Matrizbarcos[x+1][y-1]=2;
-                Matrizbarcos[x-1][y-1]=2;
-                for(int i=0; i<3; i++) {
-                    if(MatrizBarcos[x][y]=1||MatrizBarcos[x][y]=2) {
-                        goto Alt;
-                    }
-                    if(MatrizBarcos[x-1][y]=1||MatrizBarcos[x+1][y]=1)
-                        { goto Alt;}
-                    Matrizbarcos[x][y] = 1;
-                    Matrizbarcos[x+1][y]=2;
-                    Matrizbarcos[x-1][y]=2;
-                    y+=1;
-                }
-                if(MatrizBarcos[x][y+1]=1||MatrizBarcos[x+1][y+1]=1) {
-                    goto Alt;}
-                if(MatrizBarcos[x-1][y+1]=1)
-                    {
-                        goto Alt;
-                    }
-                Matrizbarcos[x][y+1] = 2;
-                Matrizbarcos[x+1][y+1]=2;
-                Matrizbarcos[x-1][y+1]=2;
-                 //printf("El barco de 3 Horizontal comienza en (%d,%d)\n", x, y);
-                break;
-            case 2:
-                Alto:
-                x = rand() %10;
-                y = rand() %9;
-
-                if(MatrizBarcos[x][y]=1||MatrizBarcos[x][y]=2) {
-                    goto Alto;
-                }
-
-                 if(x=0&&y=8)
-                {
-                    if(MatrizBarcos[x][y-1]=1||MatrizBarcos[x+1][y-1]=1) {
-                        goto Alto;}
-                    Matrizbarcos[x][y-1] = 2;
-                    Matrizbarcos[x+1][y-1]=2;
-                    for(int i=0; i<2;i++){
-                        if(MatrizBarcos[x][y]=1||MatrizBarcos[x][y]=2) {
-                            goto Alto;
-                        }
-                        if(MatrizBarcos[x+1][y]=1)
-                            { goto Alto;}
-                        Matrizbarcos[x][y] = 1;
-                        Matrizbarcos[x+1][y]=2;
-                        y++
-                    }
-                }
-
-                if(x=9&&y=8)
-                {
-                    if(MatrizBarcos[x][y-1]=1||MatrizBarcos[x-1][y-1]=1) {
-                        goto Alto;}
-                    Matrizbarcos[x][y-1] = 2;
-                    Matrizbarcos[x-1][y-1]=2;
-                    for(int i=0; i<2;i++){
-                        if(MatrizBarcos[x][y]=1||MatrizBarcos[x][y]=2) {
-                            goto Alto;
-                        }
-                        if(MatrizBarcos[x-1][y]=1)
-                            { goto Alto;}
-                        Matrizbarcos[x][y] = 1;
-                        Matrizbarcos[x-1][y]=2;
-                    y++
-                    }
-                }
-
-                if(x=9)
-                {
-                    if(MatrizBarcos[x][y-1]=1||MatrizBarcos[x-1][y-1]=1) {
-                        goto Alto;}
-                    Matrizbarcos[x][y-1] = 2;
-                    Matrizbarcos[x-1][y-1]=2;
-                    for(int i=0; i<2;i++){
-                        if(MatrizBarcos[x][y]=1||MatrizBarcos[x][y]=2) {
-                            goto Alto;
-                        }
-                        if(MatrizBarcos[x-1][y]=1)
-                        {
-                            goto Alto;
-                        }
-                        Matrizbarcos[x][y] = 1;
-                        Matrizbarcos[x-1][y] = 2;
-                        y++
-                    }
-                    if(MatrizBarcos[x][y+1]=1||MatrizBarcos[x-1][y+1]=1)
-                    {
-                        goto Alto;
-                    }
-                    Matrizbarcos[x][y+1] = 2;
-                    Matrizbarcos[x-1][y+1] = 2;
-                }
-
-
-                if(x=0&&y=0)
-                {
-                    for(int i=0; i<2; i++) {
-                        if(MatrizBarcos[x][y]=1||MatrizBarcos[x][y]=2) {
-                            goto Alto;
-                            }
-                        if(MatrizBarcos[x+1][y]=1)
-                        {
-                            goto Alto;
-                        }
-                        Matrizbarcos[x][y] = 1;
-                        Matrizbarcos[x+1][y] = 2;
-                        y+=1;
-                    }
-                    if(MatrizBarcos[x][y+1]=1||MatrizBarcos[x+1][y+1]=1)
-                    {
-                        goto Alto;
-                    }
-                    Matrizbarcos[x][y+1] = 2;
-                    Matrizbarcos[x+1][y+1] = 2;
-                }
-
-                if(y=8)
-                {
-                    if(MatrizBarcos[x][y-1]=1||MatrizBarcos[x+1][y-1]=1) {
-                        goto Alto;}
-                    if(MatrizBarcos[x-1][y-1]=1)
-                    {
-                        goto Alto;
-                    }
-                    Matrizbarcos[x][y-1] = 2;
-                    Matrizbarcos[x+1][y-1]=2;
-                    Matrizbarcos[x-1][y-1]=2;
-                    for(int i=0; i<2; i++) {
-                        if(MatrizBarcos[x][y]=1||MatrizBarcos[x][y]=2) {
-                            goto Alto;
-                        }
-                        if(MatrizBarcos[x-1][y]=1||MatrizBarcos[x+1][y]=1)
-                            { goto Alto;}
-                        Matrizbarcos[x][y] = 1;
-                        Matrizbarcos[x+1][y]=2;
-                        Matrizbarcos[x-1][y]=2;
-                        y+=1;
-                    }
-                }
-
-                if(x=9&&y=0)
-                {
-                    for(int i=0; i<2; i++) {
-                        if(MatrizBarcos[x][y]=1||MatrizBarcos[x][y]=2) {
-                            goto Alto;
-                        }
-                        if(MatrizBarcos[x-1][y]=1)
-                        {
-                            goto Alto;
-                        }
-                        Matrizbarcos[x][y] = 1;
-                        Matrizbarcos[x-1][y] = 2;
-                        y+=1;
-                    }
-                    if(MatrizBarcos[x][y+1]=1||MatrizBarcos[x-1][y+1]=1)
-                    {
-                        goto Alto;
-                    }
-                    Matrizbarcos[x][y+1] = 2;
-                    Matrizbarcos[x-1][y+1] = 2;
-                }
-
-                if(x=0)
-                {
-                    if(MatrizBarcos[x][y-1]=1||MatrizBarcos[x+1][y-1]=1) {
-                        goto Alto;}
-                    Matrizbarcos[x][y-1] = 2;
-                    Matrizbarcos[x+1][y-1]=2;
-                    for(int i=0; i<2; i++) {
-                        if(MatrizBarcos[x][y]=1||MatrizBarcos[x][y]=2) {
-                            goto Alto;
-                        }
-                        if(MatrizBarcos[x+1][y]=1)
-                        {
-                            goto Alto;
-                        }
-                        Matrizbarcos[x][y] = 1;
-                        Matrizbarcos[x+1][y] = 2;
-                        y+=1;
-                    }
-                    if(MatrizBarcos[x][y+1]=1||MatrizBarcos[x+1][y+1]=1)
-                    {
-                        goto Alto;
-                    }
-                    Matrizbarcos[x][y+1] = 2;
-                    Matrizbarcos[x+1][y+1] = 2;
-                }
-
-                if(y=0)
-                {
-                    for(int i=0; i<2; i++) {
-                        if(MatrizBarcos[x][y]=1||MatrizBarcos[x][y]=2) {
-                            goto Alto;
-                        }
-                        if(MatrizBarcos[x-1][y]=1||MatrizBarcos[x+1][y]=1)
-                        {
-                            goto Alto;
-                        }
-                        Matrizbarcos[x][y] = 1;
-                        Matrizbarcos[x-1][y] = 2;
-                        Matrizbarcos[x+1][y] = 2;
-                        y+=1;
-                    }
-                    if(MatrizBarcos[x][y+1]=1||MatrizBarcos[x+1][y+1]=1) {
-                        goto Alto;}
-                    if(MatrizBarcos[x-1][y+1]=1)
-                    {
-                        goto Alto;
-                    }
-                    Matrizbarcos[x][y+1] = 2;
-                    Matrizbarcos[x-1][y+1] = 2;
-                    Matrizbarcos[x+1][y+1] = 2;
-                }
-
-                if(MatrizBarcos[x][y-1]=1||MatrizBarcos[x+1][y-1]=1) {
-                    goto Alto;}
-                if(MatrizBarcos[x-1][y-1]=1)
-                {
-                    goto Alto;
-                }
-                Matrizbarcos[x][y-1] = 2;
-                Matrizbarcos[x+1][y-1]=2;
-                Matrizbarcos[x-1][y-1]=2;
-                for(int i=0; i<2; i++) {
-                    if(MatrizBarcos[x][y]=1||MatrizBarcos[x][y]=2) {
-                        goto Alto;
-                    }
-                    if(MatrizBarcos[x-1][y]=1||MatrizBarcos[x+1][y]=1)
-                        { goto Alto;}
-                    Matrizbarcos[x][y] = 1;
-                    Matrizbarcos[x+1][y]=2;
-                    Matrizbarcos[x-1][y]=2;
-                    y+=1;
-                }
-                if(MatrizBarcos[x][y+1]=1||MatrizBarcos[x+1][y+1]=1) {
-                    goto Alto;}
-                if(MatrizBarcos[x-1][y+1]=1)
-                    {
-                        goto Alto;
-                    }
-                Matrizbarcos[x][y+1] = 2;
-                Matrizbarcos[x+1][y+1]=2;
-                Matrizbarcos[x-1][y+1]=2;
-                // printf("El barco de 2 Horizontal comienza en (%d,%d)\n", x, y);
-                break;
-            case 1:
-                Altor:
-                x = rand() %10;
-                y = rand() %10;
-
-                if(MatrizBarcos[x][y]=1||MatrizBarcos[x][y]=2) {
-                    goto Altor;
-                }
-
-                if(x=0&&y=0)
-                {
-                    if(MatrizBarcos[x][y]=1||MatrizBarcos[x][y]=2) {
-                        goto Altor;
-                        }
-                    if(MatrizBarcos[x+1][y]=1)
-                    {
-                    goto Altor;
-                    }
-                    Matrizbarcos[x][y] = 1;
-                    Matrizbarcos[x+1][y] = 2;
-                    if(MatrizBarcos[x][y+1]=1||MatrizBarcos[x+1][y+1]=1)
-                    {
-                    goto Altor;
-                    }
-                    Matrizbarcos[x][y+1] = 2;
-                    Matrizbarcos[x+1][y+1] = 2;
-                }
-
-                if(x=0&&y=9)
-                {
-                    if(MatrizBarcos[x][y-1]=1||MatrizBarcos[x+1][y-1]=1) {
-                        goto Altor;}
-                    Matrizbarcos[x][y-1] = 2;
-                    Matrizbarcos[x+1][y-1]=2;
-                    if(MatrizBarcos[x][y]=1||MatrizBarcos[x][y]=2) {
-                        goto Altor;
-                    }
-                    if(MatrizBarcos[x+1][y]=1)
-                        { goto Altor;}
-                    Matrizbarcos[x][y] = 1;
-                    Matrizbarcos[x+1][y]=2;
-                }
-
-                if(x=9&&y=9)
-                {
-                    if(MatrizBarcos[x][y-1]=1||MatrizBarcos[x-1][y-1]=1) {
-                        goto Altor;}
-                    Matrizbarcos[x][y-1] = 2;
-                    Matrizbarcos[x-1][y-1]=2;
-                    if(MatrizBarcos[x][y]=1||MatrizBarcos[x][y]=2) {
-                        goto Altor;
-                    }
-                    if(MatrizBarcos[x-1][y]=1)
-                        { goto Altor;}
-                    Matrizbarcos[x][y] = 1;
-                    Matrizbarcos[x-1][y]=2;
-                }
-
-                if(x=9&&y=0)
-                {
-                    if(MatrizBarcos[x][y]=1||MatrizBarcos[x][y]=2) {
-                        goto Altor;
-                        }
-                    if(MatrizBarcos[x-1][y]=1)
-                    {
-                        goto Altor;
-                    }
-                    Matrizbarcos[x][y] = 1;
-                    Matrizbarcos[x-1][y] = 2;
-                    if(MatrizBarcos[x][y+1]=1||MatrizBarcos[x-1][y+1]=1)
-                    {
-                        goto Altor;
-                    }
-                    Matrizbarcos[x][y+1] = 2;
-                    Matrizbarcos[x-1][y+1] = 2;
-                }
-
-
-                if(y=9)
-                {
-                    if(MatrizBarcos[x][y-1]=1||MatrizBarcos[x+1][y-1]=1) {
-                        goto Altor;}
-                    if(MatrizBarcos[x-1][y-1]=1)
-                    {
-                    goto Altor;
-                    }
-                    Matrizbarcos[x][y-1] = 2;
-                    Matrizbarcos[x+1][y-1]=2;
-                    Matrizbarcos[x-1][y-1]=2;
-                    if(MatrizBarcos[x][y]=1||MatrizBarcos[x][y]=2) {
-                        goto Altor;
-                    }
-                    if(MatrizBarcos[x-1][y]=1||MatrizBarcos[x+1][y]=1)
-                        { goto Altor;}
-                    Matrizbarcos[x][y] = 1;
-                    Matrizbarcos[x+1][y]=2;
-                    Matrizbarcos[x-1][y]=2;
-                }
-
-                if(x=0)
-                {
-                    if(MatrizBarcos[x][y-1]=1||MatrizBarcos[x-1][y-1]=1) {
-                        goto Altor;}
-                    Matrizbarcos[x][y-1] = 2;
-                    Matrizbarcos[x-1][y-1]=2;
-                    if(MatrizBarcos[x][y]=1||MatrizBarcos[x][y]=2) {
-                        goto Altor;
-                    }
-                    if(MatrizBarcos[x-1][y]=1)
-                    {
-                        goto Altor;
-                    }
-                    Matrizbarcos[x][y] = 1;
-                    Matrizbarcos[x-1][y] = 2;
-                    if(MatrizBarcos[x][y+1]=1||MatrizBarcos[x-1][y+1]=1)
-                    {
-                        goto Altor;
-                    }
-                    Matrizbarcos[x][y+1] = 2;
-                    Matrizbarcos[x-1][y+1] = 2;
-                }
-
-                if(y=0)
-                {
-                    if(MatrizBarcos[x][y]=1||MatrizBarcos[x][y]=2) {
-                        goto Altor;
-                    }
-                    if(MatrizBarcos[x-1][y]=1||MatrizBarcos[x+1][y]=1)
-                    {
-                        goto Altor;
-                    }
-                    Matrizbarcos[x][y] = 1;
-                    Matrizbarcos[x-1][y] = 2;
-                    Matrizbarcos[x+1][y] = 2;
-                    if(MatrizBarcos[x][y+1]=1||MatrizBarcos[x+1][y+1]=1) {
-                        goto Altor;}
-                    if(MatrizBarcos[x-1][y+1]=1)
-                    {
-                        goto Altor;
-                    }
-                    Matrizbarcos[x][y+1] = 2;
-                    Matrizbarcos[x-1][y+1] = 2;
-                    Matrizbarcos[x+1][y+1] = 2;
-                }
-
-                if(x=9)
-                {
-                    if(MatrizBarcos[x][y-1]=1||MatrizBarcos[x-1][y-1]=1) {
-                        goto Altor;}
-                    Matrizbarcos[x][y-1] = 2;
-                    Matrizbarcos[x-1][y-1]=2;
-                    if(MatrizBarcos[x][y]=1||MatrizBarcos[x][y]=2) {
-                        goto Altor;
-                    }
-                    if(MatrizBarcos[x-1][y]=1)
-                    {
-                        goto Altor;
-                    }
-                    Matrizbarcos[x][y] = 1;
-                    Matrizbarcos[x-1][y] = 2;
-                    if(MatrizBarcos[x][y+1]=1||MatrizBarcos[x-1][y+1]=1)
-                    {
-                        goto Altor;
-                    }
-                    Matrizbarcos[x][y+1] = 2;
-                    Matrizbarcos[x-1][y+1] = 2;
-                }
-
-
-                if(MatrizBarcos[x][y-1]=1||MatrizBarcos[x+1][y-1]=1) {
-                    goto Altor;}
-                if(MatrizBarcos[x-1][y-1]=1)
-                {
-                    goto Altor;
-                }
-                Matrizbarcos[x][y-1] = 2;
-                Matrizbarcos[x+1][y-1]=2;
-                Matrizbarcos[x-1][y-1]=2;
-                if(MatrizBarcos[x][y]=1||MatrizBarcos[x][y]=2) {
-                    goto Altor;
-                }
-                if(MatrizBarcos[x-1][y]=1||MatrizBarcos[x+1][y]=1)
-                    { goto Altor;}
-                Matrizbarcos[x][y] = 1;
-                Matrizbarcos[x+1][y]=2;
-                Matrizbarcos[x-1][y]=2;
-                if(MatrizBarcos[x][y+1]=1||MatrizBarcos[x+1][y+1]=1) {
-                    goto Altor;}
-                if(MatrizBarcos[x-1][y+1]=1)
-                {
-                    goto Altor;
-                }
-                Matrizbarcos[x][y+1] = 2;
-                Matrizbarcos[x+1][y+1]=2;
-                Matrizbarcos[x-1][y+1]=2;
-
-
-                if(esEspecial=1)
-                {
-                    Matrizbarcos[x][y] = 3;
-                }
-
-                // printf("El barco de 1 Horizontal comienza en (%d,%d)\n", x, y);
-                break;
-            default:
-                printf("El tamano del barco es incorrecto\n");
-                break;
+            }
         }
     } else {
-        //El barco esta colocado vertical
-        int x=0;
-        int y=0;
-        switch (size) {
-            case 4:
-                y = rand() %10;
-                x = rand() %7;
-                if(x=0&&y=0)
-                {
-                    for(int i=0; i<3; i++) {
-                        Matrizbarcos[x][y] = 1;
-                        Matrizbarcos[x][y+1] = 2;
-                        x+=1;
-                    }
-                    Matrizbarcos[x+1][y+1] = 2;
-                    Matrizbarcos[x+1][y] = 2;
+        for(int i=-1; i<tam+1; i++){
+            for(int j=-1; j<2; j++){
+                int selecfila = fila + i;
+                int seleccolumna = columna + j;
+
+                if (selecfila <0 || selecfila > 9 || seleccolumna <0 || seleccolumna >9
+                    || matrizBarcos[selecfila][seleccolumna] == 1 || matrizBarcos[selecfila][seleccolumna] == 3) {
+                    continue;
+                } else {
+                    matrizBarcos[selecfila][seleccolumna] = 2;
                 }
-
-                if(x=0)
-                {
-                    for(int i=0; i<3; i++) {
-                        Matrizbarcos[x][y] = 1;
-                        Matrizbarcos[x][y-1] = 2;
-                        Matrizbarcos[x][y+1] = 2;
-                        x+=1;
-                    }
-                    Matrizbarcos[x+1][y-1] = 2;
-                    Matrizbarcos[x+1][y+1] = 2;
-                    Matrizbarcos[x+1][y] = 2;
-                }
-
-
-                if(y=0)
-                {
-                    Matrizbarcos[x-1][y+1] = 2;
-                    Matrizbarcos[x-1][y]=2;
-                    for(int i=0; i<3; i++) {
-                        Matrizbarcos[x][y] = 1;
-                        Matrizbarcos[x][y+1] = 2;
-                        x+=1;
-                    }
-                    Matrizbarcos[x+1][y+1] = 2;
-                    Matrizbarcos[x+1][y] = 2;
-                }
-
-                 if(x=0&&y=9)
-                {
-                    for(int i=0; i<3; i++) {
-                        Matrizbarcos[x][y] = 1;
-                        Matrizbarcos[x][y-1]=2;
-                        x+=1;
-                    }
-                    Matrizbarcos[x+1][y] = 2;
-                    Matrizbarcos[x+1][y-1]=2;
-                }
-
-                if(x=7&&y=9)
-                {
-                    Matrizbarcos[x-1][y] = 2;
-                    Matrizbarcos[x-1][y-1]=2;
-                    for(int i=0; i<3; i++) {
-                        Matrizbarcos[x][y] = 1;
-                        Matrizbarcos[x][y-1]=2;
-                        x+=1;
-                    }
-                }
-
-                if(x=7&&y=0)
-                {
-                    Matrizbarcos[x-1][y] = 2;
-                    Matrizbarcos[x-1][y+1] = 2;
-                    for(int i=0; i<3; i++) {
-                        Matrizbarcos[x][y] = 1;
-                        Matrizbarcos[x][y+1] = 2;
-                        x+=1;
-                    }
-                }
-
-                if(y=9)
-                {
-                    Matrizbarcos[x-1][y] = 2;
-                    Matrizbarcos[x-1][y-1]=2;
-                    for(int i=0; i<3; i++) {
-                        Matrizbarcos[x][y] = 1;
-                        Matrizbarcos[x][y-1]=2;
-                        x+=1;
-                    }
-                    Matrizbarcos[x+1][y] = 2;
-                    Matrizbarcos[x+1][y-1]=2;
-                }
-
-                if(x=7)
-                {
-                    Matrizbarcos[x-1][y] = 2;
-                    Matrizbarcos[x-1][y-1]=2;
-                    Matrizbarcos[x-1][y+1]=2;
-                    for(int i=0; i<3; i++) {
-                        Matrizbarcos[x][y] = 1;
-                        Matrizbarcos[x][y-1]=2;
-                        MatrizBarcos[x][y+1]=2;
-                        x+=1;
-                    }
-                }
-
-                Matrizbarcos[x-1][y] = 2;
-                Matrizbarcos[x-1][y-1]=2;
-                Matrizbarcos[x-1][y+1]=2;
-                for(int i=0; i<3; i++) {
-                    Matrizbarcos[x][y] = 1;
-                    Matrizbarcos[x][y+1]=2;
-                    Matrizbarcos[x][y-1]=2;
-                    x+=1;
-                }
-                Matrizbarcos[x+1][y] = 2;
-                Matrizbarcos[x+1][y-1]=2;
-                Matrizbarcos[x+1][y+1]=2;
-
-                //printf("El barco de 4 Vertical comienza en (%d,%d)\n", x, y);
-                break;
-            case 3:
-                Ale:
-                y = rand() %10;
-                x = rand() %8;
-                if(MatrizBarcos[x][y]=1||MatrizBarcos[x][y]=2) {
-                    goto Ale;
-                }
-
-                if(x=0&&y=0)
-                {
-                    for(int i=0; i<3; i++) {
-                        if(MatrizBarcos[x][y]=1||MatrizBarcos[x][y]=2) {
-                            goto Ale;
-                        }
-                        if(MatrizBarcos[x][y+1]=1)
-                        {
-                            goto Ale;
-                        }
-                        Matrizbarcos[x][y] = 1;
-                        Matrizbarcos[x][y+1] = 2;
-                        x+=1;
-                    }
-                    if(MatrizBarcos[x+1][y+1]=1||MatrizBarcos[x+1][y]=1)
-                    {
-                        goto Ale;
-                    }
-                    Matrizbarcos[x+1][y+1] = 2;
-                    Matrizbarcos[x+1][y] = 2;
-                }
-
-                if(x=0)
-                {
-                    for(int i=0; i<3; i++) {
-                        if(MatrizBarcos[x][y]=1||MatrizBarcos[x][y]=2) {
-                            goto Ale;
-                        }
-                        if(MatrizBarcos[x][y-1]=1||MatrizBarcos[x][y+1]=1)
-                        {
-                            goto Ale;
-                        }
-                        Matrizbarcos[x][y] = 1;
-                        Matrizbarcos[x][y-1] = 2;
-                        Matrizbarcos[x][y+1] = 2;
-                        x+=1;
-                    }
-                    if(MatrizBarcos[x+1][y+1]=1||MatrizBarcos[x+1][y]=1) {
-                        goto Ale;}
-                    if(MatrizBarcos[x+1][y-1]=1)
-                    {
-                        goto Ale;
-                    }
-                    Matrizbarcos[x+1][y-1] = 2;
-                    Matrizbarcos[x+1][y+1] = 2;
-                    Matrizbarcos[x+1][y] = 2;
-                }
-
-
-                if(y=0)
-                {
-                    if(MatrizBarcos[x-1][y]=1||MatrizBarcos[x-1][y+1]=1) {
-                        goto Ale;}
-                    Matrizbarcos[x-1][y+1] = 2;
-                    Matrizbarcos[x-1][y]=2;
-                    for(int i=0; i<3; i++) {
-                        if(MatrizBarcos[x][y]=1||MatrizBarcos[x][y]=2) {
-                            goto Ale;
-                        }
-                        if(MatrizBarcos[x][y+1]=1)
-                        {
-                            goto Ale;
-                        }
-                        Matrizbarcos[x][y] = 1;
-                        Matrizbarcos[x][y+1] = 2;
-                        x+=1;
-                    }
-                    if(MatrizBarcos[x+1][y+1]=1||MatrizBarcos[x+1][y]=1)
-                    {
-                        goto Ale;
-                    }
-                    Matrizbarcos[x+1][y+1] = 2;
-                    Matrizbarcos[x+1][y] = 2;
-                }
-
-                 if(x=0&&y=9)
-                {
-                    for(int i=0; i<3; i++) {
-                        if(MatrizBarcos[x][y]=1||MatrizBarcos[x][y]=2) {
-                            goto Ale;}
-                        if(MatrizBarcos[x][y-1]=1)
-                            { goto Ale;}
-                        Matrizbarcos[x][y] = 1;
-                        Matrizbarcos[x][y-1]=2;
-                        x+=1;
-                    }
-                    if(MatrizBarcos[x+1][y]=1||MatrizBarcos[x+1][y-1]=1) {
-                        goto Ale;
-                    }
-                    Matrizbarcos[x+1][y] = 2;
-                    Matrizbarcos[x+1][y-1]=2;
-                }
-
-                if(x=7&&y=9)
-                {
-                    if(MatrizBarcos[x-1][y]=1||MatrizBarcos[x-1][y-1]=1) {
-                        goto Ale;}
-                    Matrizbarcos[x-1][y] = 2;
-                    Matrizbarcos[x-1][y-1]=2;
-                    for(int i=0; i<3; i++) {
-                        if(MatrizBarcos[x][y]=1||MatrizBarcos[x][y]=2) {
-                            goto Ale;
-                        }
-                        if(MatrizBarcos[x][y-1]=1)
-                            { goto Ale;}
-                        Matrizbarcos[x][y] = 1;
-                        Matrizbarcos[x][y-1]=2;
-                        x+=1;
-                    }
-                }
-
-                if(x=7&&y=0)
-                {
-                    if(MatrizBarcos[x-1][y+1]=1||MatrizBarcos[x-1][y]=1) {
-                        goto Ale;
-                        }
-                    Matrizbarcos[x-1][y] = 2;
-                    Matrizbarcos[x-1][y+1] = 2;
-                    for(int i=0; i<3; i++) {
-                        if(MatrizBarcos[x][y]=1||MatrizBarcos[x][y]=2) {
-                            goto Ale;
-                        }
-                        if(MatrizBarcos[x][y+1]=1)
-                        {
-                            goto Ale;
-                        }
-                        Matrizbarcos[x][y] = 1;
-                        Matrizbarcos[x][y+1] = 2;
-                        x+=1;
-                    }
-                }
-
-                if(y=9)
-                {
-                    if(MatrizBarcos[x-1][y]=1||MatrizBarcos[x-1][y-1]=1) {
-                        goto Ale;}
-                    Matrizbarcos[x-1][y] = 2;
-                    Matrizbarcos[x-1][y-1]=2;
-                    for(int i=0; i<3; i++) {
-                        if(MatrizBarcos[x][y]=1||MatrizBarcos[x][y]=2) {
-                            goto Ale;
-                        }
-                        if(MatrizBarcos[x][y-1]=1)
-                            { goto Ale;}
-                        Matrizbarcos[x][y] = 1;
-                        Matrizbarcos[x][y-1]=2;
-                        x+=1;
-                    }
-                    if(MatrizBarcos[x+1][y]=1||MatrizBarcos[x+1][y-1]=1) {
-                        goto Ale;}
-                    Matrizbarcos[x+1][y] = 2;
-                    Matrizbarcos[x+1][y-1]=2;
-                }
-
-                if(x=7)
-                {
-                    if(MatrizBarcos[x-1][y]=1||MatrizBarcos[x-1][y-1]=1) {
-                        goto Ale;}
-                    if(MatrizBarcos[x-1][y+1]=1)
-                            { goto Ale;}
-                    Matrizbarcos[x-1][y] = 2;
-                    Matrizbarcos[x-1][y-1]=2;
-                    Matrizbarcos[x-1][y+1]=2;
-                    for(int i=0; i<3; i++) {
-                        if(MatrizBarcos[x][y]=1||MatrizBarcos[x][y]=2) {
-                            goto Ale;
-                        }
-                        if(MatrizBarcos[x][y-1]=1||MatrizBarcos[x][y+1]=1)
-                            { goto Ale;}
-                        Matrizbarcos[x][y] = 1;
-                        Matrizbarcos[x][y-1]=2;
-                        MatrizBarcos[x][y+1]=2;
-                        x+=1;
-                    }
-                }
-
-
-                if(MatrizBarcos[x-1][y]=1||MatrizBarcos[x-1][y+1]=1) {
-                    goto Ale;}
-                if(MatrizBarcos[x-1][y-1]=1)
-                    {
-                    goto Ale;
-                    }
-                Matrizbarcos[x-1][y] = 2;
-                Matrizbarcos[x-1][y-1]=2;
-                Matrizbarcos[x-1][y+1]=2;
-                for(int i=0; i<3; i++) {
-                    if(MatrizBarcos[x][y]=1||MatrizBarcos[x][y]=2) {
-                        goto Ale;
-                    }
-                    if(MatrizBarcos[x][y-1]=1||MatrizBarcos[x][y+1]=1)
-                        { goto Ale;}
-                    Matrizbarcos[x][y] = 1;
-                    Matrizbarcos[x][y+1]=2;
-                    Matrizbarcos[x][y-1]=2;
-                    x+=1;
-                }
-                if(MatrizBarcos[x+1][y]=1||MatrizBarcos[x+1][y+1]=1) {
-                    goto Ale;}
-                if(MatrizBarcos[x+1][y-1]=1)
-                {
-                    goto Ale;
-                }
-                Matrizbarcos[x+1][y] = 2;
-                Matrizbarcos[x+1][y-1]=2;
-                Matrizbarcos[x+1][y+1]=2;
-
-                //printf("El barco de 3 Vertical comienza en (%d,%d)\n", x, y);
-                break;
-            case 2:
-                y = rand() %10;
-                x = rand() %9;
-                Alea:
-                if(MatrizBarcos[x][y]=1||MatrizBarcos[x][y]=2) {
-                    goto Alea;
-                }
-
-                if(x=0&&y=0)
-                {
-                    for(int i=0; i<2; i++) {
-                        if(MatrizBarcos[x][y]=1||MatrizBarcos[x][y]=2) {
-                            goto Alea;
-                        }
-                        if(MatrizBarcos[x][y+1]=1)
-                        {
-                            goto Alea;
-                        }
-                        Matrizbarcos[x][y] = 1;
-                        Matrizbarcos[x][y+1] = 2;
-                        x+=1;
-                    }
-                    if(MatrizBarcos[x+1][y+1]=1||MatrizBarcos[x+1][y]=1)
-                    {
-                        goto Alea;
-                    }
-                    Matrizbarcos[x+1][y+1] = 2;
-                    Matrizbarcos[x+1][y] = 2;
-                }
-
-                if(x=0)
-                {
-                    for(int i=0; i<2; i++) {
-                        if(MatrizBarcos[x][y]=1||MatrizBarcos[x][y]=2) {
-                            goto Alea;
-                        }
-                        if(MatrizBarcos[x][y-1]=1||MatrizBarcos[x][y+1]=1)
-                        {
-                            goto Alea;
-                        }
-                        Matrizbarcos[x][y] = 1;
-                        Matrizbarcos[x][y-1] = 2;
-                        Matrizbarcos[x][y+1] = 2;
-                        x+=1;
-                    }
-                    if(MatrizBarcos[x+1][y+1]=1||MatrizBarcos[x+1][y]=1) {
-                        goto Alea;}
-                    if(MatrizBarcos[x+1][y-1]=1)
-                    {
-                        goto Alea;
-                    }
-                    Matrizbarcos[x+1][y-1] = 2;
-                    Matrizbarcos[x+1][y+1] = 2;
-                    Matrizbarcos[x+1][y] = 2;
-                }
-
-
-                if(y=0)
-                {
-                    if(MatrizBarcos[x-1][y]=1||MatrizBarcos[x-1][y+1]=1) {
-                        goto Alea;}
-                    Matrizbarcos[x-1][y+1] = 2;
-                    Matrizbarcos[x-1][y]=2;
-                    for(int i=0; i<2; i++) {
-                        if(MatrizBarcos[x][y]=1||MatrizBarcos[x][y]=2) {
-                            goto Alea;
-                        }
-                        if(MatrizBarcos[x][y+1]=1)
-                        {
-                            goto Alea;
-                        }
-                        Matrizbarcos[x][y] = 1;
-                        Matrizbarcos[x][y+1] = 2;
-                        x+=1;
-                    }
-                    if(MatrizBarcos[x+1][y+1]=1||MatrizBarcos[x+1][y]=1)
-                    {
-                        goto Alea;
-                    }
-                    Matrizbarcos[x+1][y+1] = 2;
-                    Matrizbarcos[x+1][y] = 2;
-                }
-
-                 if(x=0&&y=9)
-                {
-                    for(int i=0; i<2; i++) {
-                        if(MatrizBarcos[x][y]=1||MatrizBarcos[x][y]=2) {
-                            goto Alea;}
-                        if(MatrizBarcos[x][y-1]=1)
-                            { goto Alea;}
-                        Matrizbarcos[x][y] = 1;
-                        Matrizbarcos[x][y-1]=2;
-                        x+=1;
-                    }
-                    if(MatrizBarcos[x+1][y]=1||MatrizBarcos[x+1][y-1]=1) {
-                        goto Alea;
-                    }
-                    Matrizbarcos[x+1][y] = 2;
-                    Matrizbarcos[x+1][y-1]=2;
-                }
-
-                if(x=8&&y=9)
-                {
-                    if(MatrizBarcos[x-1][y]=1||MatrizBarcos[x-1][y-1]=1) {
-                        goto Alea;}
-                    Matrizbarcos[x-1][y] = 2;
-                    Matrizbarcos[x-1][y-1]=2;
-                    for(int i=0; i<2; i++) {
-                        if(MatrizBarcos[x][y]=1||MatrizBarcos[x][y]=2) {
-                            goto Alea;
-                        }
-                        if(MatrizBarcos[x][y-1]=1)
-                            { goto Alea;}
-                        Matrizbarcos[x][y] = 1;
-                        Matrizbarcos[x][y-1]=2;
-                        x+=1;
-                    }
-                }
-
-                if(x=8&&y=0)
-                {
-                    if(MatrizBarcos[x-1][y+1]=1||MatrizBarcos[x-1][y]=1) {
-                        goto Alea;
-                        }
-                    Matrizbarcos[x-1][y] = 2;
-                    Matrizbarcos[x-1][y+1] = 2;
-                    for(int i=0; i<2; i++) {
-                        if(MatrizBarcos[x][y]=1||MatrizBarcos[x][y]=2) {
-                            goto Alea;
-                        }
-                        if(MatrizBarcos[x][y+1]=1)
-                        {
-                            goto Alea;
-                        }
-                        Matrizbarcos[x][y] = 1;
-                        Matrizbarcos[x][y+1] = 2;
-                        x+=1;
-                    }
-                }
-
-                if(y=9)
-                {
-                    if(MatrizBarcos[x-1][y]=1||MatrizBarcos[x-1][y-1]=1) {
-                        goto Alea;}
-                    Matrizbarcos[x-1][y] = 2;
-                    Matrizbarcos[x-1][y-1]=2;
-                    for(int i=0; i<2; i++) {
-                        if(MatrizBarcos[x][y]=1||MatrizBarcos[x][y]=2) {
-                            goto Alea;
-                        }
-                        if(MatrizBarcos[x][y-1]=1)
-                            { goto Alea;}
-                        Matrizbarcos[x][y] = 1;
-                        Matrizbarcos[x][y-1]=2;
-                        x+=1;
-                    }
-                    if(MatrizBarcos[x+1][y]=1||MatrizBarcos[x+1][y-1]=1) {
-                        goto Alea;}
-                    Matrizbarcos[x+1][y] = 2;
-                    Matrizbarcos[x+1][y-1]=2;
-                }
-
-                if(x=8)
-                {
-                    if(MatrizBarcos[x-1][y]=1||MatrizBarcos[x-1][y-1]=1) {
-                        goto Alea;}
-                    if(MatrizBarcos[x-1][y+1]=1)
-                            { goto Alea;}
-                    Matrizbarcos[x-1][y] = 2;
-                    Matrizbarcos[x-1][y-1]=2;
-                    Matrizbarcos[x-1][y+1]=2;
-                    for(int i=0; i<2; i++) {
-                        if(MatrizBarcos[x][y]=1||MatrizBarcos[x][y]=2) {
-                            goto Alea;
-                        }
-                        if(MatrizBarcos[x][y-1]=1||MatrizBarcos[x][y+1]=1)
-                            { goto Alea;}
-                        Matrizbarcos[x][y] = 1;
-                        Matrizbarcos[x][y-1]=2;
-                        MatrizBarcos[x][y+1]=2;
-                        x+=1;
-                    }
-                }
-
-
-                if(MatrizBarcos[x-1][y]=1||MatrizBarcos[x-1][y+1]=1) {
-                    goto Alea;}
-                if(MatrizBarcos[x-1][y-1]=1)
-                    {
-                    goto Alea;
-                    }
-                Matrizbarcos[x-1][y] = 2;
-                Matrizbarcos[x-1][y-1]=2;
-                Matrizbarcos[x-1][y+1]=2;
-                for(int i=0; i<2; i++) {
-                    if(MatrizBarcos[x][y]=1||MatrizBarcos[x][y]=2) {
-                        goto Alea;
-                    }
-                    if(MatrizBarcos[x][y-1]=1||MatrizBarcos[x][y+1]=1)
-                        { goto Alea;}
-                    Matrizbarcos[x][y] = 1;
-                    Matrizbarcos[x][y+1]=2;
-                    Matrizbarcos[x][y-1]=2;
-                    x+=1;
-                }
-                if(MatrizBarcos[x+1][y]=1||MatrizBarcos[x+1][y+1]=1) {
-                    goto Alea;}
-                if(MatrizBarcos[x+1][y-1]=1)
-                {
-                    goto Alea;
-                }
-                Matrizbarcos[x+1][y] = 2;
-                Matrizbarcos[x+1][y-1]=2;
-                Matrizbarcos[x+1][y+1]=2;
-                //printf("El barco de 2 Vertical comienza en (%d,%d)\n", x, y);
-                break;
-            case 1:
-                y = rand() %10;
-                x = rand() %10;
-                Aleat:
-                if(MatrizBarcos[x][y]=1||MatrizBarcos[x][y]=2) {
-                    goto Aleat;
-                }
-
-                if(x=0&&y=0)
-                {
-                    if(MatrizBarcos[x][y]=1||MatrizBarcos[x][y]=2) {
-                        goto Aleat;
-                        }
-                    if(MatrizBarcos[x+1][y]=1)
-                    {
-                    goto Aleat;
-                    }
-                    Matrizbarcos[x][y] = 1;
-                    Matrizbarcos[x+1][y] = 2;
-                    if(MatrizBarcos[x][y+1]=1||MatrizBarcos[x+1][y+1]=1)
-                    {
-                    goto Aleat;
-                    }
-                    Matrizbarcos[x][y+1] = 2;
-                    Matrizbarcos[x+1][y+1] = 2;
-                }
-
-                if(x=0&&y=9)
-                {
-                    if(MatrizBarcos[x][y-1]=1||MatrizBarcos[x+1][y-1]=1) {
-                        goto Aleat;}
-                    Matrizbarcos[x][y-1] = 2;
-                    Matrizbarcos[x+1][y-1]=2;
-                    if(MatrizBarcos[x][y]=1||MatrizBarcos[x][y]=2) {
-                        goto Aleat;
-                    }
-                    if(MatrizBarcos[x+1][y]=1)
-                        { goto Aleat;}
-                    Matrizbarcos[x][y] = 1;
-                    Matrizbarcos[x+1][y]=2;
-                }
-
-                if(x=9&&y=9)
-                {
-                    if(MatrizBarcos[x][y-1]=1||MatrizBarcos[x-1][y-1]=1) {
-                        goto Aleat;}
-                    Matrizbarcos[x][y-1] = 2;
-                    Matrizbarcos[x-1][y-1]=2;
-                    if(MatrizBarcos[x][y]=1||MatrizBarcos[x][y]=2) {
-                        goto Aleat;
-                    }
-                    if(MatrizBarcos[x-1][y]=1)
-                        { goto Aleat;}
-                    Matrizbarcos[x][y] = 1;
-                    Matrizbarcos[x-1][y]=2;
-                }
-
-                if(x=9&&y=0)
-                {
-                    if(MatrizBarcos[x][y]=1||MatrizBarcos[x][y]=2) {
-                        goto Aleat;
-                        }
-                    if(MatrizBarcos[x-1][y]=1)
-                    {
-                        goto Aleat;
-                    }
-                    Matrizbarcos[x][y] = 1;
-                    Matrizbarcos[x-1][y] = 2;
-                    if(MatrizBarcos[x][y+1]=1||MatrizBarcos[x-1][y+1]=1)
-                    {
-                        goto Aleat;
-                    }
-                    Matrizbarcos[x][y+1] = 2;
-                    Matrizbarcos[x-1][y+1] = 2;
-                }
-
-
-                if(y=9)
-                {
-                    if(MatrizBarcos[x][y-1]=1||MatrizBarcos[x+1][y-1]=1) {
-                        goto Aleat;}
-                    if(MatrizBarcos[x-1][y-1]=1)
-                    {
-                    goto Aleat;
-                    }
-                    Matrizbarcos[x][y-1] = 2;
-                    Matrizbarcos[x+1][y-1]=2;
-                    Matrizbarcos[x-1][y-1]=2;
-                    if(MatrizBarcos[x][y]=1||MatrizBarcos[x][y]=2) {
-                        goto Aleat;
-                    }
-                    if(MatrizBarcos[x-1][y]=1||MatrizBarcos[x+1][y]=1)
-                        { goto Aleat;}
-                    Matrizbarcos[x][y] = 1;
-                    Matrizbarcos[x+1][y]=2;
-                    Matrizbarcos[x-1][y]=2;
-                }
-
-                if(x=0)
-                {
-                    if(MatrizBarcos[x][y-1]=1||MatrizBarcos[x-1][y-1]=1) {
-                        goto Aleat;}
-                    Matrizbarcos[x][y-1] = 2;
-                    Matrizbarcos[x-1][y-1]=2;
-                    if(MatrizBarcos[x][y]=1||MatrizBarcos[x][y]=2) {
-                        goto Aleat;
-                    }
-                    if(MatrizBarcos[x-1][y]=1)
-                    {
-                        goto Aleat;
-                    }
-                    Matrizbarcos[x][y] = 1;
-                    Matrizbarcos[x-1][y] = 2;
-                    if(MatrizBarcos[x][y+1]=1||MatrizBarcos[x-1][y+1]=1)
-                    {
-                        goto Aleat;
-                    }
-                    Matrizbarcos[x][y+1] = 2;
-                    Matrizbarcos[x-1][y+1] = 2;
-                }
-
-                if(y=0)
-                {
-                    if(MatrizBarcos[x][y]=1||MatrizBarcos[x][y]=2) {
-                        goto Aleat;
-                    }
-                    if(MatrizBarcos[x-1][y]=1||MatrizBarcos[x+1][y]=1)
-                    {
-                        goto Aleat;
-                    }
-                    Matrizbarcos[x][y] = 1;
-                    Matrizbarcos[x-1][y] = 2;
-                    Matrizbarcos[x+1][y] = 2;
-                    if(MatrizBarcos[x][y+1]=1||MatrizBarcos[x+1][y+1]=1) {
-                        goto Aleat;}
-                    if(MatrizBarcos[x-1][y+1]=1)
-                    {
-                        goto Aleat;
-                    }
-                    Matrizbarcos[x][y+1] = 2;
-                    Matrizbarcos[x-1][y+1] = 2;
-                    Matrizbarcos[x+1][y+1] = 2;
-                }
-
-                if(x=9)
-                {
-                    if(MatrizBarcos[x][y-1]=1||MatrizBarcos[x-1][y-1]=1) {
-                        goto Aleat;}
-                    Matrizbarcos[x][y-1] = 2;
-                    Matrizbarcos[x-1][y-1]=2;
-                    if(MatrizBarcos[x][y]=1||MatrizBarcos[x][y]=2) {
-                        goto Aleat;
-                    }
-                    if(MatrizBarcos[x-1][y]=1)
-                    {
-                        goto Aleat;
-                    }
-                    Matrizbarcos[x][y] = 1;
-                    Matrizbarcos[x-1][y] = 2;
-                    if(MatrizBarcos[x][y+1]=1||MatrizBarcos[x-1][y+1]=1)
-                    {
-                        goto Aleat;
-                    }
-                    Matrizbarcos[x][y+1] = 2;
-                    Matrizbarcos[x-1][y+1] = 2;
-                }
-
-
-                if(MatrizBarcos[x][y-1]=1||MatrizBarcos[x+1][y-1]=1) {
-                    goto Aleat;}
-                if(MatrizBarcos[x-1][y-1]=1)
-                {
-                    goto Aleat;
-                }
-                Matrizbarcos[x][y-1] = 2;
-                Matrizbarcos[x+1][y-1]=2;
-                Matrizbarcos[x-1][y-1]=2;
-                if(MatrizBarcos[x][y]=1||MatrizBarcos[x][y]=2) {
-                    goto Aleat;
-                }
-                if(MatrizBarcos[x-1][y]=1||MatrizBarcos[x+1][y]=1)
-                    { goto Aleat;}
-                Matrizbarcos[x][y] = 1;
-                Matrizbarcos[x+1][y]=2;
-                Matrizbarcos[x-1][y]=2;
-                if(MatrizBarcos[x][y+1]=1||MatrizBarcos[x+1][y+1]=1) {
-                    goto Aleat;}
-                if(MatrizBarcos[x-1][y+1]=1)
-                {
-                    goto Aleat;
-                }
-                Matrizbarcos[x][y+1] = 2;
-                Matrizbarcos[x+1][y+1]=2;
-                Matrizbarcos[x-1][y+1]=2;
-
-                if(esEspecial=1)
-                {
-                    Matrizbarcos[x][y] = 3;
-                }
-                //printf("El barco de 1 Vertical comienza en (%d,%d)\n", x, y);
-                break;
-            default:
-                printf("El tamano del barco es incorrecto\n");
-                break;
+            }
         }
-
     }
-
 }
 
-void rellenarTodosLosBarcos(int MatrizBarcos[][10]){
-    rellenarBarco(4, 0, MatrizBarcos[][10]);
-    for (int i=0; i<3; i++) {
-        rellenarBarco(3, 0, MatrizBarcos[][10]);
+
+void rellenarTodosLosBarcos(int matrizBarcos[][10]){
+
+    //Introducir barco de 4
+    while (1 == 1){
+        int direccion = rand() %2;
+        int fila = rand() % 9;
+        int columna = rand() %9;
+        int resultado = comprobarCabeBarco(4, fila, columna, direccion, matrizBarcos);
+        if (resultado == 1) {
+            rellenarBarco(4, fila, columna, direccion, 0, matrizBarcos);
+            break;
+        }
     }
+
     for (int i=0; i<3; i++) {
-        rellenarBarco(2,0, MatrizBarcos[][10]);
+        while (1==1){
+            int direccion = rand() %2;
+            int fila = rand() % 9;
+            int columna = rand() %9;
+            int resultado = comprobarCabeBarco(3, fila, columna, direccion, matrizBarcos);
+            if (resultado == 1) {
+                rellenarBarco(3, fila, columna, direccion, 0, matrizBarcos);
+                break;
+            }
+        }
     }
-    rellenarBarco(1,0, MatrizBarcos[][10]);
-    rellenarBarco(1,1, MatrizBarcos[][10]);
+
+    for (int i=0; i<3; i++) {
+        while (1==1){
+            int direccion = rand() %2;
+            int fila = rand() % 9;
+            int columna = rand() %9;
+            int resultado = comprobarCabeBarco(2, fila, columna, direccion, matrizBarcos);
+            if (resultado == 1) {
+                rellenarBarco(2, fila, columna, direccion, 0, matrizBarcos);
+                break;
+            }
+        }
+    }
+
+    while (1==1){
+        int direccion = rand() %2;
+        int fila = rand() % 9;
+        int columna = rand() %9;
+        int resultado = comprobarCabeBarco(1, fila, columna, direccion, matrizBarcos);
+        if (resultado == 1) {
+            rellenarBarco(1, fila, columna, direccion, 0, matrizBarcos);
+            break;
+        }
+    }
+
+    while (1==1){
+        int direccion = rand() %2;
+        int fila = rand() % 9;
+        int columna = rand() %9;
+        int resultado = comprobarCabeBarco(1, fila, columna, direccion, matrizBarcos);
+        if (resultado == 1) {
+            rellenarBarco(1, fila, columna, direccion, 1, matrizBarcos);
+            break;
+        }
+    }
+
+    for (int i=0; i<10; i++){
+        for (int j=0; j<10; j++) {
+            if (matrizBarcos[i][j] == 0) {
+                matrizBarcos[i][j] = 2;
+            }
+        }
+    }
+}
+
+int comprobarCabeBarco(int tam, int fila, int columna, int direccion, int matrizBarcos[][10]) {
+    //Comprobar si parametros dentro de la matriz
+    if (direccion == 0){
+        if (columna + tam > 10){
+            return 0;
+        }
+        if (fila > 9){
+            return 0;
+        }
+    } else {
+        if (fila + tam > 10){
+            return 0;
+        }
+        if (columna > 9){
+            return 0;
+        }
+    }
+
+    //Miramos si cabe el barco
+    for(int i=0; i<tam;i++){
+        if (direccion == 0){
+            if (matrizBarcos[fila][columna+i] == 1 || matrizBarcos[fila][columna+i] == 2) {
+                return 0;
+            }
+        } else {
+            if (matrizBarcos[fila+i][columna] == 1 || matrizBarcos[fila+i][columna] == 2) {
+                return 0;
+            }
+        }
+    }
+
+    //Miramos las casillas adyacentes
+    if (direccion == 0) {
+        for(int i=-1; i<2; i++){
+            for(int j=-1; j<tam+1; j++){
+                int selecfila = fila + i;
+                int seleccolumna = columna + j;
+
+                if (selecfila <0 || selecfila > 9 || seleccolumna <0 || seleccolumna >9) {
+                    //Estamos fuera de la matriz
+                    continue;
+                }
+                if (matrizBarcos[selecfila][seleccolumna] == 1) {
+                    return 0;
+                }
+            }
+        }
+    } else {
+        for(int i=-1; i<tam+1; i++){
+            for(int j=-1; j<2; j++){
+                int selecfila = fila + i;
+                int seleccolumna = columna + j;
+
+                if (selecfila <0 || selecfila > 9 || seleccolumna <0 || seleccolumna >9) {
+                    //Estamos fuera de la matriz
+                    continue;
+                }
+                if (matrizBarcos[selecfila][seleccolumna] == 1) {
+                    return 0;
+                }
+            }
+        }
+    }
+
+    //All OK
+    return 1;
 }
 
 int sucoordenada(int fi, int co, int SuMatriz[][10], int TuMatriz[][10])
 {
-    SuMatriz[fi][co] = 1
+    SuMatriz[fi][co] = 1;
     if(SuMatriz[fi][co] == TuMatriz[fi][co])
     {
-        printf("Te han dado a un barco, este es su resultado:\n")
+        printf("Te han dado a un barco, este es su resultado:\n");
         imprimirMatrizdeBarcos(SuMatriz, 10, 10);
         return 1;
     }
     else{
     if(TuMatriz[fi][co]=3)
     {
+        SuMatriz[fi][co] = 3;
         Printf("Te han dañado al barco especial, este es su resultado:\n");
         imprimirMatrizdeBarcos(SuMatriz, 10, 10);
         return 1;
         //Entramos aqui en el modo batalla especial entre barcos.
     }
-        Printf("No te han dañado ningun barco, este es su resultado:\n")
-        SuMatriz[fi][co] = 2
+        Printf("No te han dañado ningun barco, este es su resultado:\n");
+        SuMatriz[fi][co] = 2;
         imprimirMatrizdeBarcos(SuMatriz, 10, 10);
         return 0;
     }
@@ -1657,7 +300,7 @@ int tucoordenada(char letra, int numero, int tuMatriz[][10], int suMatriz[][10])
         printf("Vuelva a introducir la coordenada.\n");
         break;
     }
-    tuMatriz[numero][y] = 1
+    tuMatriz[numero][y] = 1;
     if(tuMatriz[numero][y] == suMatriz[numero][y])
     {
         printf("Has dado a un barco, este es tu resulatdo:\n");
@@ -1667,36 +310,29 @@ int tucoordenada(char letra, int numero, int tuMatriz[][10], int suMatriz[][10])
     else{
     if(suMatriz[numero][y]=3)
     {
+        tuMatriz[numero][y] = 3;
         Printf("Has dañado al barco especial, este es tu resultado:\n");
         imprimirMatrizdeBarcos(tuMatriz, 10, 10);
         return 1;
         //Entramos aqui en el modo batalla especial entre barcos.
     }
-        Printf("No has dañado ningun barco, este es tu resultado:");
-        tuMatriz[numero][y] = 2
+        Printf("No has dañado ningun barco, este es tu resultado:\n");
+        tuMatriz[numero][y] = 2;
         imprimirMatrizdeBarcos(tuMatriz, 10, 10);
         return 0;
     }
 
 }
 
-char cambio (int MatBarcos[][10], int x, int y)
+
+
+void ganador(int tu, int cpu)
 {
-    for (int i=0; i<x; i++) {
-        for(int j=0; j<y; j++) {
-            if(MatrizBarcos[i][j]=0)
-            {
-                MatrizBarcos[i][j]=2;
-            }
-        }
-
-    for (int i=0; i<x; i++) {
-        for(int j=0; j<y; j++) {
-            switch(MatBarcos[i][j])
-            {
-                case 1:
-
-            }
-        }
+printf ("Se acabo la partida.\n");
+if(tu<cpu)
+{
+printf("El ganador es la cpu.\n");
 }
+else
+    printf("El ganador has sido tu.\n");
 }

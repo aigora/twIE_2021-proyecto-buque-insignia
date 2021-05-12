@@ -6,6 +6,7 @@
 #include "funcionesTexto.h"
 #include "funcionesModoBatalla.h"
 #define NECESARIO_R 25
+#define NECESARIO_PRECISION 0.25
 #define FACTOR_R 0.75
 #define LONG_PUNTUACION_CSV 7
 #define TURNOS_ADICIONALES 3
@@ -13,9 +14,10 @@
 int modoBatalla(void)
 {
     float dificultad;
-    int cerrar, seleccion, cpudamage, userdamage, opcionVida, calculoCPU = cpuHabilidad();
+    int cerrar, seleccion, cpudamage, userdamage, opcionVida, calculoCPU = cpuHabilidad(), randseed = -1;
     int objCountUSER[4] = {1,1,1,1};
     int objCountCPU[4] = {1,1,1,1};
+    float var = 0;
     //puntuacion puntosBatalla;
     dificultad = calculoDificultad();
     estadisticas cpu, user;
@@ -27,6 +29,8 @@ int modoBatalla(void)
     abrirEstadisticas = fopen("estadisticas.csv", "r");
     if (abrirEstadisticas == NULL) {
         printf("Error al abrir el fichero.\n");
+        enter();
+        enter();
         return -1;
     }
 //    else
@@ -38,6 +42,8 @@ int modoBatalla(void)
     cerrar = fclose(abrirEstadisticas);
     if (cerrar == EOF) {
         printf("Error al cerrar el fichero.\n");
+        enter();
+        enter();
         return -1;
     }
 //    if (cerrar == 0)
@@ -48,6 +54,7 @@ int modoBatalla(void)
     enter();
 
     attack:
+        randseed++;
         system("cls");
         imprimeVida(user.vida, cpu.vida, 0, 0, 0);
 
@@ -60,8 +67,8 @@ int modoBatalla(void)
         switch (seleccion)              //Uso un bucle switch porque puede que añada opciones en el futuro
         {
         case 1:
-            cpudamage = ataque(user, cpu);
-            userdamage = ataque(cpu, user);
+            cpudamage = ataque(user, cpu, randseed);
+            userdamage = ataque(cpu, user, randseed+1);
             damage:
                 if (user.velocidad < cpu.velocidad)
                 {
@@ -98,8 +105,11 @@ Recuerda que puedes ver el historial de puntuaciones en el menú principal.", TUR
                 }
                 if (cpu.velocidad == user.velocidad)
                 {
-                    if (random() > 50)
+                    var = random1();
+                    if (var > 0) {
+                        printf("%f", var);
                         user.velocidad += 1;
+                    }
                     else
                         cpu.velocidad += 1;
                     goto damage;
@@ -196,12 +206,18 @@ float calculoDificultad(void)
     return factor;
 }
 
-int ataque(estadisticas atacante, estadisticas defensor)
+int ataque(estadisticas atacante, estadisticas defensor, int randseed)
 {
-    float n = random1();
+    int i = 0;
+    float n[1000], resn;
     int result = 0;
-    printf("\n%f\n", n*0.01*atacante.precision);
-    if (n*0.01*atacante.precision <= 0.25)
+
+    srand(time(NULL));
+    for (i = 0; i < 1000; i++)
+        n[i] = rand() % 1000 * 0.00001;
+    resn = n[randseed];
+    printf("\n%f\n", resn*atacante.precision);
+    if (resn*atacante.precision <= NECESARIO_PRECISION)
         printf("El ataque fall%c.\n", 162);
     else
         result = atacante.ataque * 50 / defensor.defensa;

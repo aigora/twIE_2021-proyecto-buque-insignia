@@ -71,6 +71,8 @@ int puntuaciones(char dato)
     cerrar = fclose(abrirPuntuacion);
     if (cerrar == EOF) {
         printf("Error al cerrar el fichero.\n");
+        enter();
+        enter();
         return -1;
     }
 //    if (cerrar == 0)
@@ -106,32 +108,27 @@ int puntuaciones(char dato)
 
 int random(void)
 {
-
-  int n;
-  srand(time(NULL));
-  n = rand() % 100 + 1;
-  return n;
+    srand(time(NULL));
+    return rand();
 }
 
 float random1(void)
 {
-  float n;
-  srand(time(NULL));
-  n = (rand() % 100 + 1) * 0.01;
-  return n;
+  return random() % 1000 * 0.001;
 }
 
 int enter(void)
 {
     char ch;
-    ch = getchar();
-    if (ch == '\n')
-        return 1;
-    else
-    {
-        printf("Pulsa ENTER para continuar...");
-        return 0;
-    }
+    intro:
+        ch = getchar();
+        if (ch == '\n')
+            return 1;
+        else
+        {
+            printf("Pulsa ENTER para continuar...");
+            goto intro;
+        }
 }
 
 

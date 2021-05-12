@@ -31,6 +31,7 @@
 		<Compiler>
 			<Add option="-Wall" />
 		</Compiler>
+		<Unit filename="../Matriz.h" />
 		<Unit filename="../estructuras.c">
 			<Option compilerVar="CC" />
 		</Unit>

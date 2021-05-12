@@ -1,4 +1,5 @@
-#include <Matriz.h>
+#ifndef HEADER_C6001551DA4DAD80
+#define HEADER_C6001551DA4DAD80
 
 int Matriz(int x);
 void imprimirMatrizdeBarcos(int matrizBarcos[][10], int fila, int column);
@@ -9,3 +10,6 @@ int sucoordenada(int fi, int co, int SuMatriz[][10], int TuMatriz[][10]);
 int tucoordenada(int columna, int fila, int tuMatriz[][10], int suMatriz[][10]);
 int traducirletra(char letra);
 void ganador(int tu, int cpu);
+
+#endif // header guard
+

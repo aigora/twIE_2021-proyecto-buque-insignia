@@ -2,6 +2,7 @@
 #include <time.h>
 #include <stdlib.h>
 #include "funcionesTexto.h"
+#include "matriz.h"
 #define LONG_PUNTUACION_CSV 8
 
 int inicioPrograma(void)
@@ -31,12 +32,15 @@ int jugar(void)
     switch (x[0]) {
     case 'f':
         radioSonar = 3;
+        Matriz(radioSonar);
         break;
     case 'm':
         radioSonar = 2;
+        Matriz(radioSonar);
         break;
     case 'd':
         radioSonar = 0;
+        Matriz(radioSonar);
         break;
     case 'a':
         radioSonar = 555;

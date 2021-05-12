@@ -51,7 +51,7 @@ int main()
                 printf("Has seleccionado Puntuacion. Escribe 'v' para ver la puntuacion.\n");
                 scanf("%s", volver);
                 if (strcmp(volver, "v") == 0)
-                    system("\"puntuacion.csv\"");
+                ///
                 break;
 
             ///EXPERIMENTAL. Comentar, no borrar. Puede ser útil para debuguear.

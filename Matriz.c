@@ -1,14 +1,19 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
 #include "Matriz.h"
+#include "funcionesModoBatalla.h"
+#include "estructuras.h"
+#include "funcionesTexto.h"
 
 int Matriz(int x) {
     int mbarcos = 0;
     int sbarcos = 0;
-    int misBarcos[10][10] = {{0,0,0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0,0,0}};
-    int cpuBarcos[10][10] = {{0,0,0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0,0,0}};
-    int misbarcosrellenos [10][10] = {{0,0,0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0,0,0}};
-    int susbarcosrellenos [10][10] = {{0,0,0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0,0,0}};
+    int contarCoordenadasUSER = 0, contarCoordenadasCPU = 0, victoria = 0, modoBatallaActivado = 0;
+    int misBarcos[10][10] = {0};
+    int cpuBarcos[10][10] = {0};
+    int misbarcosrellenos [10][10] = {0};
+    int susbarcosrellenos [10][10] = {0};
 
     rellenarTodosLosBarcos(misBarcos);
     //imprimirMatrizdeBarcos(misBarcos, 10, 10);
@@ -37,7 +42,16 @@ int Matriz(int x) {
                 goto scan;
             }
 
-        mbarcos = mbarcos + tucoordenada(columna, numero, misbarcosrellenos, cpuBarcos);
+        contarCoordenadasUSER = tucoordenada(columna, numero, misbarcosrellenos, cpuBarcos);
+        if (contarCoordenadasUSER == 2 && modoBatallaActivado == 0)
+        {
+            contarCoordenadasUSER--;
+            modoBatallaActivado = 1;
+            victoria = modoBatalla();
+            enter();
+            enter();
+        }
+        mbarcos = mbarcos + contarCoordenadasUSER;
         printf("Casillas de barcos acertadas por ti: %d\n", mbarcos);
 
         printf("\n\nCPU TURNO.\n");
@@ -47,7 +61,17 @@ int Matriz(int x) {
             y = rand() %10;
             x = rand() %10;
         }
-        sbarcos = sbarcos + sucoordenada(x, y, susbarcosrellenos, misBarcos);
+
+        contarCoordenadasCPU = sucoordenada(x, y, susbarcosrellenos, misBarcos);
+        if (contarCoordenadasCPU == 2 && modoBatallaActivado == 0)
+        {
+            contarCoordenadasCPU--;
+            modoBatallaActivado = 1;
+            victoria = modoBatalla();
+            enter();
+            enter();
+        }
+        sbarcos = sbarcos + contarCoordenadasCPU;
         printf("Casillas de barcos acertadas por CPU: %d\n", sbarcos);
     }
     ganador(mbarcos,sbarcos);
@@ -130,6 +154,7 @@ void rellenarTodosLosBarcos(int matrizBarcos[][10]){
 
     //Introducir barco de 4
     while (1 == 1){
+
         int direccion = rand() %2;
         int fila = rand() % 9;
         int columna = rand() %9;
@@ -282,8 +307,7 @@ int sucoordenada(int fi, int co, int SuMatriz[][10], int TuMatriz[][10])
         printf("Te han dado al barco especial, este es su resultado:\n");
         imprimirMatrizdeBarcos(SuMatriz, 10, 10);
         //Entramos aqui en el modo batalla especial entre barcos.
-
-        return 1;
+        return 2;
     }
 }
 
@@ -303,7 +327,7 @@ int tucoordenada(int columna, int fila, int tuMatriz[][10], int suMatriz[][10])
     else if(tuMatriz[fila][columna] == 3) {
         printf("Has dado al barco especial\n");
         //Entramos aqui en el modo batalla especial entre barcos.
-        return 1;
+        return 2;
     }
 }
 

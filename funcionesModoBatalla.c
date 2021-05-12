@@ -16,7 +16,7 @@ int modoBatalla(void)
     int cerrar, seleccion, cpudamage, userdamage, opcionVida, calculoCPU = cpuHabilidad();
     int objCountUSER[4] = {1,1,1,1};
     int objCountCPU[4] = {1,1,1,1};
-    puntuacion puntosBatalla;
+    //puntuacion puntosBatalla;
     dificultad = calculoDificultad();
     estadisticas cpu, user;
     printf("%f\n", dificultad);

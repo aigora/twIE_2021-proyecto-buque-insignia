@@ -1,5 +1,6 @@
 #ifndef HEADER_D572DA23AE0E45D7
 #define HEADER_D572DA23AE0E45D7
+#include "estructuras.h"
 
 float calculoDificultad(void);
 int ataque(estadisticas atacante, estadisticas defensor);

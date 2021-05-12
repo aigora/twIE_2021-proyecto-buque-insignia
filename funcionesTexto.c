@@ -2,7 +2,8 @@
 #include <time.h>
 #include <stdlib.h>
 #include "funcionesTexto.h"
-#include "matriz.h"
+#include "Matriz.h"
+#include "estructuras.h"
 #define LONG_PUNTUACION_CSV 8
 
 int inicioPrograma(void)

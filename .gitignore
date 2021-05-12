@@ -1,3 +1,6 @@
+ProyectoBuqueInsignia/ProyectoBuqueInsignia.layout
+ProyectoBuqueInsignia/ProyectoBuqueInsignia.depend
+
 # Prerequisites
 *.d
 
@@ -50,3 +53,10 @@ modules.order
 Module.symvers
 Mkfile.old
 dkms.conf
+ProyectoBuqueInsignia/ProyectoBuqueInsignia.layout
+ProyectoBuqueInsignia/ProyectoBuqueInsignia.depend
+ProyectoBuqueInsignia/ProyectoBuqueInsignia.depend
+*.layout
+*.depend
+*.layout
+*.layout

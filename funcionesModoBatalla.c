@@ -19,7 +19,7 @@ int modoBatalla(void)
     puntuacion puntosBatalla;
     dificultad = calculoDificultad();
     estadisticas cpu, user;
-    printf("%f", dificultad);
+    printf("%f\n", dificultad);
     enter();
 
     /// Leer y abrir fichero
@@ -199,8 +199,9 @@ float calculoDificultad(void)
 int ataque(estadisticas atacante, estadisticas defensor)
 {
     float n = random1();
-    int result;
-    if (n*atacante.precision <= 0.25)
+    int result = 0;
+    printf("\n%f\n", n*0.01*atacante.precision);
+    if (n*0.01*atacante.precision <= 0.25)
         printf("El ataque fall%c.\n", 162);
     else
         result = atacante.ataque * 50 / defensor.defensa;

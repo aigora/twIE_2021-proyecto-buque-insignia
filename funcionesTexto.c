@@ -114,7 +114,6 @@ int random(void)
 
 float random1(void)
 {
-
   float n;
   srand(time(NULL));
   n = (rand() % 100 + 1) * 0.01;

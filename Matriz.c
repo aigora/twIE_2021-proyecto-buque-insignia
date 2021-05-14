@@ -6,7 +6,7 @@
 #include "estructuras.h"
 #include "funcionesTexto.h"
 
-int Matriz(int x) {
+int Matriz(int sonar) {
     int mbarcos = 0;
     int sbarcos = 0;
     int contarCoordenadasUSER = 0, contarCoordenadasCPU = 0, victoria = 0, modoBatallaActivado = 0;
@@ -42,7 +42,7 @@ int Matriz(int x) {
                 goto scan;
             }
 
-        contarCoordenadasUSER = tucoordenada(columna, numero, misbarcosrellenos, cpuBarcos);
+        contarCoordenadasUSER = tucoordenada(columna, numero, sonar, misbarcosrellenos, cpuBarcos);
         if (contarCoordenadasUSER == 2 && modoBatallaActivado == 0)
         {
             contarCoordenadasUSER--;
@@ -288,6 +288,7 @@ int comprobarCabeBarco(int tam, int fila, int columna, int direccion, int matriz
 
     //All OK
     return 1;
+
 }
 
 int sucoordenada(int fi, int co, int SuMatriz[][10], int TuMatriz[][10])
@@ -311,7 +312,7 @@ int sucoordenada(int fi, int co, int SuMatriz[][10], int TuMatriz[][10])
     }
 }
 
-int tucoordenada(int columna, int fila, int tuMatriz[][10], int suMatriz[][10])
+int tucoordenada(int columna, int fila, int son, int tuMatriz[][10], int suMatriz[][10])
 {
 
     tuMatriz[fila][columna] = suMatriz[fila][columna];
@@ -322,6 +323,43 @@ int tucoordenada(int columna, int fila, int tuMatriz[][10], int suMatriz[][10])
     }
     else if (tuMatriz[fila][columna] == 2){
         printf("No has dado a ningun barco\n");
+        switch(son)
+            {
+            case 3:
+                for(int i=-3; i<7; i++){
+                for(int j=-3; j<7; j++){
+                    int filan = fila + i;
+                    int columnan = columna + j;
+
+                    if (filan <0 || filan > 9 || columnan <0 || columnan >9) {
+                        //Estamos fuera de la matriz
+                        continue;
+                    }
+                    if (tuMatriz[filan][columnan] == 1) {
+                        printf("El barco esta en un radio de 3 casillas\n");
+                    }
+                }
+            }
+                break;
+            case 2:
+                for(int i=-2; i<5; i++){
+                for(int j=-2; j<5; j++){
+                    int filanu = fila + i;
+                    int columnanu = columna + j;
+
+                    if (filanu <0 || filanu > 9 || columnanu <0 || columnanu >9) {
+                        //Estamos fuera de la matriz
+                        continue;
+                    }
+                    if (tuMatriz[filanu][columnanu] == 1) {
+                        printf("El barco esta en un radio de 2 casillas\n");
+                    }
+                }
+            }
+                break;
+            case 0:
+                break;
+            }
         return 0;
     }
     else if(tuMatriz[fila][columna] == 3) {
@@ -330,6 +368,7 @@ int tucoordenada(int columna, int fila, int tuMatriz[][10], int suMatriz[][10])
         return 2;
     }
 }
+
 
 int traducirletra(char letra){
     switch(letra)

@@ -10,11 +10,14 @@
 #define FACTOR_R 0.75
 #define LONG_PUNTUACION_CSV 7
 #define TURNOS_ADICIONALES 3
+#define MULT1 0.5
+#define MULT2 1.25
 
 int modoBatalla(void)
 {
     float dificultad;
-    int cerrar, seleccion, cpudamage, userdamage, opcionVida, calculoCPU = cpuHabilidad(), randseed = -1;
+    int cerrar, seleccion, cpudamage, userdamage, opcionVida, calculoCPU = cpuHabilidad(), randseed = -1, variacionHabilidadCPU = 0, variacionHabilidadUSER = 0;
+    char benefCPU, benefUSER;
     int objCountUSER[4] = {1,1,1,1};
     int objCountCPU[4] = {1,1,1,1};
     float var = 0;
@@ -129,6 +132,7 @@ Recuerda que puedes ver el historial de puntuaciones en el menú principal.", TUR
                     goto attack;
                 }
                 printf("Escoge un objeto para usarlo:\n");
+
                 if (objCountUSER[0] > 0)
                     printf("(1) Bola de Humo\t\t\tBajar precisi%cn del enemigo\n", 162);
                 if (objCountUSER[1] > 0)
@@ -138,6 +142,7 @@ Recuerda que puedes ver el historial de puntuaciones en el menú principal.", TUR
                 if (objCountUSER[3] > 0)
                     printf("(4) Motor Auxiliar\t\t\tAumenta tu velocidad\n");
                 scanf(" %i", &seleccion);
+
                 if (objCountUSER[seleccion - 1] == 0)
                 {
                     printf("No te quedan objetos de este tipo.\n");
@@ -146,47 +151,77 @@ Recuerda que puedes ver el historial de puntuaciones en el menú principal.", TUR
                     goto habilidad;
                 }
 
-                    enter();
                     switch (calculoCPU)
                     {
                     case 1:
-                        printf("T%c: ", 163);
-                        user.precision = accionHabilidades(cpu, user, dificultad, objCountCPU, calculoCPU);
+                        user.precision = efectoHabilidad(user.precision, MULT1, dificultad, 0);
+                        objCountCPU[0]--;
+                        variacionHabilidadCPU = -1;
+                        benefCPU = 'u';
                         break;
                     case 2:
-                        printf("T%c: ", 163);
-                        user.velocidad = accionHabilidades(cpu, user, dificultad, objCountCPU, calculoCPU);
+                        user.velocidad = efectoHabilidad(user.velocidad, MULT1, dificultad, 0);
+                        objCountCPU[1]--;
+                        variacionHabilidadCPU = -1;
+                        benefCPU = 'u';
                         break;
                     case 3:
-                        printf("CPU: ");
-                        cpu.ataque = accionHabilidades(cpu, user, dificultad, objCountCPU, calculoCPU);
+                        cpu.ataque = efectoHabilidad(cpu.ataque, MULT2, dificultad, 0.25);
+                        objCountCPU[2]--;
+                        variacionHabilidadCPU = 1;
+                        benefCPU = 'c';
                         break;
                     case 4:
-                        printf("CPU: ");
-                        cpu.velocidad = accionHabilidades(cpu, user, dificultad, objCountCPU, calculoCPU);
+                        cpu.velocidad = efectoHabilidad(cpu.velocidad, MULT2, dificultad, 0.25);
+                        objCountCPU[3]--;
+                        variacionHabilidadCPU = 1;
+                        benefCPU = 'c';
                         break;
                     }
-                    enter();
+
                     switch (seleccion)
                     {
                     case 1:
-                        printf("CPU: ");
-                        cpu.precision = accionHabilidades(user, cpu, dificultad, objCountUSER, seleccion);
+                        cpu.precision = efectoHabilidad(cpu.precision, MULT1, dificultad, 0);
+                        objCountUSER[0]--;
+                        variacionHabilidadUSER = -1;
+                        benefUSER = 'c';
                         break;
                     case 2:
-                        printf("CPU: ");
-                        cpu.velocidad = accionHabilidades(user, cpu, dificultad, objCountUSER, seleccion);
+                        cpu.velocidad = efectoHabilidad(cpu.velocidad, MULT1, dificultad, 0);
+                        objCountUSER[1]--;
+                        variacionHabilidadUSER = -1;
+                        benefUSER = 'c';
                         break;
                     case 3:
-                        printf("T%c: ", 163);
-                        user.ataque = accionHabilidades(user, cpu, dificultad, objCountUSER, seleccion);
+                        user.ataque = efectoHabilidad(user.ataque, MULT2, dificultad, 0.25);
+                        objCountUSER[2]--;
+                        variacionHabilidadUSER = 1;
+                        benefUSER = 'u';
                         break;
                     case 4:
-                        printf("T%c: ", 163);
-                        user.velocidad = accionHabilidades(user, cpu, dificultad, objCountUSER, seleccion);
+                        user.velocidad = efectoHabilidad(user.velocidad, MULT2, dificultad, 0.25);
+                        objCountUSER[3]--;
+                        variacionHabilidadUSER = 1;
+                        benefUSER = 'u';
                         break;
                     }
-                enter();
+
+                    if (cpu.velocidad > user.velocidad)
+                    {
+                        printStats(calculoCPU, variacionHabilidadCPU, benefCPU);
+                        enter();
+                        printStats(seleccion, variacionHabilidadUSER, benefUSER);
+                        enter();
+                    }
+                    else
+                    {
+                        printStats(seleccion, variacionHabilidadUSER, benefUSER);
+                        enter();
+                        printStats(calculoCPU, variacionHabilidadCPU, benefCPU);
+                        enter();
+                    }
+
                 goto attack;
         }
 }
@@ -202,7 +237,7 @@ float calculoDificultad(void)
         r = totalPartidas / 10;                     //hasta que se hayan jugado ciertas partidas. Es entonces cuando la dificultad global aumenta segun el ratio de
     else                                            //partidas ganadas y partidas jugadas
         r = FACTOR_R;
-    factor = 1 + r * totalVictorias / totalPartidas;
+    factor = 1 + (r * totalVictorias / totalPartidas);
     return factor;
 }
 
@@ -275,45 +310,54 @@ int cpuHabilidad(void)
     return result;
 }
 
-int accionHabilidades(estadisticas usuario, estadisticas oponente, float dificultad, int obj[4], int selector)
+void printStats (int stat, int variacion, char beneficiario)
 {
-    float mult1 = 0.5, mult2 = 1.25;
-    int operacional;
-    switch (selector)
+    //stat: 1 -> precisión, 2 -> ataque, 3 -> defensa, 4 -> velocidad
+    //variacion: 1 -> sube, -1 -> baja, 0 -> no cambia
+    //beneficiario: u -> usuario, c -> CPU
+    switch (stat)
     {
-    case 1://bajar precision
-        operacional = oponente.precision;
-        operacional = efectoHabilidad(operacional, mult1, dificultad, 0);
-        printf("la precisi%cn baj%c.\n", 162, 162);
-        obj[0]--;
+    case 1:
+        printf("La precisi%cn ", 162);
         break;
-    case 2://bajar velocidad
-        operacional = oponente.velocidad;
-        operacional = efectoHabilidad(operacional, mult1, dificultad, 0);
-        printf("la velocidad baj%c.\n", 162);
-        obj[1]--;
+    case 2:
+        printf("El ataque ");
         break;
-    case 3://subir ataque
-        operacional = usuario.ataque;
-        operacional = efectoHabilidad(operacional, mult2, dificultad, 0.25);
-        printf("el ataque subi%c.\n", 162);
-        obj[2]--;
+    case 3:
+        printf("La defensa ");
         break;
-    case 4://subir velocidad
-        operacional = usuario.velocidad;
-        operacional = efectoHabilidad(operacional, mult2, dificultad, 0.25);
-        printf("la velocidad subi%c.\n", 162);
-        obj[3]--;
+    case 4:
+        printf("La velocidad");
+        break;
+    }
+    switch (beneficiario)
+    {
+    case 'u':
+        printf("del usuario ");
+        break;
+    case 'c':
+        printf("de la CPU ");
+        break;
+    }
+    switch (variacion)
+    {
+    case 1:
+        printf("subi%c.\n", 162);
+        break;
+    case -1:
+        printf("baj%c.\n", 162);
+        break;
+    case 0:
+        printf("se mantiene.\n");
         break;
     }
     enter();
-    return operacional;
 }
 
-int efectoHabilidad (int stat, float factor, float difficulty, float minuendo)
+int efectoHabilidad (int stat, float factor, float difficulty, float sumando)
 {
     int result;
-    float res = stat * factor * (difficulty - minuendo);
+    float res = stat * factor * (difficulty + sumando);
     result = res;
     return result;
 }

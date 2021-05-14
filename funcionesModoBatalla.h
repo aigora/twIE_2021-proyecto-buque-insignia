@@ -7,8 +7,9 @@ int ataque(estadisticas atacante, estadisticas defensor, int randseed);
 void imprimeVida(int vidaUSER, int vidaCPU, int diferenciaUser, int diferenciaCPU, int opcion);
 int cpuHabilidad(void);
 int accionHabilidades(estadisticas usuario, estadisticas oponente, float dificultad, int obj[4], int selector);
-int efectoHabilidad (int stat, float factor, float dificultad, float minuendo);
+int efectoHabilidad (int stat, float factor, float dificultad, float sumando);
 int modoBatalla(void);
+void printStats (int stat, int variacion, char beneficiario);
 
 #endif // header guard
 

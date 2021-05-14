@@ -11,7 +11,7 @@ int inicioPrograma(void)
     int x = 0;
     printf("Bienvenido a la pagina de inicio de Proyecto Buque Insignia.\nEscribe 'atras' en cualquier momento para volver a la pagina anterior.\n\n");
     printf("%cQue quieres hacer? Selecciona entre:\n(1) Personalizar barco\n(2) Jugar\n(3) Puntuacion\n", 168);
-    printf("\nEXPERIMENTAL\n(4) Modo Batalla");//Provisional
+    printf("\nEXPERIMENTAL\n(4) Modo Batalla\n");//Provisional
     scanf(" %i", &x);
     return x;
 }
@@ -57,6 +57,7 @@ int puntuaciones(char dato)
     /// Leer fichero
     FILE *abrirPuntuacion;
     int cerrar, leerPuntuacion[LONG_PUNTUACION_CSV], solucion;
+    char total, nombre[3];
     abrirPuntuacion = fopen("puntuacionTotal.csv", "r");
     if (abrirPuntuacion == NULL) {
         printf("Error al abrir el fichero.\n");
@@ -65,7 +66,7 @@ int puntuaciones(char dato)
 //    else
 //        printf("Fichero abierto correctamente.\n");
 
-    fscanf(abrirPuntuacion, "%i, %i, %i, %i, %i, %i, %i", &leerPuntuacion[1], &leerPuntuacion[2],
+    fscanf(abrirPuntuacion, "%s, %i, %i, %i, %i, %i, %i, %i", nombre, &leerPuntuacion[1], &leerPuntuacion[2],
                 &leerPuntuacion[3], &leerPuntuacion[4], &leerPuntuacion[5], &leerPuntuacion[6], &leerPuntuacion[7]);
 
     cerrar = fclose(abrirPuntuacion);

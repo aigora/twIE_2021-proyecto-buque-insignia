@@ -6,7 +6,8 @@
 #include "estructuras.h"
 #include "funcionesTexto.h"
 
-int Matriz(int x) {
+int Matriz(int x)
+{
     int mbarcos = 0;
     int sbarcos = 0;
     int contarCoordenadasUSER = 0, contarCoordenadasCPU = 0, victoria = 0, modoBatallaActivado = 0;

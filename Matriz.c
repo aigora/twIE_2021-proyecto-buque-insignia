@@ -55,11 +55,12 @@ int Matriz(int sonar) {
         printf("Casillas de barcos acertadas por ti: %d\n", mbarcos);
 
         printf("\n\nCPU TURNO.\n");
-        int y = rand() %10;
-        int x = rand() %10;
+        int y1 = 9, x1 = 9;
+        int y = randomnum(y1);
+        int x = randomnum(x1);
         while (susbarcosrellenos[x][y]>0){
-            y = rand() %10;
-            x = rand() %10;
+            y = randomnum(y1);
+            x = randomnum(x1);
         }
 
         contarCoordenadasCPU = sucoordenada(x, y, susbarcosrellenos, misBarcos);
@@ -88,11 +89,11 @@ void imprimirMatrizdeBarcos(int matrizBarcos[][10], int fila, int column) {
         printf("%d ", x);
         for(int y=0; y<column; y++) {
             if (matrizBarcos[x][y] == 1){
-                printf("# ");
+                printf("o ");
             } else if (matrizBarcos[x][y] == 2){
-                printf(". ");
+                printf("~ ");
             } else if (matrizBarcos[x][y] == 3){
-                printf("@ ");
+                printf("x ");
             } else {
                 printf("? ");
             }
@@ -152,12 +153,13 @@ void rellenarBarco(int tam, int fila, int columna, int direccion, int esEspecial
 
 void rellenarTodosLosBarcos(int matrizBarcos[][10]){
 
+int x = 9 , y = 1;
     //Introducir barco de 4
     while (1 == 1){
 
-        int direccion = rand() %2;
-        int fila = rand() % 9;
-        int columna = rand() %9;
+        int direccion = randomnum(y);
+        int fila = randomnum(x);
+        int columna = randomnum(x);
         int resultado = comprobarCabeBarco(4, fila, columna, direccion, matrizBarcos);
         if (resultado == 1) {
             rellenarBarco(4, fila, columna, direccion, 0, matrizBarcos);
@@ -167,9 +169,9 @@ void rellenarTodosLosBarcos(int matrizBarcos[][10]){
 
     for (int i=0; i<3; i++) {
         while (1==1){
-            int direccion = rand() %2;
-            int fila = rand() % 9;
-            int columna = rand() %9;
+            int direccion = randomnum(y);
+            int fila = randomnum(x);
+            int columna = randomnum(x);
             int resultado = comprobarCabeBarco(3, fila, columna, direccion, matrizBarcos);
             if (resultado == 1) {
                 rellenarBarco(3, fila, columna, direccion, 0, matrizBarcos);
@@ -180,9 +182,9 @@ void rellenarTodosLosBarcos(int matrizBarcos[][10]){
 
     for (int i=0; i<3; i++) {
         while (1==1){
-            int direccion = rand() %2;
-            int fila = rand() % 9;
-            int columna = rand() %9;
+            int direccion = randomnum(y);
+            int fila = randomnum(x);
+            int columna = randomnum(x);
             int resultado = comprobarCabeBarco(2, fila, columna, direccion, matrizBarcos);
             if (resultado == 1) {
                 rellenarBarco(2, fila, columna, direccion, 0, matrizBarcos);
@@ -192,9 +194,9 @@ void rellenarTodosLosBarcos(int matrizBarcos[][10]){
     }
 
     while (1==1){
-        int direccion = rand() %2;
-        int fila = rand() % 9;
-        int columna = rand() %9;
+        int direccion = randomnum(y);
+        int fila = randomnum(x);
+        int columna = randomnum(x);
         int resultado = comprobarCabeBarco(1, fila, columna, direccion, matrizBarcos);
         if (resultado == 1) {
             rellenarBarco(1, fila, columna, direccion, 0, matrizBarcos);
@@ -203,9 +205,9 @@ void rellenarTodosLosBarcos(int matrizBarcos[][10]){
     }
 
     while (1==1){
-        int direccion = rand() %2;
-        int fila = rand() % 9;
-        int columna = rand() %9;
+        int direccion = randomnum(y);
+        int fila = randomnum(x);
+        int columna = randomnum(x);
         int resultado = comprobarCabeBarco(1, fila, columna, direccion, matrizBarcos);
         if (resultado == 1) {
             rellenarBarco(1, fila, columna, direccion, 1, matrizBarcos);
@@ -368,7 +370,22 @@ int tucoordenada(int columna, int fila, int son, int tuMatriz[][10], int suMatri
         return 2;
     }
 }
-
+int randomnum(int j)
+{
+    float n[1000];
+    int res;
+    srand(time(NULL));
+    for (int i = 0; i < 10; i++)
+    {
+        n[i] = rand() % 1000 * 0.01;
+        while(n[j]>j)
+            n[i] = rand() % 1000 * 0.01;
+    }
+    res = (int)n[j];
+    printf("%i\n", res);
+    enter();
+    return res;
+}
 
 int traducirletra(char letra){
     switch(letra)

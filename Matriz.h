@@ -10,6 +10,6 @@ int sucoordenada(int fi, int co, int SuMatriz[][10], int TuMatriz[][10]);
 int tucoordenada(int columna, int fila, int son, int tuMatriz[][10], int suMatriz[][10]);
 int traducirletra(char letra);
 void ganador(int tu, int cpu);
-
+int randomnum(int j);
 #endif // header guard
 

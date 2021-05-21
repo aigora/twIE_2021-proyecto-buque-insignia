@@ -1,10 +1,12 @@
 #include <stdio.h>
 #include <time.h>
 #include <stdlib.h>
+#include <string.h>
 #include "funcionesTexto.h"
 #include "Matriz.h"
 #include "estructuras.h"
-#define LONG_PUNTUACION_CSV 8
+#define LONG_PUNTUACION_CSV 7
+#define LONG_BUFFER 100
 
 int inicioPrograma(void)
 {
@@ -56,8 +58,8 @@ int puntuaciones(char dato)
 {
     /// Leer fichero
     FILE *abrirPuntuacion;
-    int cerrar, leerPuntuacion[LONG_PUNTUACION_CSV], solucion;
-    char total, nombre[3];
+    int cerrar, leerPuntuacion[LONG_PUNTUACION_CSV], solucion, i = 0, lineasTotales = 0, lineas = 0, confirm = 0;
+    char nombre[4], buff[LONG_BUFFER], scanResult, data[LONG_BUFFER];
     abrirPuntuacion = fopen("puntuacionTotal.csv", "r");
     if (abrirPuntuacion == NULL) {
         printf("Error al abrir el fichero.\n");
@@ -66,8 +68,30 @@ int puntuaciones(char dato)
 //    else
 //        printf("Fichero abierto correctamente.\n");
 
-    fscanf(abrirPuntuacion, "%s, %i, %i, %i, %i, %i, %i, %i", nombre, &leerPuntuacion[1], &leerPuntuacion[2],
-                &leerPuntuacion[3], &leerPuntuacion[4], &leerPuntuacion[5], &leerPuntuacion[6], &leerPuntuacion[7]);
+    while (fscanf(abrirPuntuacion, "%c", &scanResult) != EOF)
+    {
+        if (scanResult == '\n')
+            lineasTotales++;
+    }
+
+    fseek(abrirPuntuacion, SEEK_CUR, 0); //Mueve la posición del fichero al principio
+
+    while (fgets(buff, LONG_BUFFER, abrirPuntuacion) != NULL)
+    {
+        for (i = 0; i < LONG_BUFFER; i++)
+        {
+            if (buff[i] == '\n')
+                lineas++;
+            if (lineas == lineasTotales && confirm == 0)
+            {
+                strcpy(data, buff);
+                confirm++;
+            }
+        }
+    }
+
+    sscanf(data, "%[^,],%i,%i,%i,%i,%i,%i,%i", nombre, &leerPuntuacion[0], &leerPuntuacion[1], &leerPuntuacion[2], &leerPuntuacion[3],
+                       &leerPuntuacion[4], &leerPuntuacion[5], &leerPuntuacion[6]);
 
     cerrar = fclose(abrirPuntuacion);
     if (cerrar == EOF) {

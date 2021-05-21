@@ -16,18 +16,18 @@ int main()
     start:
         while (strcmp(volver, atras) != 0)
         {
-            system("cls");
+            printf("\033[2J");
             condicion = inicioPrograma();
             switch (condicion)
             {
             case 1:
-                system("cls");
+                printf("\033[2J");
                 printf("Has seleccionado personalizar barco.\n");
                 scanf("%s", volver);
                 break;
 
             case 2:
-                system("cls");
+                printf("\033[2J");
                 printf("Has seleccionado Jugar.\n");
                 dificultad = jugar();
                 if (dificultad == 555)
@@ -47,7 +47,7 @@ int main()
                 break;
 
             case 3:
-                system("cls");
+                printf("\033[2J");
                 printf("Has seleccionado Puntuacion. Escribe 'v' para ver la puntuacion.\n");
                 scanf("%s", volver);
                 if (strcmp(volver, "v") == 0)
@@ -68,7 +68,7 @@ int main()
             ///EXPERIMENTAL
 
             default:
-                system("cls");
+                printf("\033[2J");
                 error();
                 goto start;
                 break;

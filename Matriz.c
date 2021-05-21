@@ -9,6 +9,8 @@
 int Matriz(int sonar) {
     int mbarcos = 0;
     int sbarcos = 0;
+    int tusbarcdestr = 0;
+    int susbarcdestr = 0;
     int contarCoordenadasUSER = 0, contarCoordenadasCPU = 0, victoria = 0, modoBatallaActivado = 0;
     int misBarcos[10][10] = {0};
     int cpuBarcos[10][10] = {0};
@@ -22,7 +24,7 @@ int Matriz(int sonar) {
     //imprimirMatrizdeBarcos(cpuBarcos, 10, 10);
 
 
-    while(mbarcos<21 && sbarcos<21)
+    while(tusbarcdestr<9 && susbarcdestr<9)
     {
         printf("\n\nTU TURNO: la situacion actual es: \n");
         imprimirMatrizdeBarcos(misbarcosrellenos, 10, 10);
@@ -42,7 +44,7 @@ int Matriz(int sonar) {
                 goto scan;
             }
 
-        contarCoordenadasUSER = tucoordenada(columna, numero, sonar, misbarcosrellenos, cpuBarcos);
+        contarCoordenadasUSER = tucoordenada(columna, numero, sonar, misbarcosrellenos, cpuBarcos, &tusbarcdestr);
         if (contarCoordenadasUSER == 2 && modoBatallaActivado == 0)
         {
             contarCoordenadasUSER--;
@@ -51,19 +53,18 @@ int Matriz(int sonar) {
             enter();
             enter();
         }
-        mbarcos = mbarcos + contarCoordenadasUSER;
-        printf("Casillas de barcos acertadas por ti: %d\n", mbarcos);
+        printf("Barcos destruidos por ti: %d\n", tusbarcdestr);
 
         printf("\n\nCPU TURNO.\n");
-        int y1 = 9, x1 = 9;
-        int y = randomnum(y1);
-        int x = randomnum(x1);
+        //int z = 9;
+        int y = rand() %10;
+        int x = rand() %10;
         while (susbarcosrellenos[x][y]>0){
-            y = randomnum(y1);
-            x = randomnum(x1);
+            y = rand() %10;
+            x = rand() %10;
         }
 
-        contarCoordenadasCPU = sucoordenada(x, y, susbarcosrellenos, misBarcos);
+        contarCoordenadasCPU = sucoordenada(x, y, susbarcosrellenos, misBarcos, &susbarcdestr);
         if (contarCoordenadasCPU == 2 && modoBatallaActivado == 0)
         {
             contarCoordenadasCPU--;
@@ -72,10 +73,9 @@ int Matriz(int sonar) {
             enter();
             enter();
         }
-        sbarcos = sbarcos + contarCoordenadasCPU;
-        printf("Casillas de barcos acertadas por CPU: %d\n", sbarcos);
+        printf("Barcos destruidos por CPU: %d\n", susbarcdestr);
     }
-    ganador(mbarcos,sbarcos);
+    ganador(tusbarcdestr,susbarcdestr);
     printf("Estos han sido tus resultados\n");
     imprimirMatrizdeBarcos(misbarcosrellenos, 10, 10);
     printf("Estos han sido sus resultados\n");
@@ -84,6 +84,7 @@ int Matriz(int sonar) {
 }
 
 void imprimirMatrizdeBarcos(int matrizBarcos[][10], int fila, int column) {
+    printf("Estos son los caracteres que representan las casillas del juego: o (barco), ~ (agua), x (barco especial), ? (casilla no rellenada).\n");
     printf("- A B C D E F G H I J\n");
     for (int x=0; x<fila; x++) {
         printf("%d ", x);
@@ -153,25 +154,25 @@ void rellenarBarco(int tam, int fila, int columna, int direccion, int esEspecial
 
 void rellenarTodosLosBarcos(int matrizBarcos[][10]){
 
-int x = 9 , y = 1;
+//int x = 9 , y = 1;
     //Introducir barco de 4
     while (1 == 1){
 
-        int direccion = randomnum(y);
-        int fila = randomnum(x);
-        int columna = randomnum(x);
+        int direccion = rand() %2;
+        int fila = rand() %10;
+        int columna = rand() %10;
         int resultado = comprobarCabeBarco(4, fila, columna, direccion, matrizBarcos);
         if (resultado == 1) {
             rellenarBarco(4, fila, columna, direccion, 0, matrizBarcos);
             break;
         }
     }
-
+    //Introducir barco de 3
     for (int i=0; i<3; i++) {
         while (1==1){
-            int direccion = randomnum(y);
-            int fila = randomnum(x);
-            int columna = randomnum(x);
+            int direccion = rand() %2;
+            int fila = rand() %10;
+            int columna = rand() %10;
             int resultado = comprobarCabeBarco(3, fila, columna, direccion, matrizBarcos);
             if (resultado == 1) {
                 rellenarBarco(3, fila, columna, direccion, 0, matrizBarcos);
@@ -179,12 +180,12 @@ int x = 9 , y = 1;
             }
         }
     }
-
+    //Introducir barco de 2
     for (int i=0; i<3; i++) {
         while (1==1){
-            int direccion = randomnum(y);
-            int fila = randomnum(x);
-            int columna = randomnum(x);
+            int direccion = rand() %2;
+            int fila = rand() %10;
+            int columna = rand() %10;
             int resultado = comprobarCabeBarco(2, fila, columna, direccion, matrizBarcos);
             if (resultado == 1) {
                 rellenarBarco(2, fila, columna, direccion, 0, matrizBarcos);
@@ -192,22 +193,22 @@ int x = 9 , y = 1;
             }
         }
     }
-
+    //Introducir barco de 1
     while (1==1){
-        int direccion = randomnum(y);
-        int fila = randomnum(x);
-        int columna = randomnum(x);
+        int direccion = rand() %2;
+        int fila = rand() %10;
+        int columna = rand() %10;
         int resultado = comprobarCabeBarco(1, fila, columna, direccion, matrizBarcos);
         if (resultado == 1) {
             rellenarBarco(1, fila, columna, direccion, 0, matrizBarcos);
             break;
         }
     }
-
+    //Introducir barco de 1 especial
     while (1==1){
-        int direccion = randomnum(y);
-        int fila = randomnum(x);
-        int columna = randomnum(x);
+        int direccion = rand() %2;
+        int fila = rand() %10;
+        int columna = rand() %10;
         int resultado = comprobarCabeBarco(1, fila, columna, direccion, matrizBarcos);
         if (resultado == 1) {
             rellenarBarco(1, fila, columna, direccion, 1, matrizBarcos);
@@ -293,11 +294,99 @@ int comprobarCabeBarco(int tam, int fila, int columna, int direccion, int matriz
 
 }
 
-int sucoordenada(int fi, int co, int SuMatriz[][10], int TuMatriz[][10])
+int sucoordenada(int fi, int co, int SuMatriz[][10], int TuMatriz[][10], int *susbarcosdestruidos)
 {
     SuMatriz[fi][co] = TuMatriz[fi][co];
     if(SuMatriz[fi][co] == 1){
         printf("Te han dado a un barco, este es su resultado:\n");
+        int contar = 0;
+        for(int i=-1; i<3; i++){
+                for(int j=-1; j<3; j++){
+                    int filanue = fi + i;
+                    int columnanue = co + j;
+
+                    if (filanue <0 || filanue > 9 || columnanue <0 || columnanue >9) {
+                        //Estamos fuera de la matriz
+                        continue;
+                    }
+                    if (TuMatriz[filanue][columnanue] == 1) {
+                        contar++;
+                    }
+                }
+            }
+        if(contar == 1)
+        {
+            printf("Te han destruido un barco\n");
+            *susbarcosdestruidos += 1;
+        }
+        else {
+            contar = 0;
+            if(TuMatriz[fi][co+1]==1||TuMatriz[fi][co-1]==1)
+                {
+                    for(int i=0; i<4;i++)
+                    {
+                        int columnanue = co + i;
+                        if (fi <0 || fi > 9 || columnanue <0 || columnanue >9) {
+                            //Estamos fuera de la matriz
+                            break;
+                        }
+                        if (SuMatriz[fi][columnanue]==1 && TuMatriz[fi][columnanue]==1)
+                            {continue;}
+                        if (TuMatriz[fi][columnanue]==2 && SuMatriz[fi][columnanue]==0)
+                            {break;}
+                        contar++;
+                    }
+
+                    for(int i=0; i<4;i++)
+                    {
+                        int columnanue = co - i;
+                        if (fi <0 || fi > 9 || columnanue <0 || columnanue >9) {
+                            //Estamos fuera de la matriz
+                            break;
+                        }
+                        if (SuMatriz[fi][columnanue]==1 && TuMatriz[fi][columnanue]==1)
+                            {continue;}
+                        if (TuMatriz[fi][columnanue]==2 && SuMatriz[fi][columnanue]==0)
+                            {break;}
+                        contar++;
+                    }
+            }else{if(TuMatriz[fi+1][co]==1||TuMatriz[fi-1][co]==1)
+            {
+                for(int i=0; i<4;i++)
+                    {
+                        int filanue = fi + i;
+                        if (filanue <0 || filanue > 9 || co <0 || co >9) {
+                            //Estamos fuera de la matriz
+                            break;
+                        }
+                        if (SuMatriz[filanue][co]==1 && TuMatriz[filanue][co]==1)
+                            {continue;}
+                        if (TuMatriz[filanue][co]==2 && SuMatriz[filanue][co]==0)
+                            {break;}
+                        contar++;
+                    }
+
+                for(int i=0; i<4;i++)
+                    {
+                        int filanue = fi - i;
+                        if (filanue <0 || filanue > 9 || co <0 || co >9) {
+                            //Estamos fuera de la matriz
+                            break;
+                        }
+                        if (SuMatriz[filanue][co]==1 && TuMatriz[filanue][co]==1)
+                            {continue;}
+                        if (TuMatriz[filanue][co]==2 && SuMatriz[filanue][co]==0)
+                            {break;}
+                        contar++;
+                    }
+            }
+            }
+        }
+        if(contar == 0)
+        {
+            printf("Te han destruido un barco.\n");
+            *susbarcosdestruidos ++;
+        }
         imprimirMatrizdeBarcos(SuMatriz, 10, 10);
         return 1;
     }
@@ -314,13 +403,101 @@ int sucoordenada(int fi, int co, int SuMatriz[][10], int TuMatriz[][10])
     }
 }
 
-int tucoordenada(int columna, int fila, int son, int tuMatriz[][10], int suMatriz[][10])
+int tucoordenada(int columna, int fila, int son, int tuMatriz[][10], int suMatriz[][10], int *tusbarcosdestruidos)
 {
-
     tuMatriz[fila][columna] = suMatriz[fila][columna];
-
     if(tuMatriz[fila][columna] == 1){
+        int contar = 0;
         printf("Has dado a un barco\n");
+        for(int i=-1; i<3; i++){
+                for(int j=-1; j<3; j++){
+                    int filanue = fila + i;
+                    int columnanue = columna + j;
+
+                    if (filanue <0 || filanue > 9 || columnanue <0 || columnanue >9) {
+                        //Estamos fuera de la matriz
+                        continue;
+                    }
+                    if (suMatriz[filanue][columnanue] == 1) {
+                        contar++;
+                    }
+                }
+            }
+        if(contar == 1)
+        {
+            printf("Has destruido un barco\n");
+            *tusbarcosdestruidos ++;
+        }
+        else {
+            contar = 0;
+            if(suMatriz[fila][columna+1]==1||suMatriz[fila][columna-1]==1)
+                {
+                    for(int i=0; i<4;i++)
+                    {
+                        int columnanue = columna + i;
+                        if (fila <0 || fila > 9 || columnanue <0 || columnanue >9) {
+                            //Estamos fuera de la matriz
+                            break;
+                        }
+                        if (suMatriz[fila][columnanue]==1 && tuMatriz[fila][columnanue]==1)
+                            {continue;}
+                        if (suMatriz[fila][columnanue]==2 && tuMatriz[fila][columnanue]==0)
+                            {break;}
+                        contar++;
+                    }
+
+                    for(int i=0; i<4;i++)
+                    {
+                        int columnanue = columna - i;
+                        if (fila <0 || fila > 9 || columnanue <0 || columnanue >9) {
+                            //Estamos fuera de la matriz
+                            break;
+                        }
+                        if (suMatriz[fila][columnanue]==1 && tuMatriz[fila][columnanue]==1)
+                            {continue;}
+                        if (suMatriz[fila][columnanue]==2 && tuMatriz[fila][columnanue]==0)
+                            {break;}
+                        contar++;
+                    }
+
+                }
+            else{if(suMatriz[fila+1][columna]==1||suMatriz[fila-1][columna]==1)
+            {
+                for(int i=0;i<4;i++)
+                    {
+                        int filanue = fila + i;
+                        if (filanue <0 || filanue > 9 || columna <0 || columna >9) {
+                            //Estamos fuera de la matriz
+                            break;
+                        }
+                        if (suMatriz[filanue][columna]==1 && tuMatriz[filanue][columna]==1)
+                            {continue;}
+                        if (suMatriz[filanue][columna]==2 && tuMatriz[filanue][columna]==0)
+                            {break;}
+                        contar++;
+                    }
+
+                for(int i=0; i<4;i++)
+                    {
+                        int filanue = fila - i;
+                        if (filanue <0 || filanue > 9 || columna <0 || columna >9) {
+                            //Estamos fuera de la matriz
+                            break;
+                        }
+                        if (suMatriz[filanue][columna]==1 && tuMatriz[filanue][columna]==1)
+                            {continue;}
+                        if (suMatriz[filanue][columna]==2 && tuMatriz[filanue][columna]==0)
+                            {break;}
+                        contar++;
+                    }
+            }
+            }
+        }
+        if(contar == 0)
+        {
+            printf("Has destruido un barco.\n");
+            *tusbarcosdestruidos ++;
+        }
         return 1;
     }
     else if (tuMatriz[fila][columna] == 2){
@@ -365,12 +542,12 @@ int tucoordenada(int columna, int fila, int son, int tuMatriz[][10], int suMatri
         return 0;
     }
     else if(tuMatriz[fila][columna] == 3) {
-        printf("Has dado al barco especial\n");
+        printf("Has destruido el barco especial\n");
         //Entramos aqui en el modo batalla especial entre barcos.
         return 2;
     }
 }
-int randomnum(int j)
+/*int randomnum(int j)
 {
     float n[1000];
     int res;
@@ -378,15 +555,14 @@ int randomnum(int j)
     for (int i = 0; i < 10; i++)
     {
         n[i] = rand() % 1000 * 0.01;
-        while(n[j]>j)
+        while(n[i]>j)
             n[i] = rand() % 1000 * 0.01;
     }
     res = (int)n[j];
     printf("%i\n", res);
-    enter();
     return res;
 }
-
+*/
 int traducirletra(char letra){
     switch(letra)
     {

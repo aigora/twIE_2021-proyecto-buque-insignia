@@ -27,7 +27,6 @@ int Matriz(int sonar) {
         printf("\n\nTU TURNO: la situacion actual es: \n");
         imprimirMatrizdeBarcos(misbarcosrellenos, 10, 10);
 
-        scan:
             printf("Introduzca la columna de la casilla que desea atacar: (A-J):");
             char letra;
             scanf(" %c", &letra);
@@ -37,9 +36,19 @@ int Matriz(int sonar) {
             int numero;
             scanf("%d", &numero);
 
-            if (misbarcosrellenos[numero][columna]>0){
+            if(misbarcosrellenos[numero][columna]>0)
+            {
+            while(1==1)
+            {
                 printf("La casilla ya esta seleccionada. Elige otra\n");
-                goto scan;
+                printf("Introduzca la columna de la casilla que desea atacar: (A-J):");
+                scanf(" %c", &letra);
+                columna = traducirletra(letra);
+                printf("Introduzca la fila de la casilla que desea atacar: (0-9):");
+                scanf("%d", &numero);
+                if(misbarcosrellenos[numero][columna]==0)
+                { break;}
+            }
             }
 
         contarCoordenadasUSER = tucoordenada(columna, numero, sonar, misbarcosrellenos, cpuBarcos, &tusbarcdestr);

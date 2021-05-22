@@ -12,7 +12,7 @@ int inicioPrograma(void)
 {
     int x = 0;
     printf("Bienvenido a la pagina de inicio de Proyecto Buque Insignia.\nEscribe 'atras' en cualquier momento para volver a la pagina anterior.\n\n");
-    printf("%cQue quieres hacer? Selecciona entre:\n(1) Personalizar barco\n(2) Jugar\n(3) Puntuacion\n", 168);
+    printf("¿Que quieres hacer? Selecciona entre:\n(1) Personalizar barco\n(2) Jugar\n(3) Puntuación\n");
     printf("\nEXPERIMENTAL\n(4) Modo Batalla\n");//Provisional
     scanf(" %i", &x);
     return x;
@@ -20,7 +20,7 @@ int inicioPrograma(void)
 
 void error(void)
 {
-    printf("Caracter v%clido. Vuelve a intentarlo.\n", 160);
+    printf("Caracter inválido. Vuelve a intentarlo.\n");
     enter();
     enter();
 }
@@ -29,7 +29,7 @@ int jugar(void)
 {
     int radioSonar;
     char x[8];
-    printf("�Vamos a jugar! \n");
+    printf("¡Vamos a jugar! \n");
     printf("Elige el nivel de dificultad:\nEscribe 'facil', 'medio' o 'dificil'.\n");
     scanf(" %s", x);
     switch (x[0]) {
@@ -50,7 +50,7 @@ int jugar(void)
         break;
     }
     if (radioSonar != 555)
-        printf("El radio del sonar esta establecido a %i.", radioSonar);
+        printf("El radio del sónar está establecido a %i.", radioSonar);
     return radioSonar;
 }
 
@@ -74,7 +74,7 @@ int puntuaciones(char dato)
             lineasTotales++;
     }
 
-    fseek(abrirPuntuacion, SEEK_CUR, 0); //Mueve la posici�n del fichero al principio
+    fseek(abrirPuntuacion, SEEK_CUR, 0); //Mueve la posición del fichero al principio
 
     while (fgets(buff, LONG_BUFFER, abrirPuntuacion) != NULL)
     {
@@ -131,9 +131,8 @@ int puntuaciones(char dato)
     return solucion;
 }
 
-int random(void)
+int randm(void)
 {
-    srand(time(NULL));
     return rand();
 }
 

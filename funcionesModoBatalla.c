@@ -52,7 +52,7 @@ int modoBatalla()
     ///DEBUG
 
     /// Leer y abrir fichero
-    FILE *abrirEstadisticas;          //Lo hago con ficheros porque en el futuro quiero aÒadir un sistema de mejoras seg˙n las partidas jugadas, o un sistema de recompensas
+    FILE *abrirEstadisticas;          //Lo hago con ficheros porque en el futuro quiero a√±adir un sistema de mejoras seg√∫n las partidas jugadas, o un sistema de recompensas
     abrirEstadisticas = fopen("estadisticas.csv", "r");
     if (abrirEstadisticas == NULL) {
         printf("Error al abrir el fichero.\n");
@@ -77,31 +77,31 @@ int modoBatalla()
 //    printf("Fichero cerrado correctamente.\n");
     /// Fin de lectura del fichero
 
-    system("cls");
-    printf("La lancha ha sido destruida. %cQue comience la batalla!\n", 173);
+    printf("\033[2J");
+    printf("La lancha ha sido destruida. ¬°Que comience la batalla!\n");
     enter();
 
     attack:
         randseed++;
-        system("cls");
+        printf("\033[2J");
         imprimeVida(user.vida, cpu.vida, 0, 0, 0);
 
-        ///DEBUG: Imprimir estadÌsticas completas
+        ///DEBUG: Imprimir estad√≠sticas completas
         printf("\tAtk\tDef\tSpd\tAcc\tHP\nUSR\t%i\t%i\t%i\t%i\t%i\nCPU\t%i\t%i\t%i\t%i\t%i\n", user.ataque, user.defensa, user.velocidad, user.precision, user.vida,
                cpu.ataque, cpu.defensa, cpu.velocidad, cpu.precision, cpu.vida);
         ///DEBUG
 
-        //Imprimir cambios en estadÌsticas
+        //Imprimir cambios en estad√≠sticas
         printArrows(pcUser, pcontadorUser);
         printArrows(pcCPU, pcontadorCPU);
-        printf("\n\tAtq\tDef\tVel\tPre\nT%c:\t%s\t%s\t%s\t%s\nCPU:\t%s\t%s\t%s\t%s\n", 163,
+        printf("\n\tAtq\tDef\tVel\tPre\nT√∫:\t%s\t%s\t%s\t%s\nCPU:\t%s\t%s\t%s\t%s\n",
                cUser.ataque, cUser.defensa, cUser.velocidad, cUser.precision,
                cCPU.ataque, cCPU.defensa, cCPU.velocidad, cCPU.precision);
 
-        printf("\nSelecciona una opci%cn:\n(1) Atacar\n(2) Usar Objetos\n", 162);
+        printf("\nSelecciona una opci√≥n:\n(1) Atacar\n(2) Usar Objetos\n");
         scanf(" %i", &seleccion);
-        system("cls");
-        switch (seleccion)//Uso un bucle switch porque puede que aÒada opciones en el futuro
+        printf("\033[2J");
+        switch (seleccion)//Uso un bucle switch porque puede que a√±ada opciones en el futuro
         {
         case 1:
             puntosBatalla.numeroAcciones++;
@@ -120,7 +120,7 @@ int modoBatalla()
                     cpu.vida -= cpudamage;
                     if (cpu.vida <= 0)
                     {
-                        printf("%cHas ganado! Tienes ahora %i turnos adicionales.\n", 173, TURNOS_ADICIONALES);
+                        printf("¬°Has ganado! Tienes ahora %i turnos adicionales.\n", TURNOS_ADICIONALES);
                         return 1;
                     }
                 }
@@ -130,14 +130,14 @@ int modoBatalla()
                     cpu.vida -= cpudamage;
                     if (cpu.vida <= 0)
                     {
-                        printf("%cHas ganado! Tienes ahora %i turnos adicionales.\n", 173, TURNOS_ADICIONALES);
+                        printf("¬°Has ganado! Tienes ahora %i turnos adicionales.\n", TURNOS_ADICIONALES);
                         return 1;
                     }
                     user.vida -= userdamage;
                     if (user.vida <= 0)
                     {
-                        printf("El enemigo ha ganado. Tiene ahora %i turnos adicionales.\nSe han aÒadido %i puntos a la puntuaciÛn total.\n\
-Recuerda que puedes ver el historial de puntuaciones en el men˙ principal.", TURNOS_ADICIONALES, 0);
+                        printf("El enemigo ha ganado. Tiene ahora %i turnos adicionales.\nSe han a√±adido %i puntos a la puntuaci√≥n total.\n\
+Recuerda que puedes ver el historial de puntuaciones en el men√∫ principal.", TURNOS_ADICIONALES, 0);
                         return 0;
                     }
                 }
@@ -159,7 +159,7 @@ Recuerda que puedes ver el historial de puntuaciones en el men˙ principal.", TUR
         case 2:
             habilidad:
                 puntosBatalla.numeroAcciones++;
-                system("cls");
+                printf("\033[2J");
                 if (objCountUSER[0] == 0 && objCountUSER[1] == 0 && objCountUSER[2] == 0 && objCountUSER[3] == 0)
                 {
                     printf("No te quedan objetos.");
@@ -170,11 +170,11 @@ Recuerda que puedes ver el historial de puntuaciones en el men˙ principal.", TUR
                 printf("Escoge un objeto para usarlo:\n");
 
                 if (objCountUSER[0] > 0)
-                    printf("(1) Bola de Humo\t\t\tBajar precisi%cn del enemigo\n", 162);
+                    printf("(1) Bola de Humo\t\t\tBajar precisi√≥n del enemigo\n");
                 if (objCountUSER[1] > 0)
                     printf("(2) Ancla\t\t\t\tBajar velocidad de enemigo\n");
                 if (objCountUSER[2] > 0)
-                    printf("(3) P%clvora Premium\t\t\tAumenta tu ataque\n", 162);
+                    printf("(3) P√≥lvora Premium\t\t\tAumenta tu ataque\n");
                 if (objCountUSER[3] > 0)
                     printf("(4) Motor Auxiliar\t\t\tAumenta tu velocidad\n");
                 scanf(" %i", &seleccion);
@@ -255,7 +255,7 @@ Recuerda que puedes ver el historial de puntuaciones en el men˙ principal.", TUR
                         break;
                     }
 
-                    //stat: 1 -> precisiÛn, 2 -> velocidad, 3 -> ataque, 4 -> defensa
+                    //stat: 1 -> precisi√≥n, 2 -> velocidad, 3 -> ataque, 4 -> defensa
                     //variacion: 1 -> sube, -1 -> baja, 0 -> no cambia
                     //beneficiario: u -> usuario, c -> CPU
                     if (calculoCPU == 4)
@@ -310,7 +310,7 @@ int ataque(estadisticas atacante, estadisticas defensor, int randseed)
     printf("\n%f\n", resn);
     printf("\n%f\n", resn*atacante.precision);
     if (resn*atacante.precision <= NECESARIO_PRECISION)
-        printf("El ataque fall%c.\n", 162);
+        printf("El ataque fall√≥.\n");
     else
         result = atacante.ataque * 50 / defensor.defensa;
     return result;
@@ -322,33 +322,33 @@ void imprimeVida(int vidaUSER, int vidaCPU, int diferenciaUser, int diferenciaCP
     char healthbarCPU[101] = "                                                                                                    ";
     char healthbarUSER[101] = "                                                                                                    ";
     for (i = 0; i < vidaUSER; i++)
-        healthbarUSER[i] = 254;
+        healthbarUSER[i] = '#';
     for (i = 0; i < vidaCPU; i++)
-        healthbarCPU[i] = 254;
+        healthbarCPU[i] = '#';
     switch (opcion)
     {
     case 1:
         printf("La vida del enemigo ha disminuido en %i puntos.\nVida CPU:", diferenciaCPU);
-        printf("\n%i%c %s\n\n", vidaCPU, 37, healthbarCPU);
+        printf("\n%i%c %s\n\n", vidaCPU, '%', healthbarCPU);
             enter();
             enter();
         printf("Tu vida ha disminuido en %i puntos.\nTu vida:", diferenciaUser);
-        printf("\n%i%c %s\n\n", vidaUSER, 37, healthbarUSER);
+        printf("\n%i%c %s\n\n", vidaUSER, '%', healthbarUSER);
             enter();
         break;
 
     case -1:
         printf("Tu vida ha disminuido en %i puntos.\nTu vida:", diferenciaUser);
-        printf("\n%i%c %s\n\n", vidaUSER, 37, healthbarUSER);
+        printf("\n%i%c %s\n\n", vidaUSER, '%', healthbarUSER);
             enter();
             enter();
         printf("La vida del enemigo ha disminuido en %i puntos.\nVida CPU:", diferenciaCPU);
-        printf("\n%i%c %s\n\n", vidaCPU, 37, healthbarCPU);
+        printf("\n%i%c %s\n\n", vidaCPU, '%', healthbarCPU);
             enter();
         break;
 
     case 0:
-        printf("Tu vida:\n%i%c %s\n\nVida CPU:\n%i%c %s\n\n", vidaUSER, 37, healthbarUSER, vidaCPU, 37, healthbarCPU);
+        printf("Tu vida:\n%i%c %s\n\nVida CPU:\n%i%c %s\n\n", vidaUSER, '%', healthbarUSER, vidaCPU, '%', healthbarCPU);
         break;
     }
 }
@@ -373,13 +373,13 @@ int cpuHabilidad(int contador[4])
 
 void printStats (int stat, int variacion, char beneficiario)
 {
-    //stat: 1 -> precisiÛn, 2 -> velocidad, 3 -> ataque, 4 -> defensa
+    //stat: 1 -> precisi√≥n, 2 -> velocidad, 3 -> ataque, 4 -> defensa
     //variacion: 1 -> sube, -1 -> baja, 0 -> no cambia
     //beneficiario: u -> usuario, c -> CPU
     switch (stat)
     {
     case 1:
-        printf("La precisi%cn ", 162);
+        printf("La precisi√≥n ");
         break;
     case 2:
         printf("La velocidad ");
@@ -403,10 +403,10 @@ void printStats (int stat, int variacion, char beneficiario)
     switch (variacion)
     {
     case 1:
-        printf("subi%c.\n", 162);
+        printf("subi√≥.\n");
         break;
     case -1:
-        printf("baj%c.\n", 162);
+        printf("baj√≥.\n");
         break;
     case 0:
         printf("se mantiene.\n");

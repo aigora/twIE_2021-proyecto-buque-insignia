@@ -1,12 +1,14 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <time.h>
 #include "funcionesTexto.h"
 #include "estructuras.h"
 #include "funcionesModoBatalla.h"
 
 int main()
 {
+    srand(time(NULL));
     char volver[6];
     const char atras[6] = "atras";
     int condicion, dificultad;
@@ -48,13 +50,13 @@ int main()
 
             case 3:
                 printf("\033[2J");
-                printf("Has seleccionado Puntuacion. Escribe 'v' para ver la puntuacion.\n");
+                printf("Has seleccionado Puntuación. Escribe 'v' para ver la puntuación.\n");
                 scanf("%s", volver);
                 if (strcmp(volver, "v") == 0)
                 ///
                 break;
 
-            ///EXPERIMENTAL. Comentar, no borrar. Puede ser �til para debuguear.
+            ///EXPERIMENTAL. Comentar, no borrar. Puede ser útil para debuguear.
             case 4:
                 victoria = modoBatalla();
                 if (victoria == 1)

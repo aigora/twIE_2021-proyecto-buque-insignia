@@ -5,7 +5,7 @@ int inicioPrograma(void);
 void error(void);
 int jugar(void);
 int puntuaciones(char dato);
-int random(void);
+int randm(void);
 float random1(void);
 int enter(void);
 

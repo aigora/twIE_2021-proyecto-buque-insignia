@@ -7,8 +7,6 @@
 #include "funcionesTexto.h"
 
 int Matriz(int sonar) {
-    int mbarcos = 0;
-    int sbarcos = 0;
     int tusbarcdestr = 0;
     int susbarcdestr = 0;
     int contarCoordenadasUSER = 0, contarCoordenadasCPU = 0, victoria = 0, modoBatallaActivado = 0;
@@ -80,6 +78,7 @@ int Matriz(int sonar) {
     imprimirMatrizdeBarcos(misbarcosrellenos, 10, 10);
     printf("Estos han sido sus resultados\n");
     imprimirMatrizdeBarcos(susbarcosrellenos, 10, 10);
+    enter();
     return 0;
 }
 
@@ -328,11 +327,13 @@ int sucoordenada(int fi, int co, int SuMatriz[][10], int TuMatriz[][10], int *su
                         int columnanue = co + i;
                         if (fi <0 || fi > 9 || columnanue <0 || columnanue >9) {
                             //Estamos fuera de la matriz
-                            break;
+                            continue;
                         }
                         if (SuMatriz[fi][columnanue]==1 && TuMatriz[fi][columnanue]==1)
                             {continue;}
                         if (TuMatriz[fi][columnanue]==2 && SuMatriz[fi][columnanue]==0)
+                            {break;}
+                        if (SuMatriz[fi][columnanue]==2)
                             {break;}
                         contar++;
                     }
@@ -342,11 +343,13 @@ int sucoordenada(int fi, int co, int SuMatriz[][10], int TuMatriz[][10], int *su
                         int columnanue = co - i;
                         if (fi <0 || fi > 9 || columnanue <0 || columnanue >9) {
                             //Estamos fuera de la matriz
-                            break;
+                            continue;
                         }
                         if (SuMatriz[fi][columnanue]==1 && TuMatriz[fi][columnanue]==1)
                             {continue;}
                         if (TuMatriz[fi][columnanue]==2 && SuMatriz[fi][columnanue]==0)
+                            {break;}
+                        if (SuMatriz[fi][columnanue]==2)
                             {break;}
                         contar++;
                     }
@@ -357,11 +360,13 @@ int sucoordenada(int fi, int co, int SuMatriz[][10], int TuMatriz[][10], int *su
                         int filanue = fi + i;
                         if (filanue <0 || filanue > 9 || co <0 || co >9) {
                             //Estamos fuera de la matriz
-                            break;
+                            continue;
                         }
                         if (SuMatriz[filanue][co]==1 && TuMatriz[filanue][co]==1)
                             {continue;}
                         if (TuMatriz[filanue][co]==2 && SuMatriz[filanue][co]==0)
+                            {break;}
+                        if (SuMatriz[filanue][co]==2)
                             {break;}
                         contar++;
                     }
@@ -371,11 +376,13 @@ int sucoordenada(int fi, int co, int SuMatriz[][10], int TuMatriz[][10], int *su
                         int filanue = fi - i;
                         if (filanue <0 || filanue > 9 || co <0 || co >9) {
                             //Estamos fuera de la matriz
-                            break;
+                            continue;
                         }
                         if (SuMatriz[filanue][co]==1 && TuMatriz[filanue][co]==1)
                             {continue;}
                         if (TuMatriz[filanue][co]==2 && SuMatriz[filanue][co]==0)
+                            {break;}
+                        if (SuMatriz[filanue][co]==2)
                             {break;}
                         contar++;
                     }
@@ -385,7 +392,7 @@ int sucoordenada(int fi, int co, int SuMatriz[][10], int TuMatriz[][10], int *su
         if(contar == 0)
         {
             printf("Te han destruido un barco.\n");
-            *susbarcosdestruidos ++;
+            *susbarcosdestruidos += 1;
         }
         imprimirMatrizdeBarcos(SuMatriz, 10, 10);
         return 1;
@@ -426,7 +433,7 @@ int tucoordenada(int columna, int fila, int son, int tuMatriz[][10], int suMatri
         if(contar == 1)
         {
             printf("Has destruido un barco\n");
-            *tusbarcosdestruidos ++;
+            *tusbarcosdestruidos +=1;
         }
         else {
             contar = 0;
@@ -437,11 +444,13 @@ int tucoordenada(int columna, int fila, int son, int tuMatriz[][10], int suMatri
                         int columnanue = columna + i;
                         if (fila <0 || fila > 9 || columnanue <0 || columnanue >9) {
                             //Estamos fuera de la matriz
-                            break;
+                            continue;
                         }
                         if (suMatriz[fila][columnanue]==1 && tuMatriz[fila][columnanue]==1)
                             {continue;}
                         if (suMatriz[fila][columnanue]==2 && tuMatriz[fila][columnanue]==0)
+                            {break;}
+                        if (tuMatriz[fila][columnanue]==2)
                             {break;}
                         contar++;
                     }
@@ -451,11 +460,13 @@ int tucoordenada(int columna, int fila, int son, int tuMatriz[][10], int suMatri
                         int columnanue = columna - i;
                         if (fila <0 || fila > 9 || columnanue <0 || columnanue >9) {
                             //Estamos fuera de la matriz
-                            break;
+                            continue;
                         }
                         if (suMatriz[fila][columnanue]==1 && tuMatriz[fila][columnanue]==1)
                             {continue;}
                         if (suMatriz[fila][columnanue]==2 && tuMatriz[fila][columnanue]==0)
+                            {break;}
+                        if (tuMatriz[fila][columnanue]==2)
                             {break;}
                         contar++;
                     }
@@ -468,11 +479,13 @@ int tucoordenada(int columna, int fila, int son, int tuMatriz[][10], int suMatri
                         int filanue = fila + i;
                         if (filanue <0 || filanue > 9 || columna <0 || columna >9) {
                             //Estamos fuera de la matriz
-                            break;
+                            continue;
                         }
                         if (suMatriz[filanue][columna]==1 && tuMatriz[filanue][columna]==1)
                             {continue;}
                         if (suMatriz[filanue][columna]==2 && tuMatriz[filanue][columna]==0)
+                            {break;}
+                        if (tuMatriz[filanue][columna]==2)
                             {break;}
                         contar++;
                     }
@@ -482,11 +495,13 @@ int tucoordenada(int columna, int fila, int son, int tuMatriz[][10], int suMatri
                         int filanue = fila - i;
                         if (filanue <0 || filanue > 9 || columna <0 || columna >9) {
                             //Estamos fuera de la matriz
-                            break;
+                            continue;
                         }
                         if (suMatriz[filanue][columna]==1 && tuMatriz[filanue][columna]==1)
                             {continue;}
                         if (suMatriz[filanue][columna]==2 && tuMatriz[filanue][columna]==0)
+                            {break;}
+                        if (tuMatriz[filanue][columna]==2)
                             {break;}
                         contar++;
                     }
@@ -496,11 +511,13 @@ int tucoordenada(int columna, int fila, int son, int tuMatriz[][10], int suMatri
         if(contar == 0)
         {
             printf("Has destruido un barco.\n");
-            *tusbarcosdestruidos ++;
+            *tusbarcosdestruidos += 1;
         }
         return 1;
     }
     else if (tuMatriz[fila][columna] == 2){
+        int k = 0;
+        int l = 0;
         printf("No has dado a ningun barco\n");
         switch(son)
             {
@@ -514,11 +531,12 @@ int tucoordenada(int columna, int fila, int son, int tuMatriz[][10], int suMatri
                         //Estamos fuera de la matriz
                         continue;
                     }
-                    if (tuMatriz[filan][columnan] == 1) {
-                        printf("El barco esta en un radio de 3 casillas\n");
+                    if (suMatriz[filan][columnan] == 1&& tuMatriz[filan][columnan]==0) {
+                        k++;
                     }
                 }
             }
+            printf("%d casillas de barco estan en un radio de 3 casillas\n", k);
                 break;
             case 2:
                 for(int i=-2; i<5; i++){
@@ -530,11 +548,12 @@ int tucoordenada(int columna, int fila, int son, int tuMatriz[][10], int suMatri
                         //Estamos fuera de la matriz
                         continue;
                     }
-                    if (tuMatriz[filanu][columnanu] == 1) {
-                        printf("El barco esta en un radio de 2 casillas\n");
+                    if (suMatriz[filanu][columnanu] == 1 && tuMatriz[filanu][columnanu]==0) {
+                        l++;
                     }
                 }
             }
+            printf("%d casillas de barco estan en un radio de 2 casillas\n", l);
                 break;
             case 0:
                 break;
@@ -543,6 +562,7 @@ int tucoordenada(int columna, int fila, int son, int tuMatriz[][10], int suMatri
     }
     else if(tuMatriz[fila][columna] == 3) {
         printf("Has destruido el barco especial\n");
+        *tusbarcosdestruidos += 1;
         //Entramos aqui en el modo batalla especial entre barcos.
         return 2;
     }

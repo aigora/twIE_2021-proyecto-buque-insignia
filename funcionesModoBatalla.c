@@ -18,7 +18,7 @@ int modoBatalla()
     puntuacion puntosBatalla;
     float dificultad;
     int cerrar, seleccion, cpudamage, userdamage, opcionVida, calculoCPU, randseed = -1, variacionHabilidadCPU = 0, variacionHabilidadUSER = 0, exit = 1, exitDamage = 1,
-    exitHabilidad = 1;
+    exitHabilidad = 1, enterkey = 0;
     char benefCPU, benefUSER;
     int objCountUSER[4] = {2,2,2,2};
     int objCountCPU[4] = {1,0,0,0};
@@ -48,7 +48,7 @@ int modoBatalla()
     pcCPU = &cCPU;
 
     ///DEBUG
-    printf("\nDificultad: %f\n", dificultad);
+    printf("\nDificultad: %f\t", dificultad);
     enter();
     ///DEBUG
 
@@ -79,7 +79,9 @@ int modoBatalla()
 
     clearscr();
     printf("La lancha ha sido destruida. %cQue comience la batalla!\n", 173);
-    enter();
+    enterkey = 0;
+    while (enterkey != 1)
+        enterkey = enter();
 
     //Funcionamiento principal
     while (exit != 0)
@@ -158,8 +160,9 @@ int modoBatalla()
                 }
                 imprimeVida(user.vida, cpu.vida, userdamage, cpudamage, opcionVida);
                 seleccion = 0;
-                enter();
-                enter();
+                enterkey = 0;
+                while (enterkey != 1)
+                    enterkey = enter();
                 exitDamage = 0;
                 exit = 3;
             }
@@ -172,7 +175,9 @@ int modoBatalla()
                 if (objCountUSER[0] == 0 && objCountUSER[1] == 0 && objCountUSER[2] == 0 && objCountUSER[3] == 0)
                 {
                     printf("No te quedan objetos.");
-                    enter();
+                    enterkey = 0;
+                    while (enterkey != 1)
+                        enterkey = enter();
                     exitHabilidad = 0;
                 }
 
@@ -190,7 +195,9 @@ int modoBatalla()
                 if (objCountUSER[seleccion - 1] == 0)
                 {
                     printf("No te quedan objetos de este tipo.\n");
-                    enter();
+                    enterkey = 0;
+                    while (enterkey != 1)
+                        enterkey = enter();
                     exitHabilidad = 3;
                 }
 
@@ -201,7 +208,9 @@ int modoBatalla()
                     {
                     case 0:
                         printf("\nA la CPU no le quedan objetos.\n");
-                        enter();
+                        enterkey = 0;
+                        while (enterkey != 1)
+                            enterkey = enter();
                         benefCPU = 'o';
                         variacionHabilidadCPU = 0;
                         break;
@@ -278,16 +287,24 @@ int modoBatalla()
                     if (cpu.velocidad > user.velocidad)
                     {
                         printStats(calculoCPU, variacionHabilidadCPU, benefCPU);
-                        enter();
+                        enterkey = 0;
+                        while (enterkey != 1)
+                            enterkey = enter();
                         printStats(seleccion, variacionHabilidadUSER, benefUSER);
-                        enter();
+                        enterkey = 0;
+                        while (enterkey != 1)
+                            enterkey = enter();
                     }
                     else
                     {
                         printStats(seleccion, variacionHabilidadUSER, benefUSER);
-                        enter();
+                        enterkey = 0;
+                        while (enterkey != 1)
+                            enterkey = enter();
                         printStats(calculoCPU, variacionHabilidadCPU, benefCPU);
-                        enter();
+                        enterkey = 0;
+                        while (enterkey != 1)
+                            enterkey = enter();
                     }
                     exit = 3;
                 }
@@ -346,7 +363,6 @@ void imprimeVida(int vidaUSER, int vidaCPU, int diferenciaUser, int diferenciaCP
         printf("La vida del enemigo ha disminuido en %i puntos.\nVida CPU:", diferenciaCPU);
         printf("\n%i%c %s\n\n", vidaCPU, 37, healthbarCPU);
             enter();
-            enter();
         printf("Tu vida ha disminuido en %i puntos.\nTu vida:", diferenciaUser);
         printf("\n%i%c %s\n\n", vidaUSER, 37, healthbarUSER);
             enter();
@@ -355,7 +371,6 @@ void imprimeVida(int vidaUSER, int vidaCPU, int diferenciaUser, int diferenciaCP
     case -1:
         printf("Tu vida ha disminuido en %i puntos.\nTu vida:", diferenciaUser);
         printf("\n%i%c %s\n\n", vidaUSER, 37, healthbarUSER);
-            enter();
             enter();
         printf("La vida del enemigo ha disminuido en %i puntos.\nVida CPU:", diferenciaCPU);
         printf("\n%i%c %s\n\n", vidaCPU, 37, healthbarCPU);

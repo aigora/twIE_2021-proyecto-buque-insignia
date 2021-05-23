@@ -11,6 +11,7 @@ int efectoHabilidad (int stat, float factor, float dificultad, float sumando);
 int modoBatalla();
 void printStats (int stat, int variacion, char beneficiario);
 void printArrows (cambiosEstadisticas *flechas, estadisticas *stat);
+void clearscr(void);
 
 #endif // header guard
 

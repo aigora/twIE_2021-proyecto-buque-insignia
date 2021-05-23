@@ -17,10 +17,11 @@ int modoBatalla()
 {
     puntuacion puntosBatalla;
     float dificultad;
-    int cerrar, seleccion, cpudamage, userdamage, opcionVida, calculoCPU, randseed = -1, variacionHabilidadCPU = 0, variacionHabilidadUSER = 0;
+    int cerrar, seleccion, cpudamage, userdamage, opcionVida, calculoCPU, randseed = -1, variacionHabilidadCPU = 0, variacionHabilidadUSER = 0, exit = 1, exitDamage = 1,
+    exitHabilidad = 1;
     char benefCPU, benefUSER;
-    int objCountUSER[4] = {1,1,1,1};
-    int objCountCPU[4] = {1,1,1,1};
+    int objCountUSER[4] = {2,2,2,2};
+    int objCountCPU[4] = {1,0,0,0};
     float var = 0;
     dificultad = calculoDificultad();
     estadisticas cpu, user, contadorUser, contadorCPU, *pcontadorUser, *pcontadorCPU;
@@ -52,38 +53,39 @@ int modoBatalla()
     ///DEBUG
 
     /// Leer y abrir fichero
-    FILE *abrirEstadisticas;          //Lo hago con ficheros porque en el futuro quiero añadir un sistema de mejoras según las partidas jugadas, o un sistema de recompensas
+    {
+    FILE *abrirEstadisticas;
     abrirEstadisticas = fopen("estadisticas.csv", "r");
-    if (abrirEstadisticas == NULL) {
+    if (abrirEstadisticas == NULL)
+    {
         printf("Error al abrir el fichero.\n");
-        enter();
-        enter();
         return -1;
     }
 //    else
 //        printf("Fichero abierto correctamente.\n");
 
-    fscanf(abrirEstadisticas, "%i, %i, %i, %i, %i, %i, %i, %i, %i, %i", &user.precision, &user.ataque,
+    fscanf(abrirEstadisticas, "%i,%i,%i,%i,%i,%i,%i,%i,%i,%i", &user.precision, &user.ataque,
                 &user.defensa, &user.velocidad, &user.vida, &cpu.precision, &cpu.ataque, &cpu.defensa, &cpu.velocidad, &cpu.vida);
 
     cerrar = fclose(abrirEstadisticas);
     if (cerrar == EOF) {
         printf("Error al cerrar el fichero.\n");
-        enter();
-        enter();
         return -1;
     }
 //    if (cerrar == 0)
 //    printf("Fichero cerrado correctamente.\n");
+    }
     /// Fin de lectura del fichero
 
-    system("cls");
+    clearscr();
     printf("La lancha ha sido destruida. %cQue comience la batalla!\n", 173);
     enter();
 
-    attack:
+    //Funcionamiento principal
+    while (exit != 0)
+    {
         randseed++;
-        system("cls");
+        clearscr();
         imprimeVida(user.vida, cpu.vida, 0, 0, 0);
 
         ///DEBUG: Imprimir estadísticas completas
@@ -100,48 +102,51 @@ int modoBatalla()
 
         printf("\nSelecciona una opci%cn:\n(1) Atacar\n(2) Usar Objetos\n", 162);
         scanf(" %i", &seleccion);
-        system("cls");
-        switch (seleccion)//Uso un bucle switch porque puede que añada opciones en el futuro
+        clearscr();
+        switch (seleccion)
         {
         case 1:
-            puntosBatalla.numeroAcciones++;
+            //puntosBatalla.numeroAcciones++;
             cpudamage = ataque(user, cpu, randseed);
             userdamage = ataque(cpu, user, randseed+1);
-            damage:
+            user.vida -= userdamage;
+            cpu.vida -= cpudamage;
+            exitDamage = 1;
+            while (exitDamage != 0)
+            {
                 if (user.velocidad < cpu.velocidad)
                 {
                     opcionVida = -1;
-                    user.vida -= userdamage;
                     if (user.vida <= 0)
                     {
                         printf("El enemigo ha ganado. Tiene ahora %i turnos adicionales.\n", TURNOS_ADICIONALES);
                         return 0;
+                        exit = 0;
                     }
-                    cpu.vida -= cpudamage;
                     if (cpu.vida <= 0)
                     {
                         printf("%cHas ganado! Tienes ahora %i turnos adicionales.\n", 173, TURNOS_ADICIONALES);
                         return 1;
+                        exit = 0;
                     }
                 }
-                if (cpu.velocidad < user.velocidad)
+                else if (cpu.velocidad < user.velocidad)
                 {
                     opcionVida = 1;
-                    cpu.vida -= cpudamage;
                     if (cpu.vida <= 0)
                     {
                         printf("%cHas ganado! Tienes ahora %i turnos adicionales.\n", 173, TURNOS_ADICIONALES);
                         return 1;
+                        exit = 0;
                     }
-                    user.vida -= userdamage;
                     if (user.vida <= 0)
                     {
-                        printf("El enemigo ha ganado. Tiene ahora %i turnos adicionales.\nSe han añadido %i puntos a la puntuación total.\n\
-Recuerda que puedes ver el historial de puntuaciones en el menú principal.", TURNOS_ADICIONALES, 0);
+                        printf("El enemigo ha ganado. Tiene ahora %i turnos adicionales.\n", TURNOS_ADICIONALES);
                         return 0;
+                        exit = 0;
                     }
                 }
-                if (cpu.velocidad == user.velocidad)
+                else if (cpu.velocidad == user.velocidad)
                 {
                     var = random1();
                     if (var > 0) {
@@ -150,25 +155,28 @@ Recuerda que puedes ver el historial de puntuaciones en el menú principal.", TUR
                     }
                     else
                         cpu.velocidad += 1;
-                    goto damage;
                 }
                 imprimeVida(user.vida, cpu.vida, userdamage, cpudamage, opcionVida);
                 seleccion = 0;
-                goto attack;
+                enter();
+                enter();
+                exitDamage = 0;
+                exit = 3;
+            }
 
         case 2:
-            habilidad:
+            while (exitHabilidad != 0 && exit != 3)
+            {
                 puntosBatalla.numeroAcciones++;
-                system("cls");
+                clearscr();
                 if (objCountUSER[0] == 0 && objCountUSER[1] == 0 && objCountUSER[2] == 0 && objCountUSER[3] == 0)
                 {
                     printf("No te quedan objetos.");
                     enter();
-                    enter();
-                    goto attack;
+                    exitHabilidad = 0;
                 }
-                printf("Escoge un objeto para usarlo:\n");
 
+                printf("Escoge un objeto para usarlo:\n");
                 if (objCountUSER[0] > 0)
                     printf("(1) Bola de Humo\t\t\tBajar precisi%cn del enemigo\n", 162);
                 if (objCountUSER[1] > 0)
@@ -183,16 +191,20 @@ Recuerda que puedes ver el historial de puntuaciones en el menú principal.", TUR
                 {
                     printf("No te quedan objetos de este tipo.\n");
                     enter();
-                    enter();
-                    goto habilidad;
+                    exitHabilidad = 3;
                 }
 
+                if (exitHabilidad != 3)
+                {
                     calculoCPU = cpuHabilidad(objCountCPU);
                     switch (calculoCPU)
                     {
                     case 0:
                         printf("\nA la CPU no le quedan objetos.\n");
                         enter();
+                        benefCPU = 'o';
+                        variacionHabilidadCPU = 0;
+                        break;
                     case 1:
                         user.precision = efectoHabilidad(user.precision, MULT1, dificultad, 0);
                         objCountCPU[0]--;
@@ -277,9 +289,12 @@ Recuerda que puedes ver el historial de puntuaciones en el menú principal.", TUR
                         printStats(calculoCPU, variacionHabilidadCPU, benefCPU);
                         enter();
                     }
-
-                goto attack;
+                    exit = 3;
+                }
+            }
         }
+    }
+    return 0;
 }
 
 float calculoDificultad(void)
@@ -355,19 +370,39 @@ void imprimeVida(int vidaUSER, int vidaCPU, int diferenciaUser, int diferenciaCP
 
 int cpuHabilidad(int contador[4])
 {
-    int result = random1()*100;
+    int result, restart = 1;
 
-    printf("\nRandom: %i\n", result);
-    if (contador[0] == 0 && contador[1] == 0 && contador[2] == 0 && contador[3] == 0)
-        result = 0;
-    if (result > 0 && result <= 25 && contador[0] > 0)
-        result = 1;
-    if (result > 25 && result <= 50 && contador[1] > 0)
-        result = 2;
-    if (result > 50 && result <= 75 && contador[2] > 0)
-        result = 3;
-    if (result > 75 && result <= 100 && contador[3] > 0)
-        result = 4;
+    while (restart != 0)
+    {
+        result = rand() % 1000 * 0.001 * 100;
+        printf("\nRandom: %i\n", result);
+        if (contador[0] == 0 && contador[1] == 0 && contador[2] == 0 && contador[3] == 0)
+        {
+            result = 0;
+            restart = 0;
+        }
+        if (result > 0 && result <= 25 && contador[0] > 0)
+        {
+            result = 1;
+            restart = 0;
+        }
+        if (result > 25 && result <= 50 && contador[1] > 0)
+        {
+            result = 2;
+            restart = 0;
+        }
+        if (result > 50 && result <= 75 && contador[2] > 0)
+        {
+            result = 3;
+            restart = 0;
+        }
+        if (result > 75 && result <= 100 && contador[3] > 0)
+        {
+            result = 4;
+            restart = 0;
+        }
+    }
+    printf("Result: %i\n", result);
     return result;
 }
 
@@ -390,6 +425,8 @@ void printStats (int stat, int variacion, char beneficiario)
     case 4:
         printf("La defensa ");
         break;
+    default:
+        break;
     }
     switch (beneficiario)
     {
@@ -398,6 +435,8 @@ void printStats (int stat, int variacion, char beneficiario)
         break;
     case 'c':
         printf("de la CPU ");
+        break;
+    default:
         break;
     }
     switch (variacion)
@@ -408,8 +447,7 @@ void printStats (int stat, int variacion, char beneficiario)
     case -1:
         printf("baj%c.\n", 162);
         break;
-    case 0:
-        printf("se mantiene.\n");
+    default:
         break;
     }
     enter();
@@ -469,4 +507,10 @@ void printArrows (cambiosEstadisticas *flechas, estadisticas *stat)
             flechas->precision[i] = 25;
     else if (stat->precision == 0)
         strcpy(flechas->precision, "----");
+}
+
+void clearscr()
+{
+    for (int i = 0; i < 200; i++)
+        printf("\n");
 }

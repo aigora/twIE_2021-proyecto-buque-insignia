@@ -144,22 +144,15 @@ float random1(void)
 
 int enter(void)
 {
-//    char ch;
-//    ch = getchar();
-//    if (ch == '\n')
-//        return 1;
-//    else
-//    {
-//        printf("Pulsa ENTER para continuar...");
-//        enter();
-//    }
-    char variable;
-    while (variable != '\n')
-        scanf("%c", &variable);
-    if (variable == '\n')
+    char ch;
+    ch = getchar();
+    if (ch == '\n')
         return 1;
     else
+    {
+        printf("Pulsa ENTER para continuar...");
         return 0;
+    }
 }
 
 

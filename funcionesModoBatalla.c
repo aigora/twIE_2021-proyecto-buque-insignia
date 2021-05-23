@@ -20,8 +20,8 @@ int modoBatalla()
     int cerrar, seleccion, cpudamage, userdamage, opcionVida, calculoCPU, randseed = -1, variacionHabilidadCPU = 0, variacionHabilidadUSER = 0, exit = 1, exitDamage = 1,
     exitHabilidad = 1, enterkey = 0;
     char benefCPU, benefUSER;
-    int objCountUSER[4] = {2,2,2,2};
-    int objCountCPU[4] = {1,0,0,0};
+    int objCountUSER[4] = {0,0,0,0};
+    int objCountCPU[4] = {0,0,0,0};
     float var = 0;
     dificultad = calculoDificultad();
     estadisticas cpu, user, contadorUser, contadorCPU, *pcontadorUser, *pcontadorCPU;
@@ -114,7 +114,7 @@ int modoBatalla()
             user.vida -= userdamage;
             cpu.vida -= cpudamage;
             exitDamage = 1;
-            while (exitDamage != 0)
+            do
             {
                 if (user.velocidad < cpu.velocidad)
                 {
@@ -166,9 +166,10 @@ int modoBatalla()
                 exitDamage = 0;
                 exit = 3;
             }
+            while (exitDamage != 0);
 
         case 2:
-            while (exitHabilidad != 0 && exit != 3)
+            do
             {
                 puntosBatalla.numeroAcciones++;
                 clearscr();
@@ -178,7 +179,7 @@ int modoBatalla()
                     enterkey = 0;
                     while (enterkey != 1)
                         enterkey = enter();
-                    exitHabilidad = 0;
+                    exit = 3;
                 }
 
                 printf("Escoge un objeto para usarlo:\n");
@@ -309,6 +310,7 @@ int modoBatalla()
                     exit = 3;
                 }
             }
+            while (exitHabilidad != 0 && exit != 3);
         }
     }
     return 0;
@@ -350,7 +352,7 @@ int ataque(estadisticas atacante, estadisticas defensor, int randseed)
 
 void imprimeVida(int vidaUSER, int vidaCPU, int diferenciaUser, int diferenciaCPU, int opcion)
 {
-    int i = 0;
+    int i = 0, enterkey = 0;
     char healthbarCPU[101] = "                                                                                                    ";
     char healthbarUSER[101] = "                                                                                                    ";
     for (i = 0; i < vidaUSER; i++)
@@ -362,19 +364,27 @@ void imprimeVida(int vidaUSER, int vidaCPU, int diferenciaUser, int diferenciaCP
     case 1:
         printf("La vida del enemigo ha disminuido en %i puntos.\nVida CPU:", diferenciaCPU);
         printf("\n%i%c %s\n\n", vidaCPU, 37, healthbarCPU);
-            enter();
+            enterkey = 0;
+            while (enterkey != 1)
+                enterkey = enter();
         printf("Tu vida ha disminuido en %i puntos.\nTu vida:", diferenciaUser);
         printf("\n%i%c %s\n\n", vidaUSER, 37, healthbarUSER);
-            enter();
+            enterkey = 0;
+            while (enterkey != 1)
+                enterkey = enter();
         break;
 
     case -1:
         printf("Tu vida ha disminuido en %i puntos.\nTu vida:", diferenciaUser);
         printf("\n%i%c %s\n\n", vidaUSER, 37, healthbarUSER);
-            enter();
+            enterkey = 0;
+            while (enterkey != 1)
+                enterkey = enter();
         printf("La vida del enemigo ha disminuido en %i puntos.\nVida CPU:", diferenciaCPU);
         printf("\n%i%c %s\n\n", vidaCPU, 37, healthbarCPU);
-            enter();
+            enterkey = 0;
+            while (enterkey != 1)
+                enterkey = enter();
         break;
 
     case 0:

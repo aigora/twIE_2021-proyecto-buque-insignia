@@ -50,10 +50,10 @@ int modoBatalla()
     ///DEBUG
     printf("\nDificultad: %f\t", dificultad);
     enter();
+    enter();
     ///DEBUG
 
     /// Leer y abrir fichero
-    {
     FILE *abrirEstadisticas;
     abrirEstadisticas = fopen("estadisticas.csv", "r");
     if (abrirEstadisticas == NULL)
@@ -68,13 +68,13 @@ int modoBatalla()
                 &user.defensa, &user.velocidad, &user.vida, &cpu.precision, &cpu.ataque, &cpu.defensa, &cpu.velocidad, &cpu.vida);
 
     cerrar = fclose(abrirEstadisticas);
-    if (cerrar == EOF) {
+    if (cerrar == EOF)
+    {
         printf("Error al cerrar el fichero.\n");
         return -1;
     }
 //    if (cerrar == 0)
 //    printf("Fichero cerrado correctamente.\n");
-    }
     /// Fin de lectura del fichero
 
     clearscr();
@@ -82,7 +82,7 @@ int modoBatalla()
     enter();
 
     //Funcionamiento principal
-    while (exit != 0)
+    while (1 == 1)
     {
         randseed++;
         clearscr();
@@ -102,6 +102,7 @@ int modoBatalla()
 
         printf("\nSelecciona una opci%cn:\n(1) Atacar\n(2) Usar Objetos\n", 162);
         scanf(" %i", &seleccion);
+
         clearscr();
         switch (seleccion)
         {
@@ -111,8 +112,9 @@ int modoBatalla()
             userdamage = ataque(cpu, user, randseed+1);
             user.vida -= userdamage;
             cpu.vida -= cpudamage;
-            exitDamage = 1;
-            do
+            if (userdamage == 0 && cpudamage == 0)
+                break;
+            while (1 == 1)
             {
                 if (user.velocidad < cpu.velocidad)
                 {
@@ -121,13 +123,13 @@ int modoBatalla()
                     {
                         printf("El enemigo ha ganado. Tiene ahora %i turnos adicionales.\n", TURNOS_ADICIONALES);
                         return 0;
-                        exit = 0;
+                        break;
                     }
                     if (cpu.vida <= 0)
                     {
                         printf("%cHas ganado! Tienes ahora %i turnos adicionales.\n", 173, TURNOS_ADICIONALES);
                         return 1;
-                        exit = 0;
+                        break;
                     }
                 }
                 else if (cpu.velocidad < user.velocidad)
@@ -137,37 +139,38 @@ int modoBatalla()
                     {
                         printf("%cHas ganado! Tienes ahora %i turnos adicionales.\n", 173, TURNOS_ADICIONALES);
                         return 1;
-                        exit = 0;
+                        break;
                     }
                     if (user.vida <= 0)
                     {
                         printf("El enemigo ha ganado. Tiene ahora %i turnos adicionales.\n", TURNOS_ADICIONALES);
                         return 0;
-                        exit = 0;
+                        break;
                     }
                 }
                 else if (cpu.velocidad == user.velocidad)
                 {
                     var = random1();
-                    if (var > 0) {
-                        printf("%f", var);
+                    exit = 0;
+                    if (var > 0)
+                    {
+                        //printf("%f", var);
                         user.velocidad += 1;
                     }
                     else
                         cpu.velocidad += 1;
                 }
-                imprimeVida(user.vida, cpu.vida, userdamage, cpudamage, opcionVida);
-                seleccion = 0;
-                enterkey = 0;
-                while (enterkey != 1)
-                    enterkey = enter();
-                exitDamage = 0;
-                exit = 3;
+                if (exit != 0)
+                {
+                    imprimeVida(user.vida, cpu.vida, userdamage, cpudamage, opcionVida);
+                    seleccion = 0;
+                    enter();
+                }
             }
-            while (exitDamage != 0);
+            break;
 
         case 2:
-            do
+            while (1 == 1)
             {
                 puntosBatalla.numeroAcciones++;
                 clearscr();
@@ -199,114 +202,100 @@ int modoBatalla()
                         enterkey = enter();
                     exitHabilidad = 3;
                 }
-
-                if (exitHabilidad != 3)
+                calculoCPU = cpuHabilidad(objCountCPU);
+                switch (calculoCPU)
                 {
-                    calculoCPU = cpuHabilidad(objCountCPU);
-                    switch (calculoCPU)
-                    {
-                    case 0:
-                        printf("\nA la CPU no le quedan objetos.\n");
-                        enter();
-                        benefCPU = 'o';
-                        variacionHabilidadCPU = 0;
-                        break;
-                    case 1:
-                        user.precision = efectoHabilidad(user.precision, MULT1, dificultad, 0);
-                        objCountCPU[0]--;
-                        variacionHabilidadCPU = -1;
-                        benefCPU = 'u';
-                        pcontadorUser->precision--;
-                        break;
-                    case 2:
-                        user.velocidad = efectoHabilidad(user.velocidad, MULT1, dificultad, 0);
-                        objCountCPU[1]--;
-                        variacionHabilidadCPU = -1;
-                        benefCPU = 'u';
-                        pcontadorUser->velocidad--;
-                        break;
-                    case 3:
-                        cpu.ataque = efectoHabilidad(cpu.ataque, MULT2, dificultad, 0.25);
-                        objCountCPU[2]--;
-                        variacionHabilidadCPU = 1;
-                        benefCPU = 'c';
-                        pcontadorCPU->ataque++;
-                        break;
-                    case 4:
-                        cpu.velocidad = efectoHabilidad(cpu.velocidad, MULT2, dificultad, 0.25);
-                        objCountCPU[3]--;
-                        variacionHabilidadCPU = 1;
-                        benefCPU = 'c';
-                        pcontadorCPU->velocidad++;
-                        break;
-                    }
+                case 0:
+                    printf("\nA la CPU no le quedan objetos.\n");
+                    enter();
+                    benefCPU = 'o';
+                    variacionHabilidadCPU = 0;
+                    break;
+                case 1:
+                    user.precision = efectoHabilidad(user.precision, MULT1, dificultad, 0);
+                    objCountCPU[0]--;
+                    variacionHabilidadCPU = -1;
+                    benefCPU = 'u';
+                    pcontadorUser->precision--;
+                    break;
+                case 2:
+                    user.velocidad = efectoHabilidad(user.velocidad, MULT1, dificultad, 0);
+                    objCountCPU[1]--;
+                    variacionHabilidadCPU = -1;
+                    benefCPU = 'u';
+                    pcontadorUser->velocidad--;
+                    break;
+                case 3:
+                    cpu.ataque = efectoHabilidad(cpu.ataque, MULT2, dificultad, 0.25);
+                    objCountCPU[2]--;
+                    variacionHabilidadCPU = 1;
+                    benefCPU = 'c';
+                    pcontadorCPU->ataque++;
+                    break;
+                case 4:
+                    cpu.velocidad = efectoHabilidad(cpu.velocidad, MULT2, dificultad, 0.25);
+                    objCountCPU[3]--;
+                    variacionHabilidadCPU = 1;
+                    benefCPU = 'c';
+                    pcontadorCPU->velocidad++;
+                    break;
+                }
 
-                    switch (seleccion)
-                    {
-                    case 1:
-                        cpu.precision = efectoHabilidad(cpu.precision, MULT1, dificultad, 0);
-                        objCountUSER[0]--;
-                        variacionHabilidadUSER = -1;
-                        benefUSER = 'c';
-                        pcontadorCPU->precision--;
-                        break;
-                    case 2:
-                        cpu.velocidad = efectoHabilidad(cpu.velocidad, MULT1, dificultad, 0);
-                        objCountUSER[1]--;
-                        variacionHabilidadUSER = -1;
-                        benefUSER = 'c';
-                        pcontadorCPU->velocidad--;
-                        break;
-                    case 3:
-                        user.ataque = efectoHabilidad(user.ataque, MULT2, dificultad, 0.25);
-                        objCountUSER[2]--;
-                        variacionHabilidadUSER = 1;
-                        benefUSER = 'u';
-                        pcontadorUser->ataque++;
-                        break;
-                    case 4:
-                        user.velocidad = efectoHabilidad(user.velocidad, MULT2, dificultad, 0.25);
-                        objCountUSER[3]--;
-                        variacionHabilidadUSER = 1;
-                        benefUSER = 'u';
-                        pcontadorUser->velocidad++;
-                        break;
-                    }
+                switch (seleccion)
+                {
+                case 1:
+                    cpu.precision = efectoHabilidad(cpu.precision, MULT1, dificultad, 0);
+                    objCountUSER[0]--;
+                    variacionHabilidadUSER = -1;
+                    benefUSER = 'c';
+                    pcontadorCPU->precision--;
+                    break;
+                case 2:
+                    cpu.velocidad = efectoHabilidad(cpu.velocidad, MULT1, dificultad, 0);
+                    objCountUSER[1]--;
+                    variacionHabilidadUSER = -1;
+                    benefUSER = 'c';
+                    pcontadorCPU->velocidad--;
+                    break;
+                case 3:
+                    user.ataque = efectoHabilidad(user.ataque, MULT2, dificultad, 0.25);
+                    objCountUSER[2]--;
+                    variacionHabilidadUSER = 1;
+                    benefUSER = 'u';
+                    pcontadorUser->ataque++;
+                    break;
+                case 4:
+                    user.velocidad = efectoHabilidad(user.velocidad, MULT2, dificultad, 0.25);
+                    objCountUSER[3]--;
+                    variacionHabilidadUSER = 1;
+                    benefUSER = 'u';
+                    pcontadorUser->velocidad++;
+                    break;
+                }
 
-                    //stat: 1 -> precisión, 2 -> velocidad, 3 -> ataque, 4 -> defensa
-                    //variacion: 1 -> sube, -1 -> baja, 0 -> no cambia
-                    //beneficiario: u -> usuario, c -> CPU
-                    if (calculoCPU == 4)
-                            calculoCPU -= 2;
-                    if (seleccion == 4)
-                            seleccion -= 2;
+                //stat: 1 -> precisión, 2 -> velocidad, 3 -> ataque, 4 -> defensa
+                //variacion: 1 -> sube, -1 -> baja, 0 -> no cambia
+                //beneficiario: u -> usuario, c -> CPU
+                if (calculoCPU == 4)
+                        calculoCPU -= 2;
+                if (seleccion == 4)
+                        seleccion -= 2;
 
-                    if (cpu.velocidad > user.velocidad)
-                    {
-                        printStats(calculoCPU, variacionHabilidadCPU, benefCPU);
-                        enterkey = 0;
-                        while (enterkey != 1)
-                            enterkey = enter();
-                        printStats(seleccion, variacionHabilidadUSER, benefUSER);
-                        enterkey = 0;
-                        while (enterkey != 1)
-                            enterkey = enter();
-                    }
-                    else
-                    {
-                        printStats(seleccion, variacionHabilidadUSER, benefUSER);
-                        enterkey = 0;
-                        while (enterkey != 1)
-                            enterkey = enter();
-                        printStats(calculoCPU, variacionHabilidadCPU, benefCPU);
-                        enterkey = 0;
-                        while (enterkey != 1)
-                            enterkey = enter();
-                    }
-                    exit = 3;
+                if (cpu.velocidad > user.velocidad)
+                {
+                    printStats(calculoCPU, variacionHabilidadCPU, benefCPU);
+                    enter();
+                    printStats(seleccion, variacionHabilidadUSER, benefUSER);
+                    enter();
+                }
+                else
+                {
+                    printStats(seleccion, variacionHabilidadUSER, benefUSER);
+                    enter();
+                    printStats(calculoCPU, variacionHabilidadCPU, benefCPU);
+                    enter();
                 }
             }
-            while (exitHabilidad != 0 && exit != 3);
         }
     }
     return 0;
@@ -352,35 +341,31 @@ void imprimeVida(int vidaUSER, int vidaCPU, int diferenciaUser, int diferenciaCP
     char healthbarCPU[101] = "                                                                                                    ";
     char healthbarUSER[101] = "                                                                                                    ";
     for (i = 0; i < vidaUSER; i++)
-        healthbarUSER[i] = 254;
+        healthbarUSER[i] = '-';
     for (i = 0; i < vidaCPU; i++)
-        healthbarCPU[i] = 254;
+        healthbarCPU[i] = '-';
     switch (opcion)
     {
     case 1:
         printf("La vida del enemigo ha disminuido en %i puntos.\nVida CPU:", diferenciaCPU);
         printf("\n%i%c %s\n\n", vidaCPU, 37, healthbarCPU);
-            enterkey = 0;
-            while (enterkey != 1)
-                enterkey = enter();
+            enter();
+            enter();
         printf("Tu vida ha disminuido en %i puntos.\nTu vida:", diferenciaUser);
         printf("\n%i%c %s\n\n", vidaUSER, 37, healthbarUSER);
-            enterkey = 0;
-            while (enterkey != 1)
-                enterkey = enter();
+            enter();
+            enter();
         break;
 
     case -1:
         printf("Tu vida ha disminuido en %i puntos.\nTu vida:", diferenciaUser);
         printf("\n%i%c %s\n\n", vidaUSER, 37, healthbarUSER);
-            enterkey = 0;
-            while (enterkey != 1)
-                enterkey = enter();
+            enter();
+            enter();
         printf("La vida del enemigo ha disminuido en %i puntos.\nVida CPU:", diferenciaCPU);
         printf("\n%i%c %s\n\n", vidaCPU, 37, healthbarCPU);
-            enterkey = 0;
-            while (enterkey != 1)
-                enterkey = enter();
+            enter();
+            enter();
         break;
 
     case 0:

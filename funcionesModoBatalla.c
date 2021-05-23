@@ -79,9 +79,7 @@ int modoBatalla()
 
     clearscr();
     printf("La lancha ha sido destruida. %cQue comience la batalla!\n", 173);
-    enterkey = 0;
-    while (enterkey != 1)
-        enterkey = enter();
+    enter();
 
     //Funcionamiento principal
     while (exit != 0)
@@ -184,13 +182,13 @@ int modoBatalla()
 
                 printf("Escoge un objeto para usarlo:\n");
                 if (objCountUSER[0] > 0)
-                    printf("(1) Bola de Humo\t\t\tBajar precisi%cn del enemigo\n", 162);
+                    printf("(1) Bola de Humo\t\t\tBajar precisi%cn del enemigo.\t(%i disponibles)\n", 162, objCountUSER[0]);
                 if (objCountUSER[1] > 0)
-                    printf("(2) Ancla\t\t\t\tBajar velocidad de enemigo\n");
+                    printf("(2) Ancla\t\t\t\tBajar velocidad de enemigo.\t(%i disponibles)\n", objCountUSER[1]);
                 if (objCountUSER[2] > 0)
-                    printf("(3) P%clvora Premium\t\t\tAumenta tu ataque\n", 162);
+                    printf("(3) P%clvora Premium\t\t\tAumenta tu ataque.\t(%i disponibles)\n", 162, objCountUSER[2]);
                 if (objCountUSER[3] > 0)
-                    printf("(4) Motor Auxiliar\t\t\tAumenta tu velocidad\n");
+                    printf("(4) Motor Auxiliar\t\t\tAumenta tu velocidad.\t(%i disponibles)\n", objCountUSER[3]);
                 scanf(" %i", &seleccion);
 
                 if (objCountUSER[seleccion - 1] == 0)
@@ -209,9 +207,7 @@ int modoBatalla()
                     {
                     case 0:
                         printf("\nA la CPU no le quedan objetos.\n");
-                        enterkey = 0;
-                        while (enterkey != 1)
-                            enterkey = enter();
+                        enter();
                         benefCPU = 'o';
                         variacionHabilidadCPU = 0;
                         break;

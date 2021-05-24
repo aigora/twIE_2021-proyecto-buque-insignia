@@ -49,8 +49,6 @@ int Matriz(int x)
             contarCoordenadasUSER--;
             modoBatallaActivado = 1;
             victoria = modoBatalla();
-            enter();
-            enter();
         }
         mbarcos = mbarcos + contarCoordenadasUSER;
         printf("Casillas de barcos acertadas por ti: %d\n", mbarcos);
@@ -69,8 +67,6 @@ int Matriz(int x)
             contarCoordenadasCPU--;
             modoBatallaActivado = 1;
             victoria = modoBatalla();
-            enter();
-            enter();
         }
         sbarcos = sbarcos + contarCoordenadasCPU;
         printf("Casillas de barcos acertadas por CPU: %d\n", sbarcos);

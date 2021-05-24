@@ -21,8 +21,6 @@ int inicioPrograma(void)
 void error(void)
 {
     printf("Caracter v%clido. Vuelve a intentarlo.\n", 160);
-    enter();
-    enter();
 }
 
 int jugar(void)
@@ -96,8 +94,6 @@ int puntuaciones(char dato)
     cerrar = fclose(abrirPuntuacion);
     if (cerrar == EOF) {
         printf("Error al cerrar el fichero.\n");
-        enter();
-        enter();
         return -1;
     }
 //    if (cerrar == 0)
@@ -131,28 +127,38 @@ int puntuaciones(char dato)
     return solucion;
 }
 
-int random(void)
+int random(int randseed)
 {
-    srand(time(NULL));
-    return rand();
+    int i;
+    float res[1000];
+    for (i = 0; i < 1000; i++)
+        res[i] = rand();
+    return res[randseed];
 }
 
-float random1(void)
+float random1(int randseed)
 {
-  return random() % 1000 * 0.001;
+    int i;
+    float res[1000];
+    for (i = 0; i < 1000; i++)
+        res[i] = random(randseed) % 1000 * 0.001;
+    return res[randseed];
 }
 
 int enter(void)
 {
-    char ch;
-    ch = getchar();
-    if (ch == '\n')
-        return 1;
-    else
+    char ch = 0, ch2 = 0;
+    while (ch != '\n')
+    {
+        ch = getchar();
+        ch2 = getchar();
+    }
+    if (ch != '\n' && ch2 != '\n')
     {
         printf("Pulsa ENTER para continuar...");
         return 0;
     }
+    return 1;
 }
 
 

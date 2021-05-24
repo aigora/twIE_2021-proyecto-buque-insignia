@@ -1,17 +1,19 @@
 #include <stdio.h>
 #include <time.h>
 #include <stdlib.h>
+#include <string.h>
 #include "funcionesTexto.h"
 #include "Matriz.h"
 #include "estructuras.h"
-#define LONG_PUNTUACION_CSV 8
+#define LONG_PUNTUACION_CSV 7
+#define LONG_BUFFER 100
 
 int inicioPrograma(void)
 {
     int x = 0;
     printf("Bienvenido a la pagina de inicio de Proyecto Buque Insignia.\nEscribe 'atras' en cualquier momento para volver a la pagina anterior.\n\n");
     printf("%cQue quieres hacer? Selecciona entre:\n(1) Personalizar barco\n(2) Jugar\n(3) Puntuacion\n", 168);
-    printf("\nEXPERIMENTAL\n(4) Modo Batalla");//Provisional
+    printf("\nEXPERIMENTAL\n(4) Modo Batalla\n");//Provisional
     scanf(" %i", &x);
     return x;
 }
@@ -19,8 +21,6 @@ int inicioPrograma(void)
 void error(void)
 {
     printf("Caracter v%clido. Vuelve a intentarlo.\n", 160);
-    enter();
-    enter();
 }
 
 int jugar(void)
@@ -56,7 +56,8 @@ int puntuaciones(char dato)
 {
     /// Leer fichero
     FILE *abrirPuntuacion;
-    int cerrar, leerPuntuacion[LONG_PUNTUACION_CSV], solucion;
+    int cerrar, leerPuntuacion[LONG_PUNTUACION_CSV], solucion, i = 0, lineasTotales = 0, lineas = 0, confirm = 0;
+    char nombre[4], buff[LONG_BUFFER], scanResult, data[LONG_BUFFER];
     abrirPuntuacion = fopen("puntuacionTotal.csv", "r");
     if (abrirPuntuacion == NULL) {
         printf("Error al abrir el fichero.\n");
@@ -65,8 +66,30 @@ int puntuaciones(char dato)
 //    else
 //        printf("Fichero abierto correctamente.\n");
 
-    fscanf(abrirPuntuacion, "%i, %i, %i, %i, %i, %i, %i", &leerPuntuacion[1], &leerPuntuacion[2],
-                &leerPuntuacion[3], &leerPuntuacion[4], &leerPuntuacion[5], &leerPuntuacion[6], &leerPuntuacion[7]);
+    while (fscanf(abrirPuntuacion, "%c", &scanResult) != EOF)
+    {
+        if (scanResult == '\n')
+            lineasTotales++;
+    }
+
+    fseek(abrirPuntuacion, SEEK_CUR, 0); //Mueve la posición del fichero al principio
+
+    while (fgets(buff, LONG_BUFFER, abrirPuntuacion) != NULL)
+    {
+        for (i = 0; i < LONG_BUFFER; i++)
+        {
+            if (buff[i] == '\n')
+                lineas++;
+            if (lineas == lineasTotales && confirm == 0)
+            {
+                strcpy(data, buff);
+                confirm++;
+            }
+        }
+    }
+
+    sscanf(data, "%[^,],%i,%i,%i,%i,%i,%i,%i", nombre, &leerPuntuacion[0], &leerPuntuacion[1], &leerPuntuacion[2], &leerPuntuacion[3],
+                       &leerPuntuacion[4], &leerPuntuacion[5], &leerPuntuacion[6]);
 
     cerrar = fclose(abrirPuntuacion);
     if (cerrar == EOF) {
@@ -104,34 +127,38 @@ int puntuaciones(char dato)
     return solucion;
 }
 
-int random(void)
+int random(int randseed)
 {
-
-  int n;
-  srand(time(NULL));
-  n = rand() % 100 + 1;
-  return n;
+    int i;
+    float res[1000];
+    for (i = 0; i < 1000; i++)
+        res[i] = rand();
+    return res[randseed];
 }
 
-float random1(void)
+float random1(int randseed)
 {
-  float n;
-  srand(time(NULL));
-  n = (rand() % 100 + 1) * 0.01;
-  return n;
+    int i;
+    float res[1000];
+    for (i = 0; i < 1000; i++)
+        res[i] = random(randseed) % 1000 * 0.001;
+    return res[randseed];
 }
 
 int enter(void)
 {
-    char ch;
-    ch = getchar();
-    if (ch == '\n')
-        return 1;
-    else
+    char ch = 0, ch2 = 0;
+    while (ch != '\n')
+    {
+        ch = getchar();
+        ch2 = getchar();
+    }
+    if (ch != '\n' && ch2 != '\n')
     {
         printf("Pulsa ENTER para continuar...");
         return 0;
     }
+    return 1;
 }
 
 

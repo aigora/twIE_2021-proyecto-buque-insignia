@@ -6,6 +6,7 @@
 #include "estructuras.h"
 #include "funcionesTexto.h"
 
+
 int Matriz(int sonar) {
     int tusbarcdestr = 0;
     int susbarcdestr = 0;
@@ -57,8 +58,6 @@ int Matriz(int sonar) {
             contarCoordenadasUSER--;
             modoBatallaActivado = 1;
             victoria = modoBatalla();
-            enter();
-            enter();
         }
         printf("Barcos destruidos por ti: %d\n", tusbarcdestr);
 
@@ -77,8 +76,6 @@ int Matriz(int sonar) {
             contarCoordenadasCPU--;
             modoBatallaActivado = 1;
             victoria = modoBatalla();
-            enter();
-            enter();
         }
         printf("Barcos destruidos por CPU: %d\n", susbarcdestr);
     }

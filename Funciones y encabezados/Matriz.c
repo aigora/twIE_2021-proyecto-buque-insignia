@@ -577,7 +577,6 @@ int tucoordenada(int columna, int fila, int son, int tuMatriz[][10], int suMatri
 {
     float n[1000];
     int res;
-    srand(time(NULL));
     for (int i = 0; i < 10; i++)
     {
         n[i] = rand() % 1000 * 0.01;

@@ -50,7 +50,6 @@ int main()
                 break;
 
             case 3:
-                printf("\033[2J");
                 printf("Has seleccionado Puntuacion. Escribe 'v' para ver la puntuacion.\n");
                 scanf("%s", volver);
                 if (strcmp(volver, "v") == 0)

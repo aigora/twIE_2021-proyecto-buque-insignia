@@ -31,9 +31,6 @@
 		<Compiler>
 			<Add option="-Wall" />
 		</Compiler>
-		<Unit filename="../Ficheros/desbloqueables.csv" />
-		<Unit filename="../Ficheros/estadisticas.csv" />
-		<Unit filename="../Ficheros/puntuacionTotal.csv" />
 		<Unit filename="../Funciones y encabezados/Matriz.c">
 			<Option compilerVar="CC" />
 		</Unit>
@@ -53,6 +50,9 @@
 		<Unit filename="../Funciones y encabezados/menu_principal.c">
 			<Option compilerVar="CC" />
 		</Unit>
+		<Unit filename="Ficheros/desbloqueables.csv" />
+		<Unit filename="Ficheros/estadisticas.csv" />
+		<Unit filename="Ficheros/puntuacionTotal.csv" />
 		<Extensions />
 	</Project>
 </CodeBlocks_project_file>

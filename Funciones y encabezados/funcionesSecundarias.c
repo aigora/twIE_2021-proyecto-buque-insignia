@@ -58,6 +58,19 @@ int puntuaciones(char dato)
     FILE *abrirPuntuacion;
     int cerrar, leerPuntuacion[LONG_PUNTUACION_CSV], solucion, i = 0, lineasTotales = 0, lineas = 0, confirm = 0;
     char nombre[4], buff[LONG_BUFFER], scanResult, data[LONG_BUFFER];
+    abrirPuntuacion = fopen("puntuacionTotal.csv", "w");
+    if (abrirPuntuacion == NULL)
+    {
+        printf("Error al abrir el fichero.\n");
+        return -1;
+    }
+    cerrar = fclose(abrirPuntuacion);
+    if (cerrar == EOF)
+    {
+        printf("Error al cerrar el fichero.\n");
+        return -1;
+    }
+
     abrirPuntuacion = fopen("puntuacionTotal.csv", "r");
     if (abrirPuntuacion == NULL) {
         printf("Error al abrir el fichero.\n");
@@ -161,4 +174,9 @@ int enter(void)
     return 1;
 }
 
-
+void clearscr()
+{
+    printf("\033[2J");
+//    for (int i = 0; i < 200; i++)
+//        printf("\n");
+}

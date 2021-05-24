@@ -8,6 +8,7 @@ int puntuaciones(char dato);
 int random(int randseed);
 float random1(int randseed);
 int enter(void);
+void clearscr(void);
 
 #endif // header guard
 

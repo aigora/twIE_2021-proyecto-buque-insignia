@@ -59,6 +59,19 @@ int modoBatalla()
 
     ///Leer y abrir fichero
     FILE *abrirEstadisticas;
+    abrirEstadisticas = fopen("estadisticas.csv", "w");
+    if (abrirEstadisticas == NULL)
+    {
+        printf("Error al abrir el fichero.\n");
+        return -1;
+    }
+    principal.cerrar = fclose(abrirEstadisticas);
+    if (principal.cerrar == EOF)
+    {
+        printf("Error al cerrar el fichero.\n");
+        return -1;
+    }
+
     abrirEstadisticas = fopen("estadisticas.csv", "r");
     if (abrirEstadisticas == NULL)
     {
@@ -608,10 +621,4 @@ void printArrows (cambiosEstadisticas *flechas, estadisticas *stat)
                 (flechas + j)->velocidad[i] = 25;
         }
     }
-}
-
-void clearscr()
-{
-    for (int i = 0; i < 200; i++)
-        printf("\n");
 }

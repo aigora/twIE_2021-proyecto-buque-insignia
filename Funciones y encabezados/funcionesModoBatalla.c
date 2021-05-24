@@ -3,7 +3,7 @@
 #include <string.h>
 #include <time.h>
 #include "estructuras.h"
-#include "funcionesTexto.h"
+#include "funcionesSecundarias.h"
 #include "funcionesModoBatalla.h"
 #define NECESARIO_R 25
 #define NECESARIO_PRECISION 0.25

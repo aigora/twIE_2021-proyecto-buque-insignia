@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
-#include "funcionesTexto.h"
+#include "funcionesSecundarias.h"
 #include "estructuras.h"
 #include "funcionesModoBatalla.h"
 

@@ -4,7 +4,7 @@
 #include "Matriz.h"
 #include "funcionesModoBatalla.h"
 #include "estructuras.h"
-#include "funcionesTexto.h"
+#include "funcionesSecundarias.h"
 
 
 int Matriz(int sonar) {

@@ -31,28 +31,28 @@
 		<Compiler>
 			<Add option="-Wall" />
 		</Compiler>
-		<Unit filename="../Matriz.c">
+		<Unit filename="../Ficheros/desbloqueables.csv" />
+		<Unit filename="../Ficheros/estadisticas.csv" />
+		<Unit filename="../Ficheros/puntuacionTotal.csv" />
+		<Unit filename="../Funciones y encabezados/Matriz.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="../Matriz.h" />
-		<Unit filename="../estructuras.c">
+		<Unit filename="../Funciones y encabezados/Matriz.h" />
+		<Unit filename="../Funciones y encabezados/estructuras.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="../estructuras.h" />
-		<Unit filename="../funcionesModoBatalla.c">
+		<Unit filename="../Funciones y encabezados/estructuras.h" />
+		<Unit filename="../Funciones y encabezados/funcionesModoBatalla.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="../funcionesModoBatalla.h" />
-		<Unit filename="../funcionesTexto.c">
+		<Unit filename="../Funciones y encabezados/funcionesModoBatalla.h" />
+		<Unit filename="../Funciones y encabezados/funcionesSecundarias.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="../funcionesTexto.h" />
-		<Unit filename="../menu_principal.c">
+		<Unit filename="../Funciones y encabezados/funcionesSecundarias.h" />
+		<Unit filename="../Funciones y encabezados/menu_principal.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="desbloqueables.csv" />
-		<Unit filename="estadisticas.csv" />
-		<Unit filename="puntuacionTotal.csv" />
 		<Extensions />
 	</Project>
 </CodeBlocks_project_file>

@@ -16,6 +16,7 @@ int main()
     int victoria; //Provisional
 
     start:
+        clearscr();
         while (strcmp(volver, atras) != 0)
         {
             printf("\033[2J");
@@ -63,14 +64,12 @@ int main()
                     printf("Has ganado.");
                 if (victoria == 0)
                     printf("Has perdido.");
-                enter();
-                enter();
                 goto start;
                 break;
             ///EXPERIMENTAL
 
             default:
-                printf("\033[2J");
+                clearscr();
                 error();
                 goto start;
                 break;

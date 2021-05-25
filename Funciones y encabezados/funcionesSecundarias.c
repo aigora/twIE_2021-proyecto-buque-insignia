@@ -7,13 +7,82 @@
 #include "estructuras.h"
 #define LONG_PUNTUACION_CSV 7
 #define LONG_BUFFER 100
+#define NUMERO_DESBLOQ 17
+
+int generarDesbloqueables(void)
+{
+    FILE *abrirDesbloq;
+    int i = 0, j = 0, k = 0, cerrar;
+    desbloqueables datos[NUMERO_DESBLOQ];
+    datos[0].block = '·';
+    for (i = 1; i < NUMERO_DESBLOQ; i++)
+        datos[i].block = '!';
+    char todosLosNombres[2000];
+    int todasLasEstadisticasYObjetos[NUMERO_DESBLOQ][9] =
+    {
+        { 90, 60, 55, 60, 60,0,1,0,1},
+        { 90, 65, 60, 60, 70,1,0,1,0},
+        { 90, 70, 65, 50, 80,1,2,1,1},
+        { 90, 73, 70, 55, 90,2,2,2,1},
+        { 90, 75, 70, 60,100,3,3,3,2},
+        { 95, 80, 70, 65,100,2,3,3,2},
+        { 95, 80, 75, 65,100,2,2,3,4},
+        { 95, 85, 75, 70,100,4,2,2,3},
+        { 95, 85, 80, 70,100,3,4,3,3},
+        { 95, 90, 80, 80,100,4,3,4,3},
+        { 95, 90, 80, 90,100,4,4,3,4},
+        { 95, 90, 85, 75,100,4,4,4,4},
+        { 95, 95, 85, 85,100,4,4,4,4},
+        { 95, 95, 90, 90,100,4,4,4,4},
+        {100, 95, 90, 85,100,4,4,4,4},
+        {100, 95,100, 95,100,4,4,4,4},
+        {100,100,100,100,100,4,4,4,4},
+    };
+    for (i = 0; i < NUMERO_DESBLOQ; i++)
+    {
+        datos[i].stats.precision = todasLasEstadisticasYObjetos[i][0];
+        datos[i].stats.ataque    = todasLasEstadisticasYObjetos[i][1];
+        datos[i].stats.defensa   = todasLasEstadisticasYObjetos[i][2];
+        datos[i].stats.velocidad = todasLasEstadisticasYObjetos[i][3];
+        datos[i].stats.vida      = todasLasEstadisticasYObjetos[i][4];
+        for (j = 5; j < 9; j++)
+        {
+            k = j - 5;
+            datos[i].objetos[k] = todasLasEstadisticasYObjetos[i][j];
+        }
+    }
+    strcpy(todosLosNombres, "Soldado,Cabo,Cabo Primero,Sargento,Brigada,Subteniente,Suboficial Mayor,Alférez,Capitán,\
+Comandante,Teniente Coronel,Coronel,General de Brigada,General de División,Almirante,Almirante General,Capitán General");
+    sscanf(todosLosNombres, "%[^,],%[^,],%[^,],%[^,],%[^,],%[^,],%[^,],%[^,],%[^,],%[^,],%[^,],%[^,],%[^,],%[^,],%[^,],%[^,],%[^,]",
+           datos[0].nombre, datos[1].nombre, datos[2].nombre, datos[3].nombre, datos[4].nombre, datos[5].nombre, datos[6].nombre,
+           datos[7].nombre, datos[8].nombre, datos[9].nombre, datos[10].nombre, datos[11].nombre, datos[12].nombre, datos[13].nombre,
+           datos[14].nombre, datos[15].nombre, datos[16].nombre);
+
+    abrirDesbloq = fopen("desbloqueables.csv", "w");
+    if (abrirDesbloq == NULL)
+    {
+        printf("Error al abrir el fichero.\n");
+        return -1;
+    }
+    for (i = 0; i < NUMERO_DESBLOQ; i++)
+        fprintf(abrirDesbloq, "%c,%s,%i,%i,%i,%i,%i,%i,%i,%i,%i\n", datos[i].block, datos[i].nombre,
+                datos[i].stats.precision, datos[i].stats.ataque, datos[i].stats.defensa, datos[i].stats.velocidad, datos[i].stats.vida,
+                datos[i].objetos[0], datos[i].objetos[1], datos[i].objetos[2], datos[i].objetos[3]);
+    cerrar = fclose(abrirDesbloq);
+    if (cerrar == EOF)
+    {
+        printf("Error al cerrar el fichero.\n");
+        return -1;
+    }
+    return 0;
+}
 
 int inicioPrograma(void)
 {
     int x = 0;
     printf("Bienvenido a la pagina de inicio de Proyecto Buque Insignia.\nEscribe 'atras' en cualquier momento para volver a la pagina anterior.\n\n");
     printf("%cQue quieres hacer? Selecciona entre:\n(1) Personalizar barco\n(2) Jugar\n(3) Puntuacion\n", 168);
-    printf("\nEXPERIMENTAL\n(4) Modo Batalla\n");//Provisional
+    //printf("\nEXPERIMENTAL\n(4) Modo Batalla\n");//Provisional
     scanf(" %i", &x);
     return x;
 }

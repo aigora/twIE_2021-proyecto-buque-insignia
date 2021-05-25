@@ -9,6 +9,7 @@ int random(int randseed);
 float random1(int randseed);
 int enter(void);
 void clearscr(void);
+int generarDesbloqueables(void);
 
 #endif // header guard
 

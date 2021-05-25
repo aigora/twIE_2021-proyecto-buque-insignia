@@ -34,5 +34,12 @@ typedef struct
     char benefCPU, benefUSER;
 } mainStruct;
 
+typedef struct
+{
+    char nombre[200], block;
+    estadisticas stats;
+    int objetos[4];
+} desbloqueables;
+
 #endif // header guard
 

@@ -15,8 +15,9 @@
 
 int modoBatalla()
 {
-    int i = 0;
-    //declaraciones y asignaciones de variables
+    int i = 0, flag = 0;
+    char desbloq, nombre[20];
+    estadisticas barco[2];
     mainStruct principal;
     principal.contadorStats[0] = (estadisticas){0,0,0,0};
     principal.contadorStats[1] = (estadisticas){0,0,0,0};
@@ -34,14 +35,6 @@ int modoBatalla()
     principal.variacionHabilidad[1] = 0;
     principal.exit = 40;//valor aleatorio para ejecutar la función, pero sin arriesgarse a que sea 1 o 0
     principal.exit2 = 40;
-    principal.objCountCPU[0] = 2;
-    principal.objCountCPU[1] = 2;
-    principal.objCountCPU[2] = 2;
-    principal.objCountCPU[3] = 2;
-    principal.objCountUSER[0] = 2;
-    principal.objCountUSER[1] = 2;
-    principal.objCountUSER[2] = 2;
-    principal.objCountUSER[3] = 2;
     for (i = 0; i < 2; i++)
     {
         principal.contadorStats[i].ataque = 0;
@@ -58,37 +51,66 @@ int modoBatalla()
     ///DEBUG
 
     ///Leer y abrir fichero
-    FILE *abrirEstadisticas;
-    abrirEstadisticas = fopen("estadisticas.csv", "w");
+    FILE *abrirEstadisticas, *abrirDesbloq;
+    abrirEstadisticas = fopen("estadisticas.csv", "r");
+    abrirDesbloq      = fopen("desbloqueables.csv", "r");
     if (abrirEstadisticas == NULL)
     {
-        printf("Error al abrir el fichero.\n");
-        return -1;
+        flag = 1;
     }
-    principal.cerrar = fclose(abrirEstadisticas);
+    else
+        principal.cerrar = fclose(abrirEstadisticas);
     if (principal.cerrar == EOF)
     {
-        printf("Error al cerrar el fichero.\n");
+        printf("Error al cerrar estadisticas.csv la 0 vez");
         return -1;
+    }
+    if (flag == 1)
+    {
+        fscanf(abrirDesbloq, "%c,%[^,],%i,%i,%i,%i,%i,%i,%i,%i,%i\n",
+                &desbloq, nombre, &barco[0].precision, &barco[0].ataque, &barco[0].defensa, &barco[0].velocidad, &barco[0].vida,
+                &principal.objCountUSER[0], &principal.objCountUSER[1], &principal.objCountUSER[2], &principal.objCountUSER[3]);
+        fclose(abrirDesbloq);
+
+        abrirDesbloq = fopen("desbloqueables.csv", "r");
+        fscanf(abrirDesbloq, "%c,%[^,],%i,%i,%i,%i,%i,%i,%i,%i,%i\n",
+                &desbloq, nombre, &barco[1].precision, &barco[1].ataque, &barco[1].defensa, &barco[1].velocidad, &barco[1].vida,
+                &principal.objCountCPU[0], &principal.objCountCPU[1], &principal.objCountCPU[2], &principal.objCountCPU[3]);
+        fclose(abrirDesbloq);
+
+        abrirEstadisticas = fopen("estadisticas.csv", "w");
+        fprintf(abrirEstadisticas, "%i,%i,%i,%i,%i,%i,%i,%i,%i\n%i,%i,%i,%i,%i,%i,%i,%i,%i\n",
+                barco[0].precision, barco[0].ataque, barco[0].defensa, barco[0].velocidad, barco[0].vida,
+                principal.objCountUSER[0], principal.objCountUSER[1], principal.objCountUSER[2], principal.objCountUSER[3],
+                barco[1].precision, barco[1].ataque, barco[1].defensa, barco[1].velocidad, barco[1].vida,
+                principal.objCountCPU[0], principal.objCountCPU[1], principal.objCountCPU[2], principal.objCountCPU[3]);
+        principal.cerrar = fclose(abrirEstadisticas);
+        if (principal.cerrar == EOF)
+        {
+            printf("Error al cerrar el fichero estadisticas.csv 1a vez.\n");
+            return -1;
+        }
     }
 
     abrirEstadisticas = fopen("estadisticas.csv", "r");
     if (abrirEstadisticas == NULL)
     {
-        printf("Error al abrir el fichero.\n");
+        printf("Error al abrir el fichero estadisticas.csv 2a vez.\n");
         return -1;
     }
 //    else
 //        printf("Fichero abierto correctamente.\n");
 
-    fscanf(abrirEstadisticas, "%i,%i,%i,%i,%i,%i,%i,%i,%i,%i",
-           &principal.usercpu[0].precision, &principal.usercpu[0].ataque, &principal.usercpu[0].defensa, &principal.usercpu[0].velocidad, &principal.usercpu[0].vida,
-           &principal.usercpu[1].precision, &principal.usercpu[1].ataque, &principal.usercpu[1].defensa, &principal.usercpu[1].velocidad, &principal.usercpu[1].vida);
+    fscanf(abrirEstadisticas, "%i,%i,%i,%i,%i,%i,%i,%i,%i\n%i,%i,%i,%i,%i,%i,%i,%i,%i",
+           &principal.usercpu[0].precision, &principal.usercpu[0].ataque, &principal.usercpu[0].defensa, &principal.usercpu[0].velocidad,
+           &principal.usercpu[0].vida, &principal.objCountUSER[0], &principal.objCountUSER[1], &principal.objCountUSER[2], &principal.objCountUSER[3],
+           &principal.usercpu[1].precision, &principal.usercpu[1].ataque, &principal.usercpu[1].defensa, &principal.usercpu[1].velocidad,
+           &principal.usercpu[1].vida, &principal.objCountCPU[0], &principal.objCountCPU[1], &principal.objCountCPU[2], &principal.objCountCPU[3]);
 
     principal.cerrar = fclose(abrirEstadisticas);
     if (principal.cerrar == EOF)
     {
-        printf("Error al cerrar el fichero.\n");
+        printf("Error al cerrar el fichero estadisticas.csv 2a vez.\n");
         return -1;
     }
 //    if (principal.cerrar == 0)
@@ -131,11 +153,11 @@ mainStruct funcionamientoPrincipal(mainStruct principal)
         return principal;
     }
 
-    ///DEBUG: Imprimir estadísticas completas
-    printf("\tAtk\tDef\tSpd\tAcc\tHP\nUSR\t%i\t%i\t%i\t%i\t%i\nCPU\t%i\t%i\t%i\t%i\t%i\n",
-           principal.usercpu[0].ataque, principal.usercpu[0].defensa, principal.usercpu[0].velocidad, principal.usercpu[0].precision, principal.usercpu[0].vida,
-           principal.usercpu[1].ataque, principal.usercpu[1].defensa, principal.usercpu[1].velocidad, principal.usercpu[1].precision, principal.usercpu[1].vida);
-    ///DEBUG: Imprimir estadísticas completas
+//    ///DEBUG: Imprimir estadísticas completas
+//    printf("\tAtk\tDef\tSpd\tAcc\tHP\nUSR\t%i\t%i\t%i\t%i\t%i\nCPU\t%i\t%i\t%i\t%i\t%i\n",
+//           principal.usercpu[0].ataque, principal.usercpu[0].defensa, principal.usercpu[0].velocidad, principal.usercpu[0].precision, principal.usercpu[0].vida,
+//           principal.usercpu[1].ataque, principal.usercpu[1].defensa, principal.usercpu[1].velocidad, principal.usercpu[1].precision, principal.usercpu[1].vida);
+//    ///DEBUG: Imprimir estadísticas completas
 
     ///Imprimir cambios en estadísticas
 

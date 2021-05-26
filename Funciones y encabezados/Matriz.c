@@ -9,6 +9,7 @@
 
 int Matriz(int sonar, puntuacion *puntos)
 {
+
     int tusbarcdestr = 0;
     int susbarcdestr = 0;
     int contarCoordenadasUSER = 0, contarCoordenadasCPU = 0, victoria = 0, modoBatallaActivado = 0;

@@ -9,74 +9,6 @@
 #define LONG_BUFFER 100
 #define NUMERO_DESBLOQ 17
 
-int generarDesbloqueables(void)
-{
-    FILE *abrirDesbloq;
-    int i = 0, j = 0, k = 0, cerrar;
-    desbloqueables datos[NUMERO_DESBLOQ];
-    datos[0].block = '·';
-    for (i = 1; i < NUMERO_DESBLOQ; i++)
-        datos[i].block = '!';
-    char todosLosNombres[2000];
-    int todasLasEstadisticasYObjetos[NUMERO_DESBLOQ][9] =
-    {
-        { 90, 60, 55, 60, 60,0,1,0,1},
-        { 90, 65, 60, 60, 70,1,0,1,0},
-        { 90, 70, 65, 50, 80,1,2,1,1},
-        { 90, 73, 70, 55, 90,2,2,2,1},
-        { 90, 75, 70, 60,100,3,3,3,2},
-        { 95, 80, 70, 65,100,2,3,3,2},
-        { 95, 80, 75, 65,100,2,2,3,4},
-        { 95, 85, 75, 70,100,4,2,2,3},
-        { 95, 85, 80, 70,100,3,4,3,3},
-        { 95, 90, 80, 80,100,4,3,4,3},
-        { 95, 90, 80, 90,100,4,4,3,4},
-        { 95, 90, 85, 75,100,4,4,4,4},
-        { 95, 95, 85, 85,100,4,4,4,4},
-        { 95, 95, 90, 90,100,4,4,4,4},
-        {100, 95, 90, 85,100,4,4,4,4},
-        {100, 95,100, 95,100,4,4,4,4},
-        {100,100,100,100,100,4,4,4,4},
-    };
-    for (i = 0; i < NUMERO_DESBLOQ; i++)
-    {
-        datos[i].stats.precision = todasLasEstadisticasYObjetos[i][0];
-        datos[i].stats.ataque    = todasLasEstadisticasYObjetos[i][1];
-        datos[i].stats.defensa   = todasLasEstadisticasYObjetos[i][2];
-        datos[i].stats.velocidad = todasLasEstadisticasYObjetos[i][3];
-        datos[i].stats.vida      = todasLasEstadisticasYObjetos[i][4];
-        for (j = 5; j < 9; j++)
-        {
-            k = j - 5;
-            datos[i].objetos[k] = todasLasEstadisticasYObjetos[i][j];
-        }
-    }
-    strcpy(todosLosNombres, "Soldado,Cabo,Cabo Primero,Sargento,Brigada,Subteniente,Suboficial Mayor,Alférez,Capitán,\
-Comandante,Teniente Coronel,Coronel,General de Brigada,General de División,Almirante,Almirante General,Capitán General");
-    sscanf(todosLosNombres, "%[^,],%[^,],%[^,],%[^,],%[^,],%[^,],%[^,],%[^,],%[^,],%[^,],%[^,],%[^,],%[^,],%[^,],%[^,],%[^,],%[^,]",
-           datos[0].nombre, datos[1].nombre, datos[2].nombre, datos[3].nombre, datos[4].nombre, datos[5].nombre, datos[6].nombre,
-           datos[7].nombre, datos[8].nombre, datos[9].nombre, datos[10].nombre, datos[11].nombre, datos[12].nombre, datos[13].nombre,
-           datos[14].nombre, datos[15].nombre, datos[16].nombre);
-
-    abrirDesbloq = fopen("desbloqueables.csv", "w");
-    if (abrirDesbloq == NULL)
-    {
-        printf("Error al abrir el fichero.\n");
-        return -1;
-    }
-    for (i = 0; i < NUMERO_DESBLOQ; i++)
-        fprintf(abrirDesbloq, "%c,%s,%i,%i,%i,%i,%i,%i,%i,%i,%i\n", datos[i].block, datos[i].nombre,
-                datos[i].stats.precision, datos[i].stats.ataque, datos[i].stats.defensa, datos[i].stats.velocidad, datos[i].stats.vida,
-                datos[i].objetos[0], datos[i].objetos[1], datos[i].objetos[2], datos[i].objetos[3]);
-    cerrar = fclose(abrirDesbloq);
-    if (cerrar == EOF)
-    {
-        printf("Error al cerrar el fichero.\n");
-        return -1;
-    }
-    return 0;
-}
-
 int inicioPrograma(void)
 {
     int x = 0;
@@ -92,7 +24,7 @@ void error(void)
     printf("Caracter v%clido. Vuelve a intentarlo.\n", 160);
 }
 
-int jugar(void)
+int jugar(puntuacion *puntos)
 {
     int radioSonar;
     char x[8];
@@ -102,15 +34,15 @@ int jugar(void)
     switch (x[0]) {
     case 'f':
         radioSonar = 3;
-        Matriz(radioSonar);
+        Matriz(radioSonar, puntos);
         break;
     case 'm':
         radioSonar = 2;
-        Matriz(radioSonar);
+        Matriz(radioSonar, puntos);
         break;
     case 'd':
         radioSonar = 0;
-        Matriz(radioSonar);
+        Matriz(radioSonar, puntos);
         break;
     case 'a':
         radioSonar = 555;
@@ -248,4 +180,198 @@ void clearscr()
     printf("\033[2J");
 //    for (int i = 0; i < 200; i++)
 //        printf("\n");
+}
+
+int generarDesbloqueables(void)
+{
+    FILE *abrirDesbloq;
+    int i = 0, j = 0, k = 0, cerrar;
+    desbloqueables datos[NUMERO_DESBLOQ];
+    datos[0].block = '·';
+    for (i = 1; i < NUMERO_DESBLOQ; i++)
+        datos[i].block = '!';
+    char todosLosNombres[2000];
+    int todasLasEstadisticasYObjetos[NUMERO_DESBLOQ][9] =
+    {
+        { 90, 60, 55, 60, 60,0,1,0,1},
+        { 90, 65, 60, 60, 70,1,0,1,0},
+        { 90, 70, 65, 50, 80,1,2,1,1},
+        { 90, 73, 70, 55, 90,2,2,2,1},
+        { 90, 75, 70, 60,100,3,3,3,2},
+        { 95, 80, 70, 65,100,2,3,3,2},
+        { 95, 80, 75, 65,100,2,2,3,4},
+        { 95, 85, 75, 70,100,4,2,2,3},
+        { 95, 85, 80, 70,100,3,4,3,3},
+        { 95, 90, 80, 80,100,4,3,4,3},
+        { 95, 90, 80, 90,100,4,4,3,4},
+        { 95, 90, 85, 75,100,4,4,4,4},
+        { 95, 95, 85, 85,100,4,4,4,4},
+        { 95, 95, 90, 90,100,4,4,4,4},
+        {100, 95, 90, 85,100,4,4,4,4},
+        {100, 95,100, 95,100,4,4,4,4},
+        {100,100,100,100,100,4,4,4,4},
+    };
+    for (i = 0; i < NUMERO_DESBLOQ; i++)
+    {
+        datos[i].stats.precision = todasLasEstadisticasYObjetos[i][0];
+        datos[i].stats.ataque    = todasLasEstadisticasYObjetos[i][1];
+        datos[i].stats.defensa   = todasLasEstadisticasYObjetos[i][2];
+        datos[i].stats.velocidad = todasLasEstadisticasYObjetos[i][3];
+        datos[i].stats.vida      = todasLasEstadisticasYObjetos[i][4];
+        for (j = 5; j < 9; j++)
+        {
+            k = j - 5;
+            datos[i].objetos[k] = todasLasEstadisticasYObjetos[i][j];
+        }
+    }
+    strcpy(todosLosNombres, "Soldado,Cabo,Cabo Primero,Sargento,Brigada,Subteniente,Suboficial Mayor,Alférez,Capitán,\
+Comandante,Teniente Coronel,Coronel,General de Brigada,General de División,Almirante,Almirante General,Capitán General");
+    sscanf(todosLosNombres, "%[^,],%[^,],%[^,],%[^,],%[^,],%[^,],%[^,],%[^,],%[^,],%[^,],%[^,],%[^,],%[^,],%[^,],%[^,],%[^,],%[^,]",
+           datos[0].nombre, datos[1].nombre, datos[2].nombre, datos[3].nombre, datos[4].nombre, datos[5].nombre, datos[6].nombre,
+           datos[7].nombre, datos[8].nombre, datos[9].nombre, datos[10].nombre, datos[11].nombre, datos[12].nombre, datos[13].nombre,
+           datos[14].nombre, datos[15].nombre, datos[16].nombre);
+
+    abrirDesbloq = fopen("desbloqueables.csv", "w");
+    if (abrirDesbloq == NULL)
+    {
+        printf("Error al abrir el fichero.\n");
+        return -1;
+    }
+    for (i = 0; i < NUMERO_DESBLOQ; i++)
+        fprintf(abrirDesbloq, "%c,%s,%i,%i,%i,%i,%i,%i,%i,%i,%i\n", datos[i].block, datos[i].nombre,
+                datos[i].stats.precision, datos[i].stats.ataque, datos[i].stats.defensa, datos[i].stats.velocidad, datos[i].stats.vida,
+                datos[i].objetos[0], datos[i].objetos[1], datos[i].objetos[2], datos[i].objetos[3]);
+    cerrar = fclose(abrirDesbloq);
+    if (cerrar == EOF)
+    {
+        printf("Error al cerrar el fichero.\n");
+        return -1;
+    }
+    return 0;
+}
+
+puntuacion guardarPuntuaciones(puntuacion *puntos)
+{
+    int cerrar;
+    FILE *pf;
+    pf = fopen("puntuacionTotal.csv", "a");
+    if (pf == NULL)
+    {
+        printf("Error al abrir el archivo 'puntuacionTotal.csv'");
+        enter();
+    }
+
+    fprintf(pf, "%s,%i,%i,%i,%i,%i\n", puntos->nombre, puntos->puntuacionTot, puntos->barcosHundidos, puntos->totalDamageOcasionado, puntos->totalDamageRecibido,
+            puntos->victorias);
+
+    cerrar = fclose(pf);
+    if (cerrar == EOF)
+    {
+        printf("Error al cerrar el archivo 'puntuacionTotal.csv'");
+        enter();
+    }
+}
+
+void verPuntuacion(void)
+{
+    int cerrar;
+    FILE *pf;
+    pf = fopen("puntuacionTotal.csv", "r");
+    if (pf == NULL)
+    {
+        printf("Error al abrir el archivo 'puntuacionTotal.csv'");
+        enter();
+    }
+    ///codigo
+    cerrar = fclose(pf);
+    if (cerrar == EOF)
+    {
+        printf("Error al cerrar el archivo 'puntuacionTotal.csv'");
+        enter();
+    }
+}
+
+login sesion(void)
+{
+    login info;
+    int log, flag = 1, cerrar, buffer[5], i = 0;
+    char userBuffer[20], stringBuffer[5000], allUsers[2000][20], *tokens;
+    stringBuffer[0] = '\0';
+    FILE *pf;
+    while (flag != -1)
+    {
+        pf = fopen("puntuacionTotal.csv", "r");
+        if (pf == NULL)
+        {
+            cerrar = fclose(pf);
+            pf = fopen("puntuacionTotal.csv", "w");
+            fprintf(pf, "%s,%i,%i,%i,%i,%i\n", "NULL", 0, 0, 0, 0, 0);
+            cerrar = fclose(pf);
+            if (cerrar == EOF)
+            {
+                printf("Error al cerrar el archivo puntuacionTotal.csv");
+            }
+        }
+        else
+        {
+            while (fscanf(pf, " %[^,],%i,%i,%i,%i,%i\n", userBuffer, &buffer[0], &buffer[1], &buffer[2], &buffer[3], &buffer[4]) != EOF)
+            {
+                strcat(userBuffer, ",");
+                strcat(stringBuffer, userBuffer);
+            }
+        }
+        printf("\nstringBuffer: %s\n", stringBuffer);
+        tokens = strtok(stringBuffer, ",");
+        i = 0;
+        while (tokens != NULL)
+        {
+            strcpy(allUsers[i], tokens);
+            tokens = strtok(NULL, ",");
+            printf("\nallUsers[%i]: %s\n", i, allUsers[i]);
+            i++;
+        }
+
+        cerrar = fclose(pf);
+        if (cerrar == EOF)
+        {
+            printf("Error al cerrar el fichero.");
+            flag = -1;
+        }
+        flag = -1;
+    }
+
+    printf("Selecciona una opción:\n\n(1)Iniciar sesión.\n(2)Registrarse.\n");
+    scanf(" %i", &log);
+    switch (log)
+    {
+    case 1:
+        clearscr();
+        printf("Introduce tu nombre de usuario.\n");//comprobar si está registrado
+        scanf("%s", info.user);
+        printf("Introduce tu contraseña.\n");
+        scanf("%s", info.pass);
+        break;
+    case 2:
+        clearscr();
+        while (flag != -1)
+        {
+            printf("Introduce un nombre de usuario.\n");//comprobar si ya está registrado
+            scanf("%s", info.user);
+            printf("Introduce una contraseña.\n");
+            scanf("%s", info.pass);
+            printf("Introduce de nuevo la contraseña.\n");
+            scanf("%s", info.checkpass);
+            if (strcmp(info.checkpass, info.pass) != 0)
+            {
+                printf("Las contraseñas no coinciden. Vuelve a intentarlo.\n");
+            }
+            else
+            {
+                clearscr();
+                printf("¡Bienvenido, %s!\n", info.user);
+                flag = -1;
+                return info;
+            }
+        }
+    }
 }

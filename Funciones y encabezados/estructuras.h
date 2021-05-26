@@ -3,7 +3,8 @@
 
 typedef struct
 {
-    int numeroAcciones, totalDamageRecibido, totalDamageOcasionado, puntuacionTot, victoria, barcosHundidos;
+    int totalDamageRecibido, totalDamageOcasionado, puntuacionTot, victorias, barcosHundidos;
+    char nombre[20];
 } puntuacion;
 
 typedef struct
@@ -40,6 +41,11 @@ typedef struct
     estadisticas stats;
     int objetos[4];
 } desbloqueables;
+
+typedef struct
+{
+    char user[20], pass[100], checkpass[100];
+} login;
 
 #endif // header guard
 

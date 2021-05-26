@@ -7,7 +7,8 @@
 #include "funcionesSecundarias.h"
 
 
-int Matriz(int sonar) {
+int Matriz(int sonar, puntuacion *puntos)
+{
     int tusbarcdestr = 0;
     int susbarcdestr = 0;
     int contarCoordenadasUSER = 0, contarCoordenadasCPU = 0, victoria = 0, modoBatallaActivado = 0;
@@ -57,7 +58,7 @@ int Matriz(int sonar) {
         {
             contarCoordenadasUSER--;
             modoBatallaActivado = 1;
-            victoria = modoBatalla();
+            victoria = modoBatalla(puntos);
         }
         printf("Barcos destruidos por ti: %d\n", tusbarcdestr);
 
@@ -75,7 +76,7 @@ int Matriz(int sonar) {
         {
             contarCoordenadasCPU--;
             modoBatallaActivado = 1;
-            victoria = modoBatalla();
+            victoria = modoBatalla(puntos);
         }
         printf("Barcos destruidos por CPU: %d\n", susbarcdestr);
     }
@@ -567,7 +568,7 @@ int tucoordenada(int columna, int fila, int son, int tuMatriz[][10], int suMatri
         return 0;
     }
     else if(tuMatriz[fila][columna] == 3) {
-        printf("Has destruido el barco especial\n");
+        printf("Has destruido el barco especial.\n");
         *tusbarcosdestruidos += 1;
         //Entramos aqui en el modo batalla especial entre barcos.
         return 2;

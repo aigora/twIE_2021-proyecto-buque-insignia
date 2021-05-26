@@ -1,7 +1,8 @@
 #ifndef HEADER_C6001551DA4DAD80
 #define HEADER_C6001551DA4DAD80
+#include "estructuras.h"
 
-int Matriz(int x);
+int Matriz(int x, puntuacion *puntos);
 void imprimirMatrizdeBarcos(int matrizBarcos[][10], int fila, int column);
 void rellenarBarco(int tam, int fila, int columna, int direccion, int esEspecial, int matrizBarcos[][10]);
 void rellenarTodosLosBarcos(int matrizBarcos[][10]);

@@ -13,7 +13,7 @@
 #define MULT1 0.5
 #define MULT2 1.25
 
-int modoBatalla()
+int modoBatalla(puntuacion *puntos)
 {
     int i = 0, flag = 0;
     char desbloq, nombre[20];

@@ -40,9 +40,9 @@ typedef struct
 
 typedef struct
 {
-    char usuario[20], nombre[200], block;
+    char nombre[200];
     estadisticas stats;
-    int objetos[4];
+    int objetos[4], puntosNecesarios;
 } desbloqueables;
 
 typedef struct

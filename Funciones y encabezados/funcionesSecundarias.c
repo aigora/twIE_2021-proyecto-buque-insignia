@@ -7,7 +7,7 @@
 #include "estructuras.h"
 #define LONG_PUNTUACION_CSV 6
 #define LONG_BUFFER 100
-#define NUMERO_DESBLOQ 17
+#define MAXPUNTOS 50000
 
 int inicioPrograma(void)
 {
@@ -182,33 +182,30 @@ void clearscr()
 int generarDesbloqueables(void)
 {
     FILE *abrirDesbloq;
-    int i = 0, j = 0, k = 0, cerrar;
-    desbloqueables datos[NUMERO_DESBLOQ];
-    datos[0].block = '·';
-    for (i = 1; i < NUMERO_DESBLOQ; i++)
-        datos[i].block = '!';
+    int i = 0, j = 0, k = 0, cerrar, c = calculoConstanteEcDif(MAXPUNTOS);
+    desbloqueables datos[17];
     char todosLosNombres[2000];
-    int todasLasEstadisticasYObjetos[NUMERO_DESBLOQ][9] =
+    int todasLasEstadisticasYObjetos[17][10] =
     {
-        { 90, 60, 55, 60, 60,0,1,0,1},
-        { 90, 65, 60, 60, 70,1,0,1,0},
-        { 90, 70, 65, 50, 80,1,2,1,1},
-        { 90, 73, 70, 55, 90,2,2,2,1},
-        { 90, 75, 70, 60,100,3,3,3,2},
-        { 95, 80, 70, 65,100,2,3,3,2},
-        { 95, 80, 75, 65,100,2,2,3,4},
-        { 95, 85, 75, 70,100,4,2,2,3},
-        { 95, 85, 80, 70,100,3,4,3,3},
-        { 95, 90, 80, 80,100,4,3,4,3},
-        { 95, 90, 80, 90,100,4,4,3,4},
-        { 95, 90, 85, 75,100,4,4,4,4},
-        { 95, 95, 85, 85,100,4,4,4,4},
-        { 95, 95, 90, 90,100,4,4,4,4},
-        {100, 95, 90, 85,100,4,4,4,4},
-        {100, 95,100, 95,100,4,4,4,4},
-        {100,100,100,100,100,4,4,4,4},
+        { 90, 60, 55, 60, 60,0,1,0,1,calculoEcDif(0, c)},
+        { 90, 65, 60, 60, 70,1,0,1,0,calculoEcDif(1, c)},
+        { 90, 70, 65, 50, 80,1,2,1,1,calculoEcDif(2, c)},
+        { 90, 73, 70, 55, 90,2,2,2,1,calculoEcDif(3, c)},
+        { 90, 75, 70, 60,100,3,3,3,2,calculoEcDif(4, c)},
+        { 95, 80, 70, 65,100,2,3,3,2,calculoEcDif(5, c)},
+        { 95, 80, 75, 65,100,2,2,3,4,calculoEcDif(6, c)},
+        { 95, 85, 75, 70,100,4,2,2,3,calculoEcDif(7, c)},
+        { 95, 85, 80, 70,100,3,4,3,3,calculoEcDif(8, c)},
+        { 95, 90, 80, 80,100,4,3,4,3,calculoEcDif(9, c)},
+        { 95, 90, 80, 90,100,4,4,3,4,calculoEcDif(10, c)},
+        { 95, 90, 85, 75,100,4,4,4,4,calculoEcDif(11, c)},
+        { 95, 95, 85, 85,100,4,4,4,4,calculoEcDif(12, c)},
+        { 95, 95, 90, 90,100,4,4,4,4,calculoEcDif(13, c)},
+        {100, 95, 90, 85,100,4,4,4,4,calculoEcDif(14, c)},
+        {100, 95,100, 95,100,4,4,4,4,calculoEcDif(15, c)},
+        {100,100,100,100,100,4,4,4,4,calculoEcDif(16, c)},
     };
-    for (i = 0; i < NUMERO_DESBLOQ; i++)
+    for (i = 0; i < 17; i++)
     {
         datos[i].stats.precision = todasLasEstadisticasYObjetos[i][0];
         datos[i].stats.ataque    = todasLasEstadisticasYObjetos[i][1];
@@ -234,10 +231,10 @@ Comandante,Teniente Coronel,Coronel,General de Brigada,General de División,Almir
         printf("Error al abrir el fichero.\n");
         return -1;
     }
-    for (i = 0; i < NUMERO_DESBLOQ; i++)
-        fprintf(abrirDesbloq, "%c,%s,%i,%i,%i,%i,%i,%i,%i,%i,%i\n", datos[i].block, datos[i].nombre,
+    for (i = 0; i < 17; i++)
+        fprintf(abrirDesbloq, "%s,%i,%i,%i,%i,%i,%i,%i,%i,%i,%i\n", datos[i].nombre,
                 datos[i].stats.precision, datos[i].stats.ataque, datos[i].stats.defensa, datos[i].stats.velocidad, datos[i].stats.vida,
-                datos[i].objetos[0], datos[i].objetos[1], datos[i].objetos[2], datos[i].objetos[3]);
+                datos[i].objetos[0], datos[i].objetos[1], datos[i].objetos[2], datos[i].objetos[3], datos[i].puntosNecesarios);
     cerrar = fclose(abrirDesbloq);
     if (cerrar == EOF)
     {
@@ -507,4 +504,16 @@ login sesion(void)
         }
     }
     return info;
+}
+
+float calculoEcDif(int nivel, int k)
+{//recordar que la ecuación diferencial es y' = 2y -> integral(y' / 2y)dx = integral dx -> ln(y) / 2 = x + C -> y = x^2 + 2Cx + K (ignorada)
+    k = calculoConstanteEcDif(MAXPUNTOS);
+    return nivel*nivel + 2*k*nivel;
+}
+
+float calculoConstanteEcDif(int maxPuntos)
+{   //recordar que la ecuación diferencial es y' = 2y -> integral(y' / 2y)dx = integral dx -> ln(y) / 2 = x + C
+    //Luego, despejar C según el valor inicial maxPuntos, y el máximo de la variable x, x = 16 distintos rangos disponibles
+    return (maxPuntos - 16*16) / (16*2);
 }

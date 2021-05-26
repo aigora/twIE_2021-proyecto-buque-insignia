@@ -14,6 +14,8 @@ int generarDesbloqueables(void);
 void guardarPuntuaciones(puntuacion *puntos);
 void verPuntuacion(void);
 login sesion(void);
+float calculoConstanteEcDif(int maxPuntos);
+float calculoEcDif(int nivel, int k);
 
 #endif // header guard
 

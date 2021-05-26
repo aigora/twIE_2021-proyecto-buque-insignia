@@ -7,20 +7,22 @@
 #include "funcionesModoBatalla.h"
 
 //Esquema desbloqueables.csv:
-//d (desbloqueado) ó b (bloqueado),Nombre del barco,Precisión,Ataque,Defensa,Velocidad,Vida,Obj1,Obj2,Obj3,Obj4
+//Usuario,bloqueo,Nombre del barco,Precisión,Ataque,Defensa,Velocidad,Vida,Obj1,Obj2,Obj3,Obj4
 
 int start(int condicion, int victoria, char volver[6], const char atras[6], puntuacion *puntos);
 
 int main()
 {
+    login registro;
     puntuacion puntuacionTotal, *puntos;
     puntos = &puntuacionTotal;
     srand(time(NULL));
     char volver[6];
     const char atras[6] = "atras";
     int condicion = 0, inicio = 1, victoria = 0;
-    sesion();
-
+    registro = sesion();
+    strcpy(puntuacionTotal.nombre, registro.user);
+    //printf("Tu nombre: %s\n", puntos->nombre);
     while (inicio != 0)
         inicio = start(condicion, victoria, volver, atras, puntos);
     return 0;
@@ -49,19 +51,19 @@ int start(int condicion, int victoria, char volver[6], const char atras[6], punt
     clearscr();
     while (strcmp(volver, atras) != 0)
     {
-        printf("\033[2J");
+        clearscr();
         printf("\n");
         condicion = inicioPrograma();
         switch (condicion)
         {
         case 1:
-            printf("\033[2J");
+            clearscr();
             printf("Has seleccionado personalizar barco.\n");
             scanf("%s", volver);
             break;
 
         case 2:
-            printf("\033[2J");
+            clearscr();
             printf("Has seleccionado Jugar.\n");
             exit = jugar(puntos);
             guardarPuntuaciones(puntos);

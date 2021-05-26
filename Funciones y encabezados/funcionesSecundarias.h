@@ -11,7 +11,9 @@ float random1(int randseed);
 int enter(void);
 void clearscr(void);
 int generarDesbloqueables(void);
-puntuacion guardarPuntuaciones(puntuacion *puntos);
+void guardarPuntuaciones(puntuacion *puntos);
+void verPuntuacion(void);
+login sesion(void);
 
 #endif // header guard
 

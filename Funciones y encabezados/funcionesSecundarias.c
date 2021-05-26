@@ -5,7 +5,7 @@
 #include "funcionesSecundarias.h"
 #include "Matriz.h"
 #include "estructuras.h"
-#define LONG_PUNTUACION_CSV 7
+#define LONG_PUNTUACION_CSV 6
 #define LONG_BUFFER 100
 #define NUMERO_DESBLOQ 17
 
@@ -102,8 +102,8 @@ int puntuaciones(char dato)
         }
     }
 
-    sscanf(data, "%[^,],%i,%i,%i,%i,%i,%i,%i", nombre, &leerPuntuacion[0], &leerPuntuacion[1], &leerPuntuacion[2], &leerPuntuacion[3],
-                       &leerPuntuacion[4], &leerPuntuacion[5], &leerPuntuacion[6]);
+    sscanf(data, "%[^,],%i,%i,%i,%i,%i,%i", nombre, &leerPuntuacion[0], &leerPuntuacion[1], &leerPuntuacion[2], &leerPuntuacion[3],
+                       &leerPuntuacion[4], &leerPuntuacion[5]);
 
     cerrar = fclose(abrirPuntuacion);
     if (cerrar == EOF) {
@@ -122,20 +122,17 @@ int puntuaciones(char dato)
     case 'p'://puntuacion total
         solucion = leerPuntuacion[1];
         break;
-    case 'm':
-        solucion = leerPuntuacion[2];
-        break;
-    case 'd':
-        solucion = leerPuntuacion[3];
-        break;
-    case 'o':
+    case 'd'://total daño recibido
         solucion = leerPuntuacion[4];
         break;
-    case 'h':
-        solucion = leerPuntuacion[5];
+    case 'o'://total daño ocasionado
+        solucion = leerPuntuacion[3];
+        break;
+    case 'h'://total barcos hundidos
+        solucion = leerPuntuacion[2];
         break;
     case 'v'://victorias
-        solucion = leerPuntuacion[6];
+        solucion = leerPuntuacion[5];
         break;
     }
     return solucion;
@@ -250,7 +247,7 @@ Comandante,Teniente Coronel,Coronel,General de Brigada,General de División,Almir
     return 0;
 }
 
-puntuacion guardarPuntuaciones(puntuacion *puntos)
+void guardarPuntuaciones(puntuacion *puntos)
 {
     int cerrar;
     FILE *pf;
@@ -261,7 +258,7 @@ puntuacion guardarPuntuaciones(puntuacion *puntos)
         enter();
     }
 
-    fprintf(pf, "%s,%i,%i,%i,%i,%i\n", puntos->nombre, puntos->puntuacionTot, puntos->barcosHundidos, puntos->totalDamageOcasionado, puntos->totalDamageRecibido,
+    fprintf(pf, "%s,%i,%i,%i,%i,%i,%i\n", puntos->nombre, puntos->totalPartidas, puntos->puntuacionTot, puntos->barcosHundidos, puntos->totalDamageOcasionado, puntos->totalDamageRecibido,
             puntos->victorias);
 
     cerrar = fclose(pf);
@@ -274,28 +271,62 @@ puntuacion guardarPuntuaciones(puntuacion *puntos)
 
 void verPuntuacion(void)
 {
-    int cerrar;
+    int cerrar, datos[6], i, confirm, exit = 0, escape;
+    char users[2000][20], userbuffer[2000], userinput[20];
     FILE *pf;
-    pf = fopen("puntuacionTotal.csv", "r");
-    if (pf == NULL)
+    escape = 0;
+    while (escape != 1)
     {
-        printf("Error al abrir el archivo 'puntuacionTotal.csv'");
-        enter();
-    }
-    ///codigo
-    cerrar = fclose(pf);
-    if (cerrar == EOF)
-    {
-        printf("Error al cerrar el archivo 'puntuacionTotal.csv'");
-        enter();
+        pf = fopen("puntuacionTotal.csv", "r");
+        if (pf == NULL)
+        {
+            printf("Error al abrir el archivo 'puntuacionTotal.csv'");
+            enter();
+        }
+        clearscr();
+        printf("Introduce el nombre del usuario del que deseas ver las puntuaciones.\n");
+        scanf(" %s", userinput);
+        i = 0;
+        confirm = 1;
+        while (fgets(userbuffer, 2000, pf) != NULL)
+        {
+            sscanf(userbuffer, "%[^,],%i,%i,%i,%i,%i,%i\n", users[i], &datos[0], &datos[1], &datos[2], &datos[3], &datos[4], &datos[5]);
+            confirm = strcmp(users[i], userinput);
+            if (confirm == 0 && exit == 0)
+            {
+                clearscr();
+                printf("Leyenda:\nPJ -> Partidas jugadas\nPG -> Partidas ganadas\nTH -> Total de barcos hundidos\nDO -> Daño ocasionado en el Modo de Batalla\n\
+DR -> Daño recibido en el Modo de Batalla\nPT -> Puntuación total\n\nFicha de puntuaciones para el usuario %s:\nPJ\tPG\tTH\tDO\tDR\tPT\n", userinput);
+                exit++;
+            }
+            if (confirm == 0)
+                printf("%i\t%i\t%i\t%i\t%i\t%i\n", datos[0], datos[5], datos[2], datos[3], datos[4], datos[1]);
+            i++;
+        }
+        if (exit == 0)
+        {
+            printf("El usuario indicado no está registrado o no ha jugado ninguna partida.\n");
+            enter();
+        }
+        else
+        {
+            cerrar = fclose(pf);
+            if (cerrar == EOF)
+            {
+                printf("Error al cerrar el archivo 'puntuacionTotal.csv'");
+                enter();
+            }
+            enter();
+            escape = 1;
+        }
     }
 }
 
 login sesion(void)
 {
     login info;
-    int log, flag = 1, cerrar, buffer[5], i = 0, check = 2;
-    char userBuffer[20], stringBuffer[5000], allUsers[2000][20], *tokens;
+    int log, flag = 1, cerrar, buffer[5], i = 0, j = 0, check = 2, exit = 0, checkcount;
+    char userBuffer[20], stringBuffer[6000], allUsers[2000][20], allPasses[2000][20], *tokens, provpass[20];
     stringBuffer[0] = '\0';
     FILE *pf, *pflog;
     while (flag != -1)
@@ -338,7 +369,14 @@ login sesion(void)
             }
             else
             {
-                fscanf(pflog, "%[^,],%[^\n]", info.user, info.pass);
+                i = 0;
+                while (fgets(stringBuffer, 6000, pflog) != NULL && i < 2000)
+                {
+                    sscanf(stringBuffer, "%[^,],%[^\n]", allUsers[i], allPasses[i]);
+                    printf("%s,%s\n", allUsers[i], allPasses[i]);
+                    i++;
+                }
+                j = i;
                 cerrar = fclose(pflog);
                 if (cerrar == EOF)
                 {
@@ -357,56 +395,114 @@ login sesion(void)
         flag = -1;
     }
 
-    printf("Selecciona una opción:\n\n(1)Iniciar sesión.\n(2)Registrarse.\n");
-    scanf(" %i", &log);
-    switch (log)
+    while (exit != 1)
     {
-    case 1:
         clearscr();
-        printf("Introduce tu nombre de usuario.\n");//comprobar si está registrado
-        scanf("%s", info.user);
-        for (i = 0; i < 2000; i++)
-            check = strcmp(allUsers[i], info.user);
-        if (check != 0)
+        printf("Selecciona una opción:\n\n(1)Iniciar sesión.\n(2)Registrarse.\n");
+        scanf(" %i", &log);
+        switch (log)
         {
-            printf("El usuario indicado no está registrado.\n");
-            enter();
-        }
-        else
-        {
-            printf("Introduce tu contraseña.\n");
-            scanf("%s", info.pass);
-            flag = -1;
-        }
-        break;
-    case 2:
-        clearscr();
-        while (flag != -1)
-        {
-            printf("Introduce un nombre de usuario.\n");//comprobar si ya está registrado
+        case 1:
+            clearscr();
+            printf("Introduce tu nombre de usuario.\n");
             scanf("%s", info.user);
-            printf("Introduce una contraseña.\n");
-            scanf("%s", info.pass);
-            printf("Introduce de nuevo la contraseña.\n");
-            scanf("%s", info.checkpass);
-            if (strcmp(info.checkpass, info.pass) != 0)
+            checkcount = 0;
+            for (i = 0; i < j; i++)
             {
-                printf("Las contraseñas no coinciden. Vuelve a intentarlo.\n");
+                check = strcmp(allUsers[i], info.user);
+                if (check == 0)
+                {
+                    strcpy(info.checkpass, allPasses[i]);
+                    checkcount++;
+                }
+            }
+            if (checkcount == 0)
+            {
+                printf("El usuario indicado no está registrado.\n");
+                enter();
             }
             else
             {
-                clearscr();
-                tokens = strtok(stringBuffer, ",");
+                printf("Introduce tu contraseña.\n");
                 i = 0;
-                while (tokens != NULL)
+                do
                 {
-                    strcpy(allUsers[i], tokens);
-                    tokens = strtok(NULL, ",");
-                    fprintf("allUsers[%i]: %s\n", i, allUsers[i]);
+                    provpass[i] = getch();
+                    if (provpass[i] != '\r')
+                        printf("*");
                     i++;
                 }
-                printf("¡Bienvenido, %s!\n", info.user);
-                flag = -1;
+                while(provpass[i - 1] != '\r');
+                for (i = 0; i < strlen(provpass) - 1; i++)
+                    info.pass[i] = provpass[i];
+                printf("\n");
+
+                if (strcmp(info.pass, info.checkpass) == 0)
+                {
+                    printf("¡Bienvenido, %s!", info.user);
+                    enter();
+                    return info;
+                }
+                else
+                {
+                    printf("Contraseña incorrecta. Vuelve a intentarlo.\n");
+                    enter();
+                }
+            }
+            break;
+        case 2:
+            clearscr();
+            flag = 0;
+            while (flag != -1)
+            {
+                printf("Introduce un nombre de usuario.\n");
+                scanf("%s", info.user);
+                checkcount = 0;
+                for (i = 0; i < 2000; i++)
+                {
+                    check = strcmp(allUsers[i], info.user);
+                    if (check == 0)
+                        checkcount++;
+                }
+                if (checkcount != 0)
+                {
+                    printf("El usuario ya está registrado.\n");
+                    enter();
+                }
+                else
+                {
+                    printf("Introduce una contraseña.\n");
+                    scanf("%s", info.pass);
+                    printf("Introduce de nuevo la contraseña.\n");
+                    scanf("%s", info.checkpass);
+                    if (strcmp(info.checkpass, info.pass) != 0)
+                    {
+                        printf("Las contraseñas no coinciden. Vuelve a intentarlo.\n");
+                        enter();
+                    }
+                    else
+                    {
+                        clearscr();
+                        pflog = fopen("registro.csv", "a");
+                        if (pflog == NULL)
+                        {
+                            printf("Error al abrir el fichero.");
+                            enter();
+                            return info;
+                        }
+                        fprintf(pflog, "%s,%s\n", info.user, info.pass);
+                        cerrar = fclose(pflog);
+                        if (cerrar == EOF)
+                        {
+                            printf("Error al cerrar el fichero.");
+                            enter();
+                            return info;
+                        }
+                        printf("Usuario guardado.\n¡Bienvenido, %s!\n", info.user);
+                        enter();
+                        return info;
+                    }
+                }
             }
         }
     }

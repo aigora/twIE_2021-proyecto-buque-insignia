@@ -3,7 +3,10 @@
 
 typedef struct
 {
-    int totalDamageRecibido, totalDamageOcasionado, puntuacionTot, victorias, barcosHundidos, totalPartidas;
+    int totalDamageRecibido,
+    totalDamageOcasionado,
+    puntuacionTot, victorias,
+    barcosHundidos, totalPartidas;
     char nombre[20];
 } puntuacion;
 
@@ -37,7 +40,7 @@ typedef struct
 
 typedef struct
 {
-    char nombre[200], block;
+    char usuario[20], nombre[200], block;
     estadisticas stats;
     int objetos[4];
 } desbloqueables;

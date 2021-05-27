@@ -8,9 +8,9 @@ void rellenarBarco(int tam, int fila, int columna, int direccion, int esEspecial
 void rellenarTodosLosBarcos(int matrizBarcos[][10]);
 int comprobarCabeBarco(int tam, int fila, int columna, int direccion, int matrizBarcos[][10]);
 int sucoordenada(int fi, int co, int SuMatriz[][10], int TuMatriz[][10], int *susbarcosdestruidos);
-int tucoordenada(int columna, int fila, int son, int tuMatriz[][10], int suMatriz[][10], int *tusbarcosdestruidos);
+int tucoordenada(int columna, int fila, int son, int tuMatriz[][10], int suMatriz[][10], int *tusbarcosdestruidos, puntuacion *puntos);
 int traducirletra(char letra);
-void ganador(int tu, int cpu);
+void ganador(int tu, int cpu, puntuacion *puntos);
 int randomnum(int j);
 #endif // header guard
 

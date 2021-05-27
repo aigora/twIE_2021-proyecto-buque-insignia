@@ -21,7 +21,7 @@ int Matriz(int sonar, puntuacion *puntos)
     //imprimirMatrizdeBarcos(misBarcos, 10, 10);
 
     rellenarTodosLosBarcos(cpuBarcos);
-    //imprimirMatrizdeBarcos(cpuBarcos, 10, 10);
+    imprimirMatrizdeBarcos(cpuBarcos, 10, 10);
 
 
     while(tusbarcdestr<9 && susbarcdestr<9)
@@ -53,7 +53,7 @@ int Matriz(int sonar, puntuacion *puntos)
             }
             }
 
-        contarCoordenadasUSER = tucoordenada(columna, numero, sonar, misbarcosrellenos, cpuBarcos, &tusbarcdestr);
+        contarCoordenadasUSER = tucoordenada(columna, numero, sonar, misbarcosrellenos, cpuBarcos, &tusbarcdestr, puntos);
         if (contarCoordenadasUSER == 2 && modoBatallaActivado == 0)
         {
             contarCoordenadasUSER--;
@@ -64,11 +64,15 @@ int Matriz(int sonar, puntuacion *puntos)
 
         printf("\n\nCPU TURNO.\n");
         //int z = 9;
-        int y = rand() %10;
-        int x = rand() %10;
+        int y = random(10);
+        while(y>9){y = random(10);}
+        int x = random(10);
+        while(x>9){x = random(10);}
         while (susbarcosrellenos[x][y]>0){
-            y = rand() %10;
-            x = rand() %10;
+            y = random(10);
+            while(y>9){y = random(10);}
+            x = random(10);
+            while(x>9){x = random(10);}
         }
 
         contarCoordenadasCPU = sucoordenada(x, y, susbarcosrellenos, misBarcos, &susbarcdestr);
@@ -80,7 +84,7 @@ int Matriz(int sonar, puntuacion *puntos)
         }
         printf("Barcos destruidos por CPU: %d\n", susbarcdestr);
     }
-    ganador(tusbarcdestr,susbarcdestr);
+    ganador(tusbarcdestr,susbarcdestr, puntos);
     printf("Estos han sido tus resultados\n");
     imprimirMatrizdeBarcos(misbarcosrellenos, 10, 10);
     printf("Estos han sido sus resultados\n");
@@ -164,9 +168,12 @@ void rellenarTodosLosBarcos(int matrizBarcos[][10]){
     //Introducir barco de 4
     while (1 == 1){
 
-        int direccion = rand() %2;
-        int fila = rand() %10;
-        int columna = rand() %10;
+        int direccion = random(2);
+        while(direccion>1){direccion = random(2);}
+        int fila = random(10);
+        while(fila>9){fila = random(10);}
+        int columna = random(10);
+        while(columna>9){columna = random(10);}
         int resultado = comprobarCabeBarco(4, fila, columna, direccion, matrizBarcos);
         if (resultado == 1) {
             rellenarBarco(4, fila, columna, direccion, 0, matrizBarcos);
@@ -176,9 +183,12 @@ void rellenarTodosLosBarcos(int matrizBarcos[][10]){
     //Introducir barco de 3
     for (int i=0; i<3; i++) {
         while (1==1){
-            int direccion = rand() %2;
-            int fila = rand() %10;
-            int columna = rand() %10;
+            int direccion = random(2);
+            while(direccion>1){direccion = random(2);}
+            int fila = random(10);
+            while(fila>9){fila = random(10);}
+            int columna = random(10);
+            while(columna>9){columna = random(10);}
             int resultado = comprobarCabeBarco(3, fila, columna, direccion, matrizBarcos);
             if (resultado == 1) {
                 rellenarBarco(3, fila, columna, direccion, 0, matrizBarcos);
@@ -189,9 +199,12 @@ void rellenarTodosLosBarcos(int matrizBarcos[][10]){
     //Introducir barco de 2
     for (int i=0; i<3; i++) {
         while (1==1){
-            int direccion = rand() %2;
-            int fila = rand() %10;
-            int columna = rand() %10;
+            int direccion = random(2);
+            while(direccion>1){direccion = random(2);}
+            int fila = random(10);
+            while(fila>9){fila = random(10);}
+            int columna = random(10);
+            while(columna>9){columna = random(10);}
             int resultado = comprobarCabeBarco(2, fila, columna, direccion, matrizBarcos);
             if (resultado == 1) {
                 rellenarBarco(2, fila, columna, direccion, 0, matrizBarcos);
@@ -201,9 +214,12 @@ void rellenarTodosLosBarcos(int matrizBarcos[][10]){
     }
     //Introducir barco de 1
     while (1==1){
-        int direccion = rand() %2;
-        int fila = rand() %10;
-        int columna = rand() %10;
+        int direccion = random(2);
+        while(direccion>1){direccion = random(2);}
+        int fila = random(10);
+        while(fila>9){fila = random(10);}
+        int columna = random(10);
+        while(columna>9){columna = random(10);}
         int resultado = comprobarCabeBarco(1, fila, columna, direccion, matrizBarcos);
         if (resultado == 1) {
             rellenarBarco(1, fila, columna, direccion, 0, matrizBarcos);
@@ -212,9 +228,12 @@ void rellenarTodosLosBarcos(int matrizBarcos[][10]){
     }
     //Introducir barco de 1 especial
     while (1==1){
-        int direccion = rand() %2;
-        int fila = rand() %10;
-        int columna = rand() %10;
+        int direccion = random(2);
+        while(direccion>1){direccion = random(2);}
+        int fila = random(10);
+        while(fila>9){fila = random(10);}
+        int columna = random(10);
+        while(columna>9){columna = random(10);}
         int resultado = comprobarCabeBarco(1, fila, columna, direccion, matrizBarcos);
         if (resultado == 1) {
             rellenarBarco(1, fila, columna, direccion, 1, matrizBarcos);
@@ -306,6 +325,7 @@ int sucoordenada(int fi, int co, int SuMatriz[][10], int TuMatriz[][10], int *su
     if(SuMatriz[fi][co] == 1){
         printf("Te han dado a un barco, este es su resultado:\n");
         int contar = 0;
+        int contarb = 1;
         for(int i=-1; i<3; i++){
                 for(int j=-1; j<3; j++){
                     int filanue = fi + i;
@@ -322,14 +342,14 @@ int sucoordenada(int fi, int co, int SuMatriz[][10], int TuMatriz[][10], int *su
             }
         if(contar == 1)
         {
-            printf("Te han destruido un barco\n");
+            printf("Te han destruido un barco de dimension 1.\n");
             *susbarcosdestruidos += 1;
         }
         else {
             contar = 0;
             if(TuMatriz[fi][co+1]==1||TuMatriz[fi][co-1]==1)
                 {
-                    for(int i=0; i<4;i++)
+                    for(int i=1; i<4;i++)
                     {
                         int columnanue = co + i;
                         if (fi <0 || fi > 9 || columnanue <0 || columnanue >9) {
@@ -337,7 +357,8 @@ int sucoordenada(int fi, int co, int SuMatriz[][10], int TuMatriz[][10], int *su
                             continue;
                         }
                         if (SuMatriz[fi][columnanue]==1 && TuMatriz[fi][columnanue]==1)
-                            {continue;}
+                            {contarb+=1;
+                            continue;}
                         if (TuMatriz[fi][columnanue]==2 && SuMatriz[fi][columnanue]==0)
                             {break;}
                         if (SuMatriz[fi][columnanue]==2)
@@ -345,7 +366,7 @@ int sucoordenada(int fi, int co, int SuMatriz[][10], int TuMatriz[][10], int *su
                         contar++;
                     }
 
-                    for(int i=0; i<4;i++)
+                    for(int i=1; i<4;i++)
                     {
                         int columnanue = co - i;
                         if (fi <0 || fi > 9 || columnanue <0 || columnanue >9) {
@@ -353,7 +374,8 @@ int sucoordenada(int fi, int co, int SuMatriz[][10], int TuMatriz[][10], int *su
                             continue;
                         }
                         if (SuMatriz[fi][columnanue]==1 && TuMatriz[fi][columnanue]==1)
-                            {continue;}
+                            {contarb+=1;
+                            continue;}
                         if (TuMatriz[fi][columnanue]==2 && SuMatriz[fi][columnanue]==0)
                             {break;}
                         if (SuMatriz[fi][columnanue]==2)
@@ -362,7 +384,7 @@ int sucoordenada(int fi, int co, int SuMatriz[][10], int TuMatriz[][10], int *su
                     }
             }else{if(TuMatriz[fi+1][co]==1||TuMatriz[fi-1][co]==1)
             {
-                for(int i=0; i<4;i++)
+                for(int i=1; i<4;i++)
                     {
                         int filanue = fi + i;
                         if (filanue <0 || filanue > 9 || co <0 || co >9) {
@@ -370,7 +392,8 @@ int sucoordenada(int fi, int co, int SuMatriz[][10], int TuMatriz[][10], int *su
                             continue;
                         }
                         if (SuMatriz[filanue][co]==1 && TuMatriz[filanue][co]==1)
-                            {continue;}
+                            {contarb+=1;
+                            continue;}
                         if (TuMatriz[filanue][co]==2 && SuMatriz[filanue][co]==0)
                             {break;}
                         if (SuMatriz[filanue][co]==2)
@@ -378,7 +401,7 @@ int sucoordenada(int fi, int co, int SuMatriz[][10], int TuMatriz[][10], int *su
                         contar++;
                     }
 
-                for(int i=0; i<4;i++)
+                for(int i=1; i<4;i++)
                     {
                         int filanue = fi - i;
                         if (filanue <0 || filanue > 9 || co <0 || co >9) {
@@ -386,7 +409,8 @@ int sucoordenada(int fi, int co, int SuMatriz[][10], int TuMatriz[][10], int *su
                             continue;
                         }
                         if (SuMatriz[filanue][co]==1 && TuMatriz[filanue][co]==1)
-                            {continue;}
+                            {contarb+=1;
+                            continue;}
                         if (TuMatriz[filanue][co]==2 && SuMatriz[filanue][co]==0)
                             {break;}
                         if (SuMatriz[filanue][co]==2)
@@ -398,7 +422,7 @@ int sucoordenada(int fi, int co, int SuMatriz[][10], int TuMatriz[][10], int *su
         }
         if(contar == 0)
         {
-            printf("Te han destruido un barco.\n");
+            printf("Te han destruido un barco de dimension %i.\n", contarb);
             *susbarcosdestruidos += 1;
         }
         imprimirMatrizdeBarcos(SuMatriz, 10, 10);
@@ -410,18 +434,19 @@ int sucoordenada(int fi, int co, int SuMatriz[][10], int TuMatriz[][10], int *su
         return 0;
     }
     else if(SuMatriz[fi][co] == 3) {
-        printf("Te han dado al barco especial, este es su resultado:\n");
+        printf("Te han dado al barco especial de dimension 1, este es su resultado:\n");
         imprimirMatrizdeBarcos(SuMatriz, 10, 10);
         //Entramos aqui en el modo batalla especial entre barcos.
         return 2;
     }
 }
 
-int tucoordenada(int columna, int fila, int son, int tuMatriz[][10], int suMatriz[][10], int *tusbarcosdestruidos)
+int tucoordenada(int columna, int fila, int son, int tuMatriz[][10], int suMatriz[][10], int *tusbarcosdestruidos, puntuacion *puntos)
 {
     tuMatriz[fila][columna] = suMatriz[fila][columna];
     if(tuMatriz[fila][columna] == 1){
         int contar = 0;
+        int contarb = 1;
         printf("Has dado a un barco\n");
         for(int i=-1; i<3; i++){
                 for(int j=-1; j<3; j++){
@@ -439,14 +464,16 @@ int tucoordenada(int columna, int fila, int son, int tuMatriz[][10], int suMatri
             }
         if(contar == 1)
         {
-            printf("Has destruido un barco\n");
+            printf("Has destruido un barco de dimension 1.\n");
+            puntos->barcosHundidos +=1;
+            puntos->puntuacionTot += 100;
             *tusbarcosdestruidos +=1;
         }
         else {
             contar = 0;
             if(suMatriz[fila][columna+1]==1||suMatriz[fila][columna-1]==1)
                 {
-                    for(int i=0; i<4;i++)
+                    for(int i=1; i<4;i++)
                     {
                         int columnanue = columna + i;
                         if (fila <0 || fila > 9 || columnanue <0 || columnanue >9) {
@@ -454,7 +481,9 @@ int tucoordenada(int columna, int fila, int son, int tuMatriz[][10], int suMatri
                             continue;
                         }
                         if (suMatriz[fila][columnanue]==1 && tuMatriz[fila][columnanue]==1)
-                            {continue;}
+                            {
+                            contarb++;
+                            continue;}
                         if (suMatriz[fila][columnanue]==2 && tuMatriz[fila][columnanue]==0)
                             {break;}
                         if (tuMatriz[fila][columnanue]==2)
@@ -462,7 +491,7 @@ int tucoordenada(int columna, int fila, int son, int tuMatriz[][10], int suMatri
                         contar++;
                     }
 
-                    for(int i=0; i<4;i++)
+                    for(int i=1; i<4;i++)
                     {
                         int columnanue = columna - i;
                         if (fila <0 || fila > 9 || columnanue <0 || columnanue >9) {
@@ -470,7 +499,9 @@ int tucoordenada(int columna, int fila, int son, int tuMatriz[][10], int suMatri
                             continue;
                         }
                         if (suMatriz[fila][columnanue]==1 && tuMatriz[fila][columnanue]==1)
-                            {continue;}
+                            {
+                            contarb++;
+                            continue;}
                         if (suMatriz[fila][columnanue]==2 && tuMatriz[fila][columnanue]==0)
                             {break;}
                         if (tuMatriz[fila][columnanue]==2)
@@ -481,7 +512,7 @@ int tucoordenada(int columna, int fila, int son, int tuMatriz[][10], int suMatri
                 }
             else{if(suMatriz[fila+1][columna]==1||suMatriz[fila-1][columna]==1)
             {
-                for(int i=0;i<4;i++)
+                for(int i=1;i<4;i++)
                     {
                         int filanue = fila + i;
                         if (filanue <0 || filanue > 9 || columna <0 || columna >9) {
@@ -489,7 +520,9 @@ int tucoordenada(int columna, int fila, int son, int tuMatriz[][10], int suMatri
                             continue;
                         }
                         if (suMatriz[filanue][columna]==1 && tuMatriz[filanue][columna]==1)
-                            {continue;}
+                            {
+                            contarb++;
+                            continue;}
                         if (suMatriz[filanue][columna]==2 && tuMatriz[filanue][columna]==0)
                             {break;}
                         if (tuMatriz[filanue][columna]==2)
@@ -497,7 +530,7 @@ int tucoordenada(int columna, int fila, int son, int tuMatriz[][10], int suMatri
                         contar++;
                     }
 
-                for(int i=0; i<4;i++)
+                for(int i=1; i<4;i++)
                     {
                         int filanue = fila - i;
                         if (filanue <0 || filanue > 9 || columna <0 || columna >9) {
@@ -505,7 +538,9 @@ int tucoordenada(int columna, int fila, int son, int tuMatriz[][10], int suMatri
                             continue;
                         }
                         if (suMatriz[filanue][columna]==1 && tuMatriz[filanue][columna]==1)
-                            {continue;}
+                            {
+                            contarb++;
+                            continue;}
                         if (suMatriz[filanue][columna]==2 && tuMatriz[filanue][columna]==0)
                             {break;}
                         if (tuMatriz[filanue][columna]==2)
@@ -517,8 +552,23 @@ int tucoordenada(int columna, int fila, int son, int tuMatriz[][10], int suMatri
         }
         if(contar == 0)
         {
-            printf("Has destruido un barco.\n");
-            *tusbarcosdestruidos += 1;
+            printf("Has destruido un barco de dimension %i.\n", contarb);
+            puntos->barcosHundidos += 1;
+            *tusbarcosdestruidos +=1;
+            switch(contarb)
+            {
+            case 4:
+                puntos->puntuacionTot += 400;
+                break;
+            case 3:
+                puntos->puntuacionTot += 300;
+                break;
+            case 2:
+                puntos->puntuacionTot += 200;
+                break;
+            default:
+                break;
+            }
         }
         return 1;
     }
@@ -568,27 +618,15 @@ int tucoordenada(int columna, int fila, int son, int tuMatriz[][10], int suMatri
         return 0;
     }
     else if(tuMatriz[fila][columna] == 3) {
-        printf("Has destruido el barco especial.\n");
+        printf("Has destruido el barco especial de dimension 1.\n");
+        puntos->barcosHundidos += 1;
+        puntos->puntuacionTot += 800;
         *tusbarcosdestruidos += 1;
         //Entramos aqui en el modo batalla especial entre barcos.
         return 2;
     }
 }
-/*int randomnum(int j)
-{
-    float n[1000];
-    int res;
-    for (int i = 0; i < 10; i++)
-    {
-        n[i] = rand() % 1000 * 0.01;
-        while(n[i]>j)
-            n[i] = rand() % 1000 * 0.01;
-    }
-    res = (int)n[j];
-    printf("%i\n", res);
-    return res;
-}
-*/
+
 int traducirletra(char letra){
     switch(letra)
     {
@@ -628,7 +666,7 @@ int traducirletra(char letra){
     }
 }
 
-void ganador(int tu, int cpu)
+void ganador(int tu, int cpu, puntuacion *puntos)
 {
     printf ("Se acabo la partida.\n");
     if(tu<cpu)
@@ -636,7 +674,8 @@ void ganador(int tu, int cpu)
         printf("El ganador es la cpu.\n");
     }
     else
-        {printf("El ganador has sido tu.\n");}
+        {printf("El ganador has sido tu.\n");
+        puntos->victorias +=1;}
     printf("Tu has acertado %d barcos y la cpu ha acertado %d barcos.\n", tu, cpu);
 }
 

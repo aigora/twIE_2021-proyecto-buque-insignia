@@ -51,47 +51,6 @@ int modoBatalla(puntuacion *puntos)
     ///DEBUG
 
     ///Leer y abrir fichero
-    FILE *abrirEstadisticas, *abrirDesbloq;
-    abrirEstadisticas = fopen("estadisticas.csv", "r");
-    abrirDesbloq      = fopen("desbloqueables.csv", "r");
-    if (abrirEstadisticas == NULL)
-    {
-        flag = 1;
-    }
-    else
-        principal.cerrar = fclose(abrirEstadisticas);
-    if (principal.cerrar == EOF)
-    {
-        printf("Error al cerrar estadisticas.csv la 0 vez");
-        return -1;
-    }
-    if (flag == 1)
-    {
-        fscanf(abrirDesbloq, "%c,%[^,],%i,%i,%i,%i,%i,%i,%i,%i,%i\n",
-                &desbloq, nombre, &barco[0].precision, &barco[0].ataque, &barco[0].defensa, &barco[0].velocidad, &barco[0].vida,
-                &principal.objCountUSER[0], &principal.objCountUSER[1], &principal.objCountUSER[2], &principal.objCountUSER[3]);
-        fclose(abrirDesbloq);
-
-        abrirDesbloq = fopen("desbloqueables.csv", "r");
-        fscanf(abrirDesbloq, "%c,%[^,],%i,%i,%i,%i,%i,%i,%i,%i,%i\n",
-                &desbloq, nombre, &barco[1].precision, &barco[1].ataque, &barco[1].defensa, &barco[1].velocidad, &barco[1].vida,
-                &principal.objCountCPU[0], &principal.objCountCPU[1], &principal.objCountCPU[2], &principal.objCountCPU[3]);
-        fclose(abrirDesbloq);
-
-        abrirEstadisticas = fopen("estadisticas.csv", "w");
-        fprintf(abrirEstadisticas, "%i,%i,%i,%i,%i,%i,%i,%i,%i\n%i,%i,%i,%i,%i,%i,%i,%i,%i\n",
-                barco[0].precision, barco[0].ataque, barco[0].defensa, barco[0].velocidad, barco[0].vida,
-                principal.objCountUSER[0], principal.objCountUSER[1], principal.objCountUSER[2], principal.objCountUSER[3],
-                barco[1].precision, barco[1].ataque, barco[1].defensa, barco[1].velocidad, barco[1].vida,
-                principal.objCountCPU[0], principal.objCountCPU[1], principal.objCountCPU[2], principal.objCountCPU[3]);
-        principal.cerrar = fclose(abrirEstadisticas);
-        if (principal.cerrar == EOF)
-        {
-            printf("Error al cerrar el fichero estadisticas.csv 1a vez.\n");
-            return -1;
-        }
-    }
-
     abrirEstadisticas = fopen("estadisticas.csv", "r");
     if (abrirEstadisticas == NULL)
     {

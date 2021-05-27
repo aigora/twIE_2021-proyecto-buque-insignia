@@ -331,23 +331,20 @@ login sesion(void)
         pf = fopen("puntuacionTotal.csv", "r");
         if (pf == NULL)
         {
+            info.checkpass[0] = 0;
             cerrar = fclose(pf);
             pf = fopen("puntuacionTotal.csv", "w");
-            fprintf(pf, "%s,%i,%i,%i,%i,%i\n", "NULL", 0, 0, 0, 0, 0);
+            fprintf(pf, "%s,%i,%i,%i,%i,%i,%i\n", "NULL", 0, 0, 0, 0, 0, 0);
             cerrar = fclose(pf);
             if (cerrar == EOF)
             {
                 printf("Error al cerrar el archivo puntuacionTotal.csv");
             }
         }
-        else
-        {
-            while (fscanf(pf, " %[^,],%i,%i,%i,%i,%i\n", userBuffer, &buffer[0], &buffer[1], &buffer[2], &buffer[3], &buffer[4]) != EOF)
-            {
-                strcat(userBuffer, ",");
-                strcat(stringBuffer, userBuffer);
-            }
-        }
+//        else
+//        {
+//
+//        }
 
         flag = 0;
         while (flag != -2)

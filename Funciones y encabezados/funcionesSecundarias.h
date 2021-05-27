@@ -10,12 +10,16 @@ int random(int randseed);
 float random1(int randseed);
 int enter(void);
 void clearscr(void);
-int generarDesbloqueables(void);
-void guardarPuntuaciones(puntuacion *puntos);
-void verPuntuacion(void);
+int generarDesbloqueables(login registro);
+int guardarPuntuaciones(puntuacion *puntos);
+int verPuntuacion(void);
 login sesion(void);
-float calculoConstanteEcDif(int maxPuntos);
-float calculoEcDif(int nivel, int k);
+int calculoConstanteEcDif(int maxPuntos);
+int calculoEcDif(int nivel, int k);
+int comprobarCierreFichero(int cerrar);
+int comprobarAperturaFichero(FILE *puntero);
+int sumando(void);
+int leerFicheros(login registro, puntuacion *puntos);
 
 #endif // header guard
 

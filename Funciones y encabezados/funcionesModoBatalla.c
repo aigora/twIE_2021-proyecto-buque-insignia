@@ -15,9 +15,9 @@
 
 int modoBatalla(puntuacion *puntos)
 {
-    int i = 0, flag = 0;
-    char desbloq, nombre[20];
-    estadisticas barco[2];
+    int i = 0, lineas = 0;
+    int k = 0, provisionalOBJ[2][4];
+    char buff, buffstr[20000];
     mainStruct principal;
     principal.contadorStats[0] = (estadisticas){0,0,0,0};
     principal.contadorStats[1] = (estadisticas){0,0,0,0};
@@ -42,15 +42,14 @@ int modoBatalla(puntuacion *puntos)
         principal.contadorStats[i].velocidad = 0;
         principal.contadorStats[i].vida = 0;
     }
-
+    strcpy(principal.puntosBatalla.rango, puntos->rango);
 
     ///DEBUG
-//    printf("\nDificultad: %f\t", principal.dificultad);
-//    enter();
-//    enter();
+    printf("\nDificultad: %f\t", principal.dificultad);
     ///DEBUG
 
     ///Leer y abrir fichero
+    FILE *abrirEstadisticas;
     abrirEstadisticas = fopen("estadisticas.csv", "r");
     if (abrirEstadisticas == NULL)
     {
@@ -59,17 +58,52 @@ int modoBatalla(puntuacion *puntos)
     }
 //    else
 //        printf("Fichero abierto correctamente.\n");
+    i = 0;
+    fseek(abrirEstadisticas, SEEK_SET, SEEK_CUR);
+    while (fscanf(abrirEstadisticas, "%c", &buff) != EOF)
+    {
+        if (buff == '\n')
+            lineas++;
+        i++;
+    }
+    printf("\nLineas: %i\n", lineas);
 
-    fscanf(abrirEstadisticas, "%i,%i,%i,%i,%i,%i,%i,%i,%i\n%i,%i,%i,%i,%i,%i,%i,%i,%i",
-           &principal.usercpu[0].precision, &principal.usercpu[0].ataque, &principal.usercpu[0].defensa, &principal.usercpu[0].velocidad,
-           &principal.usercpu[0].vida, &principal.objCountUSER[0], &principal.objCountUSER[1], &principal.objCountUSER[2], &principal.objCountUSER[3],
-           &principal.usercpu[1].precision, &principal.usercpu[1].ataque, &principal.usercpu[1].defensa, &principal.usercpu[1].velocidad,
-           &principal.usercpu[1].vida, &principal.objCountCPU[0], &principal.objCountCPU[1], &principal.objCountCPU[2], &principal.objCountCPU[3]);
+    principal.cerrar = fclose(abrirEstadisticas);
+    if (comprobarCierreFichero(principal.cerrar) == -1)
+        return 0;
+
+    abrirEstadisticas = fopen("estadisticas.csv", "r");
+    if (comprobarAperturaFichero(abrirEstadisticas) == -1)
+        return 0;
+    i = 1;
+    k = 0;
+    fseek(abrirEstadisticas, SEEK_SET, SEEK_CUR);
+    while (fgets(buffstr, 20000, abrirEstadisticas) != NULL)
+    {
+        printf("BUFFSTR: %s\n", buffstr);
+        if ((i == lineas - 1 || i == lineas) && k < 2)
+        {
+            sscanf(buffstr, "%i,%i,%i,%i,%i,%i,%i,%i,%i\n",
+                   &principal.usercpu[k].precision, &principal.usercpu[k].ataque, &principal.usercpu[k].defensa, &principal.usercpu[k].velocidad,
+                   &principal.usercpu[k].vida, &provisionalOBJ[k][0], &provisionalOBJ[k][1], &provisionalOBJ[k][2], &provisionalOBJ[k][3]);
+            k++;
+            printf("Exito\n");
+        }
+        i++;
+    }
+    principal.objCountUSER[0] = provisionalOBJ[0][0];
+    principal.objCountUSER[1] = provisionalOBJ[0][1];
+    principal.objCountUSER[2] = provisionalOBJ[0][2];
+    principal.objCountUSER[3] = provisionalOBJ[0][3];
+    principal.objCountCPU[0]  = provisionalOBJ[1][0];
+    principal.objCountCPU[1]  = provisionalOBJ[1][1];
+    principal.objCountCPU[2]  = provisionalOBJ[1][2];
+    principal.objCountCPU[3]  = provisionalOBJ[1][3];
 
     principal.cerrar = fclose(abrirEstadisticas);
     if (principal.cerrar == EOF)
     {
-        printf("Error al cerrar el fichero estadisticas.csv 2a vez.\n");
+        printf("Error al cerrar el fichero estadisticas.csv.\n");
         return -1;
     }
 //    if (principal.cerrar == 0)
@@ -95,6 +129,7 @@ mainStruct funcionamientoPrincipal(mainStruct principal)
     principal.pcontador = &principal.contadorStats[0];
     principal.randseed++;
     clearscr();
+    printf("Rango: %s. ", principal.puntosBatalla.rango);
     imprimeVida(pUser, pCPU, 0, 0, 0);
 
     if (principal.usercpu[1].vida <= 0)
@@ -112,14 +147,13 @@ mainStruct funcionamientoPrincipal(mainStruct principal)
         return principal;
     }
 
-//    ///DEBUG: Imprimir estadísticas completas
-//    printf("\tAtk\tDef\tSpd\tAcc\tHP\nUSR\t%i\t%i\t%i\t%i\t%i\nCPU\t%i\t%i\t%i\t%i\t%i\n",
-//           principal.usercpu[0].ataque, principal.usercpu[0].defensa, principal.usercpu[0].velocidad, principal.usercpu[0].precision, principal.usercpu[0].vida,
-//           principal.usercpu[1].ataque, principal.usercpu[1].defensa, principal.usercpu[1].velocidad, principal.usercpu[1].precision, principal.usercpu[1].vida);
-//    ///DEBUG: Imprimir estadísticas completas
+    ///DEBUG: Imprimir estadísticas completas
+    printf("\tAtk\tDef\tSpd\tAcc\tHP\nUSR\t%i\t%i\t%i\t%i\t%i\nCPU\t%i\t%i\t%i\t%i\t%i\n",
+           principal.usercpu[0].ataque, principal.usercpu[0].defensa, principal.usercpu[0].velocidad, principal.usercpu[0].precision, principal.usercpu[0].vida,
+           principal.usercpu[1].ataque, principal.usercpu[1].defensa, principal.usercpu[1].velocidad, principal.usercpu[1].precision, principal.usercpu[1].vida);
+    ///DEBUG: Imprimir estadísticas completas
 
     ///Imprimir cambios en estadísticas
-
     printArrows(principal.pflechas, principal.pcontador);
     printf("\n\t\tAtq\tDef\tVel\tPre\nTus estad.:\t%s\t%s\t%s\t%s\nEstad. CPU:\t%s\t%s\t%s\t%s\n",
            principal.flechas[0].ataque, principal.flechas[0].defensa, principal.flechas[0].velocidad, principal.flechas[0].precision,
@@ -392,6 +426,9 @@ float calculoDificultad(void)
     float r = 0.1;
     int totalPartidas = puntuaciones('n');
     int totalVictorias = puntuaciones('v');
+
+    if (totalPartidas == 0)
+        totalPartidas = 1;
 
     if (totalPartidas < NECESARIO_R)                //Esto se hace para que cuando se hayan jugado pocas partidas no se vuelva muy dificil el juego, aumentando progresivamente
         r = totalPartidas / 10;                     //hasta que se hayan jugado ciertas partidas. Es entonces cuando la dificultad global aumenta segun el ratio de

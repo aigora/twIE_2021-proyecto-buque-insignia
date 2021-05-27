@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
+#include <math.h>
 #include "funcionesSecundarias.h"
 #include "estructuras.h"
 #include "funcionesModoBatalla.h"
@@ -12,163 +13,82 @@
 //Esquema puntuacionTotal.csv:
 //Usuario,Total partidas,Puntuacion Total,Total Daño recibido,Total Daño ocasionado,Total Barcos hundidos,Total victorias.
 
-int start(int condicion, int victoria, char volver[6], const char atras[6], puntuacion *puntos);
+int start(int condicion, login registro, puntuacion *puntos);
 
 int main()
 {
+    srand(time(NULL));
+
     login registro;
     puntuacion puntuacionTotal, *puntos;
     puntos = &puntuacionTotal;
-    srand(time(NULL));
-    char volver[6];
-    const char atras[6] = "atras";
-    int condicion = 0, inicio = 1, victoria = 0;
+
+    int condicion = 0, inicio = 1;
     registro = sesion();
     if (registro.checkpass[0] == 0)
     {
         clearscr();
-        printf("Se han creado los archivos. Reinicia el juego.\n");
+        printf("Se han creado los archivos. Ignora los errores y reinicia el juego.\n");
         return 0;
     }
 
     strcpy(puntuacionTotal.nombre, registro.user);
     //printf("Tu nombre: %s\n", puntos->nombre);
+
     while (inicio != 0)
-        inicio = start(condicion, victoria, volver, atras, puntos);
+        inicio = start(condicion, registro, puntos);
     return 0;
 }
 
-int start(int condicion, int victoria, char volver[6], const char atras[6], puntuacion *puntos)
+int start(int condicion, login registro, puntuacion *puntos)
 {
-    char buff[2000], usuarios[2000][200], contrasenas[2000][200], nombresPuntuacion[2000][200], nombresPuntuacion[2000][200], totalVictorias = 0, totalPartidas = 0;
-    desbloqueables bufer[2000];
-    FILE *pflog;
-    pflog = fopen("registro.csv", "r");
-    int i = 0, exit = 0, cerrar, puntosnecesarios;
-    puntuacion puntosvec[2000];
-    while (fgets(buff, 2000, pflog) != NULL)
+    char volver[6], *rango;
+    int exit = 0, victoria;
+    leerFicheros(registro, puntos);
+    printf("\n");
+    condicion = inicioPrograma();
+    switch (condicion)
     {
-        sscanf(buff, "%[^,],%[^\n]\n", usuarios[i], contrasenas[i]);
-        i++;
-    }
-    cerrar = fclose(pflog);
-    if (cerrar == EOF)
-    {
-        printf("Error al cerrar el fichero.");
-        return 0;
-    }
-    FILE *pf;
-    pf = fopen("puntuacionTotal.csv", "r");
-    i = 0;
-    while (fgets(buff, 2000, pf) != NULL)
-    {
-        sscanf(buff, "%[^,],%i,%i,%i,%i,%i,%i\n", nombresPuntuacion[i], &puntosvec[i].totalPartidas, &puntosvec[i].puntuacionTot, &puntosvec[i].totalDamageRecibido,
-               &puntosvec[i].totalDamageOcasionado, &puntosvec[i].barcosHundidos, &puntosvec[i].victorias);
-        if (strcmp(puntos->nombre, nombresPuntuacion[i]) == 0)
-        {
-            puntos->totalPartidas = puntosvec[i].totalPartidas;
-            puntos->puntuacionTot = puntosvec[i].puntuacionTot;
-            puntos->totalDamageRecibido = puntosvec[i].totalDamageRecibido;
-            puntos->totalDamageOcasionado = puntosvec[i].totalDamageOcasionado;
-            puntos->barcosHundidos = puntosvec[i].barcosHundidos;
-            puntos->victorias = puntosvec[i].victorias;
-        }
-        i++;
-    }
-//    printf("\nPuntero -> %s,%i,%i,%i,%i,%i,%i\n", puntos->nombre, puntos->totalPartidas, puntos->puntuacionTot, puntos->totalDamageRecibido, puntos->totalDamageOcasionado,
-//           puntos->barcosHundidos, puntos->victorias);
-    cerrar = fclose(pf);
-    if (cerrar == EOF)
-    {
-        printf("Error al cerrar el fichero.\n");
+    case 0:
+        clearscr();
+        printf("Gracias por jugar a Proyecto Buque Insignia.\nhttps://github.com/aigora/twIE_2021-proyecto-buque-insignia\n@AdriTeixeHax\n@matiaspolo\n@JorgeBachiller\n");
         enter();
-    }
+        printf("Cerrando el juego...");
+        return 0;
 
-    ///
-    FILE *abrirDesbloq;
-    int flag = 0;
-    abrirDesbloq = fopen("desbloqueables.csv", "r");
-    if (abrirDesbloq == NULL)
-    {
-        flag = 1;
-        fclose(abrirDesbloq);
-    }
-    else
-        fclose(abrirDesbloq);
-    if (flag == 1)
-    {
-        flag = generarDesbloqueables();
-    }
-
-    abrirDesbloq = fopen("desbloqueables.csv", "r");
-    if (abrirDesbloq == NULL)
-    {
-        flag = 1;
-        fclose(abrirDesbloq);
-    }
-    else
-    {
-        FILE *abrirEstadisticas;
-        abrirEstadisticas = fopen("estadisticas.csv", "w");
-        if (abrirEstadisticas == NULL)
-        {
-            printf("Error al abrir el archivo estadisticas.csv");
-            return 0;
-        }
-        i = 0;
-        while (fgets(buff, 2000, abrirDesbloq) != NULL)
-        {
-            sscanf(buff, "%[^,],%i,%i,%i,%i,%i,%i,%i,%i,%i,%i", bufer[i].nombre, &bufer[i].precision, &bufer[i].ataque, &bufer[i].defensa,
-                   &bufer[i].velocidad, &bufer[i].vida, &bufer[i].objetos[0], &bufer[i].objetos[1], &bufer[i].objetos[2], &bufer[i].objetos[3], &bufer[i].puntosNecesarios);
-            if (bufer[i].puntosNecesarios >= puntos->puntuacionTot && bufer[i - 1].puntosNecesarios <= puntos->puntuacionTot)
-            {
-                fprintf(abrirEstadisticas, "%s,%i,%i,%i,%i,%i,%i,%i,%i,%i,%i")
-            }
-        }
-        printf("\n");
-        condicion = inicioPrograma();
-        switch (condicion)
-        {
-        case 1:
-            clearscr();
-            printf("Has seleccionado personalizar barco.\n");
-            scanf("%s", volver);
-            break;
-
-        case 2:
-            clearscr();
-            printf("Has seleccionado Jugar.\n");
-            exit = jugar(puntos);
-            guardarPuntuaciones(puntos);
-            if (exit == 555)
-                return 1;
-            break;
-
-        case 3:
-            printf("Has seleccionado Puntuacion. Escribe 'v' para ver la puntuacion.\n");
-            scanf("%s", volver);
-            if (strcmp(volver, "v") == 0)
-                verPuntuacion();
-            ///
-            break;
-
-        ///EXPERIMENTAL. Comentar, no borrar. Puede ser útil para debuguear.
-        case 4:
-            victoria = modoBatalla(puntos);
-            if (victoria == 1)
-                printf("Has ganado.");
-            if (victoria == 0)
-                printf("Has perdido.");
+    case 1:
+        clearscr();
+        printf("Has seleccionado Jugar.\n");
+        exit = jugar(puntos);
+        guardarPuntuaciones(puntos);
+        if (exit == 555)
             return 1;
-            break;
-        ///EXPERIMENTAL
+        break;
 
-        default:
-            clearscr();
-            error();
-            return 1;
-            break;
-        }
+    case 2:
+        printf("Has seleccionado Puntuacion. Escribe 'v' para ver la puntuacion.\n");
+        scanf("%s", volver);
+        if (strcmp(volver, "v") == 0)
+            verPuntuacion();
+        ///
+        break;
+
+    ///EXPERIMENTAL. Comentar, no borrar. Puede ser útil para debuguear.
+    case 3:
+        victoria = modoBatalla(puntos);
+        if (victoria == 1)
+            printf("Has ganado.");
+        if (victoria == 0)
+            printf("Has perdido.");
+        return 1;
+        break;
+    ///EXPERIMENTAL
+
+    default:
+        clearscr();
+        error();
+        return 1;
+        break;
     }
-    return 0;
+    return 1;
 }

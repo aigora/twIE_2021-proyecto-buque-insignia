@@ -7,7 +7,7 @@ typedef struct
     totalDamageOcasionado,
     puntuacionTot, victorias,
     barcosHundidos, totalPartidas;
-    char nombre[20];
+    char nombre[20], rango[50];
 } puntuacion;
 
 typedef struct

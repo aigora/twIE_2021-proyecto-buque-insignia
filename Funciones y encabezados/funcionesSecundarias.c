@@ -5,9 +5,9 @@
 #include "funcionesSecundarias.h"
 #include "Matriz.h"
 #include "estructuras.h"
-#define LONG_PUNTUACION_CSV 7
+#define LONG_PUNTUACION_CSV 6
 #define LONG_BUFFER 100
-#define NUMERO_DESBLOQ 17
+#define MAXPUNTOS 50000
 
 int inicioPrograma(void)
 {
@@ -102,8 +102,8 @@ int puntuaciones(char dato)
         }
     }
 
-    sscanf(data, "%[^,],%i,%i,%i,%i,%i,%i,%i", nombre, &leerPuntuacion[0], &leerPuntuacion[1], &leerPuntuacion[2], &leerPuntuacion[3],
-                       &leerPuntuacion[4], &leerPuntuacion[5], &leerPuntuacion[6]);
+    sscanf(data, "%[^,],%i,%i,%i,%i,%i,%i", nombre, &leerPuntuacion[0], &leerPuntuacion[1], &leerPuntuacion[2], &leerPuntuacion[3],
+                       &leerPuntuacion[4], &leerPuntuacion[5]);
 
     cerrar = fclose(abrirPuntuacion);
     if (cerrar == EOF) {
@@ -116,26 +116,23 @@ int puntuaciones(char dato)
 
     switch (dato)
     {
-    case 'n':
+    case 'n'://total partidas
+        solucion = leerPuntuacion[0];
+        break;
+    case 'p'://puntuacion total
         solucion = leerPuntuacion[1];
         break;
-    case 'p':
-        solucion = leerPuntuacion[2];
-        break;
-    case 'm':
-        solucion = leerPuntuacion[3];
-        break;
-    case 'd':
+    case 'd'://total daño recibido
         solucion = leerPuntuacion[4];
         break;
-    case 'o':
+    case 'o'://total daño ocasionado
+        solucion = leerPuntuacion[3];
+        break;
+    case 'h'://total barcos hundidos
+        solucion = leerPuntuacion[2];
+        break;
+    case 'v'://victorias
         solucion = leerPuntuacion[5];
-        break;
-    case 'h':
-        solucion = leerPuntuacion[6];
-        break;
-    case 'v':
-        solucion = leerPuntuacion[7];
         break;
     }
     return solucion;
@@ -185,33 +182,30 @@ void clearscr()
 int generarDesbloqueables(void)
 {
     FILE *abrirDesbloq;
-    int i = 0, j = 0, k = 0, cerrar;
-    desbloqueables datos[NUMERO_DESBLOQ];
-    datos[0].block = '·';
-    for (i = 1; i < NUMERO_DESBLOQ; i++)
-        datos[i].block = '!';
+    int i = 0, j = 0, k = 0, cerrar, c = calculoConstanteEcDif(MAXPUNTOS);
+    desbloqueables datos[17];
     char todosLosNombres[2000];
-    int todasLasEstadisticasYObjetos[NUMERO_DESBLOQ][9] =
+    int todasLasEstadisticasYObjetos[17][10] =
     {
-        { 90, 60, 55, 60, 60,0,1,0,1},
-        { 90, 65, 60, 60, 70,1,0,1,0},
-        { 90, 70, 65, 50, 80,1,2,1,1},
-        { 90, 73, 70, 55, 90,2,2,2,1},
-        { 90, 75, 70, 60,100,3,3,3,2},
-        { 95, 80, 70, 65,100,2,3,3,2},
-        { 95, 80, 75, 65,100,2,2,3,4},
-        { 95, 85, 75, 70,100,4,2,2,3},
-        { 95, 85, 80, 70,100,3,4,3,3},
-        { 95, 90, 80, 80,100,4,3,4,3},
-        { 95, 90, 80, 90,100,4,4,3,4},
-        { 95, 90, 85, 75,100,4,4,4,4},
-        { 95, 95, 85, 85,100,4,4,4,4},
-        { 95, 95, 90, 90,100,4,4,4,4},
-        {100, 95, 90, 85,100,4,4,4,4},
-        {100, 95,100, 95,100,4,4,4,4},
-        {100,100,100,100,100,4,4,4,4},
+        { 90, 60, 55, 60, 60,0,1,0,1,calculoEcDif(0, c)},
+        { 90, 65, 60, 60, 70,1,0,1,0,calculoEcDif(1, c)},
+        { 90, 70, 65, 50, 80,1,2,1,1,calculoEcDif(2, c)},
+        { 90, 73, 70, 55, 90,2,2,2,1,calculoEcDif(3, c)},
+        { 90, 75, 70, 60,100,3,3,3,2,calculoEcDif(4, c)},
+        { 95, 80, 70, 65,100,2,3,3,2,calculoEcDif(5, c)},
+        { 95, 80, 75, 65,100,2,2,3,4,calculoEcDif(6, c)},
+        { 95, 85, 75, 70,100,4,2,2,3,calculoEcDif(7, c)},
+        { 95, 85, 80, 70,100,3,4,3,3,calculoEcDif(8, c)},
+        { 95, 90, 80, 80,100,4,3,4,3,calculoEcDif(9, c)},
+        { 95, 90, 80, 90,100,4,4,3,4,calculoEcDif(10, c)},
+        { 95, 90, 85, 75,100,4,4,4,4,calculoEcDif(11, c)},
+        { 95, 95, 85, 85,100,4,4,4,4,calculoEcDif(12, c)},
+        { 95, 95, 90, 90,100,4,4,4,4,calculoEcDif(13, c)},
+        {100, 95, 90, 85,100,4,4,4,4,calculoEcDif(14, c)},
+        {100, 95,100, 95,100,4,4,4,4,calculoEcDif(15, c)},
+        {100,100,100,100,100,4,4,4,4,calculoEcDif(16, c)},
     };
-    for (i = 0; i < NUMERO_DESBLOQ; i++)
+    for (i = 0; i < 17; i++)
     {
         datos[i].stats.precision = todasLasEstadisticasYObjetos[i][0];
         datos[i].stats.ataque    = todasLasEstadisticasYObjetos[i][1];
@@ -237,10 +231,10 @@ Comandante,Teniente Coronel,Coronel,General de Brigada,General de División,Almir
         printf("Error al abrir el fichero.\n");
         return -1;
     }
-    for (i = 0; i < NUMERO_DESBLOQ; i++)
-        fprintf(abrirDesbloq, "%c,%s,%i,%i,%i,%i,%i,%i,%i,%i,%i\n", datos[i].block, datos[i].nombre,
+    for (i = 0; i < 17; i++)
+        fprintf(abrirDesbloq, "%s,%i,%i,%i,%i,%i,%i,%i,%i,%i,%i\n", datos[i].nombre,
                 datos[i].stats.precision, datos[i].stats.ataque, datos[i].stats.defensa, datos[i].stats.velocidad, datos[i].stats.vida,
-                datos[i].objetos[0], datos[i].objetos[1], datos[i].objetos[2], datos[i].objetos[3]);
+                datos[i].objetos[0], datos[i].objetos[1], datos[i].objetos[2], datos[i].objetos[3], datos[i].puntosNecesarios);
     cerrar = fclose(abrirDesbloq);
     if (cerrar == EOF)
     {
@@ -250,7 +244,7 @@ Comandante,Teniente Coronel,Coronel,General de Brigada,General de División,Almir
     return 0;
 }
 
-puntuacion guardarPuntuaciones(puntuacion *puntos)
+void guardarPuntuaciones(puntuacion *puntos)
 {
     int cerrar;
     FILE *pf;
@@ -261,7 +255,7 @@ puntuacion guardarPuntuaciones(puntuacion *puntos)
         enter();
     }
 
-    fprintf(pf, "%s,%i,%i,%i,%i,%i\n", puntos->nombre, puntos->puntuacionTot, puntos->barcosHundidos, puntos->totalDamageOcasionado, puntos->totalDamageRecibido,
+    fprintf(pf, "%s,%i,%i,%i,%i,%i,%i\n", puntos->nombre, puntos->totalPartidas, puntos->puntuacionTot, puntos->barcosHundidos, puntos->totalDamageOcasionado, puntos->totalDamageRecibido,
             puntos->victorias);
 
     cerrar = fclose(pf);
@@ -274,104 +268,249 @@ puntuacion guardarPuntuaciones(puntuacion *puntos)
 
 void verPuntuacion(void)
 {
-    int cerrar;
+    int cerrar, datos[6], i, confirm, exit = 0, escape;
+    char users[2000][20], userbuffer[2000], userinput[20];
     FILE *pf;
-    pf = fopen("puntuacionTotal.csv", "r");
-    if (pf == NULL)
+    escape = 0;
+    while (escape != 1)
     {
-        printf("Error al abrir el archivo 'puntuacionTotal.csv'");
-        enter();
-    }
-    ///codigo
-    cerrar = fclose(pf);
-    if (cerrar == EOF)
-    {
-        printf("Error al cerrar el archivo 'puntuacionTotal.csv'");
-        enter();
+        pf = fopen("puntuacionTotal.csv", "r");
+        if (pf == NULL)
+        {
+            printf("Error al abrir el archivo 'puntuacionTotal.csv'");
+            enter();
+        }
+        clearscr();
+        printf("Introduce el nombre del usuario del que deseas ver las puntuaciones.\n");
+        scanf(" %s", userinput);
+        i = 0;
+        confirm = 1;
+        while (fgets(userbuffer, 2000, pf) != NULL)
+        {
+            sscanf(userbuffer, "%[^,],%i,%i,%i,%i,%i,%i\n", users[i], &datos[0], &datos[1], &datos[2], &datos[3], &datos[4], &datos[5]);
+            confirm = strcmp(users[i], userinput);
+            if (confirm == 0 && exit == 0)
+            {
+                clearscr();
+                printf("Leyenda:\nPJ -> Partidas jugadas\nPG -> Partidas ganadas\nTH -> Total de barcos hundidos\nDO -> Daño ocasionado en el Modo de Batalla\n\
+DR -> Daño recibido en el Modo de Batalla\nPT -> Puntuación total\n\nFicha de puntuaciones para el usuario %s:\nPJ\tPG\tTH\tDO\tDR\tPT\n", userinput);
+                exit++;
+            }
+            if (confirm == 0)
+                printf("%i\t%i\t%i\t%i\t%i\t%i\n", datos[0], datos[5], datos[2], datos[3], datos[4], datos[1]);
+            i++;
+        }
+        if (exit == 0)
+        {
+            printf("El usuario indicado no está registrado o no ha jugado ninguna partida.\n");
+            enter();
+        }
+        else
+        {
+            cerrar = fclose(pf);
+            if (cerrar == EOF)
+            {
+                printf("Error al cerrar el archivo 'puntuacionTotal.csv'");
+                enter();
+            }
+            enter();
+            escape = 1;
+        }
     }
 }
 
 login sesion(void)
 {
     login info;
-    int log, flag = 1, cerrar, buffer[5], i = 0;
-    char userBuffer[20], stringBuffer[5000], allUsers[2000][20], *tokens;
+    int log, flag = 1, cerrar, buffer[5], i = 0, j = 0, check = 2, exit = 0, checkcount;
+    char userBuffer[20], stringBuffer[6000], allUsers[2000][20], allPasses[2000][20], *tokens, provpass[20];
     stringBuffer[0] = '\0';
-    FILE *pf;
+    FILE *pf, *pflog;
     while (flag != -1)
     {
         pf = fopen("puntuacionTotal.csv", "r");
         if (pf == NULL)
         {
+            info.checkpass[0] = 0;
             cerrar = fclose(pf);
             pf = fopen("puntuacionTotal.csv", "w");
-            fprintf(pf, "%s,%i,%i,%i,%i,%i\n", "NULL", 0, 0, 0, 0, 0);
+            fprintf(pf, "%s,%i,%i,%i,%i,%i,%i\n", "NULL", 0, 0, 0, 0, 0, 0);
             cerrar = fclose(pf);
             if (cerrar == EOF)
             {
                 printf("Error al cerrar el archivo puntuacionTotal.csv");
             }
         }
-        else
+//        else
+//        {
+//
+//        }
+
+        flag = 0;
+        while (flag != -2)
         {
-            while (fscanf(pf, " %[^,],%i,%i,%i,%i,%i\n", userBuffer, &buffer[0], &buffer[1], &buffer[2], &buffer[3], &buffer[4]) != EOF)
+            pflog = fopen("registro.csv", "r");
+            if (pflog == NULL)
             {
-                strcat(userBuffer, ",");
-                strcat(stringBuffer, userBuffer);
+                cerrar = fclose(pflog);
+                pflog = fopen("registro.csv", "w");
+                cerrar = fclose(pflog);
+                if (cerrar == EOF)
+                {
+                    printf("Error al cerrar el fichero registro.csv.");
+                    return info;
+                }
+            }
+            else
+            {
+                i = 0;
+                while (fgets(stringBuffer, 6000, pflog) != NULL && i < 2000)
+                {
+                    sscanf(stringBuffer, "%[^,],%[^\n]", allUsers[i], allPasses[i]);
+                    printf("%s,%s\n", allUsers[i], allPasses[i]);
+                    i++;
+                }
+                j = i;
+                cerrar = fclose(pflog);
+                if (cerrar == EOF)
+                {
+                    printf("Error al cerrar el fichero registro.csv.");
+                    return info;
+                }
+                flag = -2;
             }
         }
-        printf("\nstringBuffer: %s\n", stringBuffer);
-        tokens = strtok(stringBuffer, ",");
-        i = 0;
-        while (tokens != NULL)
-        {
-            strcpy(allUsers[i], tokens);
-            tokens = strtok(NULL, ",");
-            printf("\nallUsers[%i]: %s\n", i, allUsers[i]);
-            i++;
-        }
-
         cerrar = fclose(pf);
         if (cerrar == EOF)
         {
             printf("Error al cerrar el fichero.");
-            flag = -1;
+            return info;
         }
         flag = -1;
     }
 
-    printf("Selecciona una opción:\n\n(1)Iniciar sesión.\n(2)Registrarse.\n");
-    scanf(" %i", &log);
-    switch (log)
+    while (exit != 1)
     {
-    case 1:
         clearscr();
-        printf("Introduce tu nombre de usuario.\n");//comprobar si está registrado
-        scanf("%s", info.user);
-        printf("Introduce tu contraseña.\n");
-        scanf("%s", info.pass);
-        break;
-    case 2:
-        clearscr();
-        while (flag != -1)
+        printf("Selecciona una opción:\n\n(1)Iniciar sesión.\n(2)Registrarse.\n");
+        scanf(" %i", &log);
+        switch (log)
         {
-            printf("Introduce un nombre de usuario.\n");//comprobar si ya está registrado
+        case 1:
+            clearscr();
+            printf("Introduce tu nombre de usuario.\n");
             scanf("%s", info.user);
-            printf("Introduce una contraseña.\n");
-            scanf("%s", info.pass);
-            printf("Introduce de nuevo la contraseña.\n");
-            scanf("%s", info.checkpass);
-            if (strcmp(info.checkpass, info.pass) != 0)
+            checkcount = 0;
+            for (i = 0; i < j; i++)
             {
-                printf("Las contraseñas no coinciden. Vuelve a intentarlo.\n");
+                check = strcmp(allUsers[i], info.user);
+                if (check == 0)
+                {
+                    strcpy(info.checkpass, allPasses[i]);
+                    checkcount++;
+                }
+            }
+            if (checkcount == 0)
+            {
+                printf("El usuario indicado no está registrado.\n");
+                enter();
             }
             else
             {
-                clearscr();
-                printf("¡Bienvenido, %s!\n", info.user);
-                flag = -1;
-                return info;
+                printf("Introduce tu contraseña.\n");
+                i = 0;
+                do
+                {
+                    provpass[i] = getch();
+                    if (provpass[i] != '\r')
+                        printf("*");
+                    i++;
+                }
+                while(provpass[i - 1] != '\r');
+                for (i = 0; i < strlen(provpass) - 1; i++)
+                    info.pass[i] = provpass[i];
+                printf("\n");
+
+                if (strcmp(info.pass, info.checkpass) == 0)
+                {
+                    printf("¡Bienvenido, %s!", info.user);
+                    enter();
+                    return info;
+                }
+                else
+                {
+                    printf("Contraseña incorrecta. Vuelve a intentarlo.\n");
+                    enter();
+                }
+            }
+            break;
+        case 2:
+            clearscr();
+            flag = 0;
+            while (flag != -1)
+            {
+                printf("Introduce un nombre de usuario.\n");
+                scanf("%s", info.user);
+                checkcount = 0;
+                for (i = 0; i < 2000; i++)
+                {
+                    check = strcmp(allUsers[i], info.user);
+                    if (check == 0)
+                        checkcount++;
+                }
+                if (checkcount != 0)
+                {
+                    printf("El usuario ya está registrado.\n");
+                    enter();
+                }
+                else
+                {
+                    printf("Introduce una contraseña.\n");
+                    scanf("%s", info.pass);
+                    printf("Introduce de nuevo la contraseña.\n");
+                    scanf("%s", info.checkpass);
+                    if (strcmp(info.checkpass, info.pass) != 0)
+                    {
+                        printf("Las contraseñas no coinciden. Vuelve a intentarlo.\n");
+                        enter();
+                    }
+                    else
+                    {
+                        clearscr();
+                        pflog = fopen("registro.csv", "a");
+                        if (pflog == NULL)
+                        {
+                            printf("Error al abrir el fichero.");
+                            enter();
+                            return info;
+                        }
+                        fprintf(pflog, "%s,%s\n", info.user, info.pass);
+                        cerrar = fclose(pflog);
+                        if (cerrar == EOF)
+                        {
+                            printf("Error al cerrar el fichero.");
+                            enter();
+                            return info;
+                        }
+                        printf("Usuario guardado.\n¡Bienvenido, %s!\n", info.user);
+                        enter();
+                        return info;
+                    }
+                }
             }
         }
     }
+    return info;
+}
+
+float calculoEcDif(int nivel, int k)
+{//recordar que la ecuación diferencial es y' = 2y -> integral(y' / 2y)dx = integral dx -> ln(y) / 2 = x + C -> y = x^2 + 2Cx + K (ignorada)
+    k = calculoConstanteEcDif(MAXPUNTOS);
+    return nivel*nivel + 2*k*nivel;
+}
+
+float calculoConstanteEcDif(int maxPuntos)
+{   //recordar que la ecuación diferencial es y' = 2y -> integral(y' / 2y)dx = integral dx -> ln(y) / 2 = x + C
+    //Luego, despejar C según el valor inicial maxPuntos, y el máximo de la variable x, x = 16 distintos rangos disponibles
+    return (maxPuntos - 16*16) / (16*2);
 }

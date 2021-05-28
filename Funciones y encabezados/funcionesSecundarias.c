@@ -15,7 +15,7 @@ int inicioPrograma(void)
     clearscr();
     printf("Bienvenido/a a la p%cgina de inicio de Proyecto Buque Insignia.\n\n", 160);
     printf("%cQu%c quieres hacer? Selecciona entre:\n(0) Salir + cr%cditos\n(1) Jugar\n(2) Puntuaci%cn\n", 168, 130, 130, 162);
-    printf("(3) Modo Batalla (Debug)\n");
+    //printf("(3) Modo Batalla (Debug)\n");
     scanf(" %i", &x);
     return x;
 }

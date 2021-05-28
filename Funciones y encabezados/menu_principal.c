@@ -69,15 +69,15 @@ int start(int condicion, login registro, puntuacion *puntos)
         break;
 
     ///EXPERIMENTAL. Comentar, no borrar. Puede ser útil para debuguear.
-    case 3:
-        victoria = modoBatalla(puntos);
-        if (victoria == 1)
-            printf("Has ganado.");
-        if (victoria == 0)
-            printf("Has perdido.");
-        guardarPuntuaciones(puntos);
-        return 1;
-        break;
+//    case 3:
+//        victoria = modoBatalla(puntos);
+//        if (victoria == 1)
+//            printf("Has ganado.");
+//        if (victoria == 0)
+//            printf("Has perdido.");
+//        guardarPuntuaciones(puntos);
+//        return 1;
+//        break;
     ///EXPERIMENTAL
 
     default:

@@ -154,9 +154,9 @@ mainStruct funcionamientoPrincipal(mainStruct principal)
     }
 
     ///DEBUG: Imprimir estadísticas completas
-    printf("\tAtk\tDef\tSpd\tAcc\tHP\nUSR\t%i\t%i\t%i\t%i\t%i\nCPU\t%i\t%i\t%i\t%i\t%i\n",
-           principal.usercpu[0].ataque, principal.usercpu[0].defensa, principal.usercpu[0].velocidad, principal.usercpu[0].precision, principal.usercpu[0].vida,
-           principal.usercpu[1].ataque, principal.usercpu[1].defensa, principal.usercpu[1].velocidad, principal.usercpu[1].precision, principal.usercpu[1].vida);
+//    printf("\tAtk\tDef\tSpd\tAcc\tHP\nUSR\t%i\t%i\t%i\t%i\t%i\nCPU\t%i\t%i\t%i\t%i\t%i\n",
+//           principal.usercpu[0].ataque, principal.usercpu[0].defensa, principal.usercpu[0].velocidad, principal.usercpu[0].precision, principal.usercpu[0].vida,
+//           principal.usercpu[1].ataque, principal.usercpu[1].defensa, principal.usercpu[1].velocidad, principal.usercpu[1].precision, principal.usercpu[1].vida);
     ///DEBUG: Imprimir estadísticas completas
 
     ///Imprimir cambios en estadísticas

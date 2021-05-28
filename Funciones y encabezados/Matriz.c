@@ -12,7 +12,7 @@ int Matriz(int sonar, puntuacion *puntos)
 
     int tusbarcdestr = 0;
     int susbarcdestr = 0;
-    int contarCoordenadasUSER = 0, contarCoordenadasCPU = 0, victoria = 0, modoBatallaActivado = 0;
+    int contarCoordenadasUSER = 0, contarCoordenadasCPU = 0, modoBatallaActivado = 0;
     int misBarcos[10][10] = {0};
     int cpuBarcos[10][10] = {0};
     int misbarcosrellenos [10][10] = {0};
@@ -59,7 +59,7 @@ int Matriz(int sonar, puntuacion *puntos)
         {
             contarCoordenadasUSER--;
             modoBatallaActivado = 1;
-            victoria = modoBatalla(puntos);
+            modoBatalla(puntos);
         }
         printf("Barcos destruidos por ti: %d\n", tusbarcdestr);
 
@@ -81,7 +81,7 @@ int Matriz(int sonar, puntuacion *puntos)
         {
             contarCoordenadasCPU--;
             modoBatallaActivado = 1;
-            victoria = modoBatalla(puntos);
+            modoBatalla(puntos);
         }
         printf("Barcos destruidos por CPU: %d\n", susbarcdestr);
     }
@@ -440,6 +440,7 @@ int sucoordenada(int fi, int co, int SuMatriz[][10], int TuMatriz[][10], int *su
         //Entramos aqui en el modo batalla especial entre barcos.
         return 2;
     }
+    return 0;
 }
 
 int tucoordenada(int columna, int fila, int son, int tuMatriz[][10], int suMatriz[][10], int *tusbarcosdestruidos, puntuacion *puntos)
@@ -465,8 +466,9 @@ int tucoordenada(int columna, int fila, int son, int tuMatriz[][10], int suMatri
             }
         if(contar == 1)
         {
-            printf("Has destruido un barco de dimension 1.\n");
-            puntos->barcosHundidos +=1;
+            printf("\nHas destruido un barco de dimension 1.\n");
+            enter();
+            puntos->barcosHundidos += 1;
             puntos->puntuacionTot += 100;
             *tusbarcosdestruidos +=1;
         }
@@ -553,7 +555,8 @@ int tucoordenada(int columna, int fila, int son, int tuMatriz[][10], int suMatri
         }
         if(contar == 0)
         {
-            printf("Has destruido un barco de dimension %i.\n", contarb);
+            printf("\nHas destruido un barco de dimension %i.\n", contarb);
+            enter();
             puntos->barcosHundidos += 1;
             *tusbarcosdestruidos +=1;
             switch(contarb)
@@ -626,6 +629,7 @@ int tucoordenada(int columna, int fila, int son, int tuMatriz[][10], int suMatri
         //Entramos aqui en el modo batalla especial entre barcos.
         return 2;
     }
+    return 0;
 }
 
 int traducirletra(char letra){
@@ -675,8 +679,10 @@ void ganador(int tu, int cpu, puntuacion *puntos)
         printf("El ganador es la cpu.\n");
     }
     else
-        {printf("El ganador has sido tu.\n");
-        puntos->victorias +=1;}
+    {
+        printf("El ganador has sido tu.\n");
+        puntos->victorias += 1;
+    }
     printf("Tu has acertado %d barcos y la cpu ha acertado %d barcos.\n", tu, cpu);
 }
 

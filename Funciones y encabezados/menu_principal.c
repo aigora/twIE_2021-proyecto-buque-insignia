@@ -22,6 +22,7 @@ int main()
     login registro;
     puntuacion puntuacionTotal, *puntos;
     puntos = &puntuacionTotal;
+    leerFicheros(registro, puntos);
 
     int condicion = 0, inicio = 1;
     registro = sesion();
@@ -42,9 +43,7 @@ int main()
 
 int start(int condicion, login registro, puntuacion *puntos)
 {
-    char volver[6], *rango;
     int exit = 0, victoria;
-    leerFicheros(registro, puntos);
     printf("\n");
     condicion = inicioPrograma();
     switch (condicion)
@@ -60,17 +59,13 @@ int start(int condicion, login registro, puntuacion *puntos)
         clearscr();
         printf("Has seleccionado Jugar.\n");
         exit = jugar(puntos);
-        guardarPuntuaciones(puntos);
         if (exit == 555)
             return 1;
+        guardarPuntuaciones(puntos);
         break;
 
     case 2:
-        printf("Has seleccionado Puntuacion. Escribe 'v' para ver la puntuacion.\n");
-        scanf("%s", volver);
-        if (strcmp(volver, "v") == 0)
-            verPuntuacion();
-        ///
+        verPuntuacion();
         break;
 
     ///EXPERIMENTAL. Comentar, no borrar. Puede ser útil para debuguear.
@@ -80,6 +75,7 @@ int start(int condicion, login registro, puntuacion *puntos)
             printf("Has ganado.");
         if (victoria == 0)
             printf("Has perdido.");
+        guardarPuntuaciones(puntos);
         return 1;
         break;
     ///EXPERIMENTAL

@@ -12,8 +12,9 @@
 int inicioPrograma(void)
 {
     int x = 0;
-    printf("Bienvenido a la pagina de inicio de Proyecto Buque Insignia.\nEscribe 'atras' en cualquier momento para volver a la pagina anterior.\n\n");
-    printf("%cQue quieres hacer? Selecciona entre:\n(0) Salir + créditos\n(1) Jugar\n(2) Puntuación\n", 168);
+    clearscr();
+    printf("Bienvenido/a a la p%cgina de inicio de Proyecto Buque Insignia.\n\n", 160);
+    printf("%cQu%c quieres hacer? Selecciona entre:\n(0) Salir + cr%cditos\n(1) Jugar\n(2) Puntuaci%cn\n", 168, 130, 130, 162);
     printf("(3) Modo Batalla (Debug)\n");
     scanf(" %i", &x);
     return x;
@@ -26,7 +27,8 @@ void error(void)
 
 int jugar(puntuacion *puntos)
 {
-    int radioSonar;
+    puntos->totalPartidas++;
+    int radioSonar = 0;
     char x[8];
     printf("¡Vamos a jugar! \n");
     printf("Elige el nivel de dificultad:\nEscribe 'facil', 'medio' o 'dificil'.\n");
@@ -34,14 +36,20 @@ int jugar(puntuacion *puntos)
     switch (x[0]) {
     case 'f':
         radioSonar = 3;
+        clearscr();
+        printf("Cargando. Espera...\n");
         Matriz(radioSonar, puntos);
         break;
     case 'm':
         radioSonar = 2;
+        clearscr();
+        printf("Cargando. Espera...\n");
         Matriz(radioSonar, puntos);
         break;
     case 'd':
         radioSonar = 0;
+        clearscr();
+        printf("Cargando. Espera...\n");
         Matriz(radioSonar, puntos);
         break;
     case 'a':
@@ -57,7 +65,7 @@ int puntuaciones(char dato)
 {
     /// Leer fichero
     FILE *abrirPuntuacion;
-    int cerrar, leerPuntuacion[LONG_PUNTUACION_CSV], solucion, i = 0, lineasTotales = 0, lineas = 0, confirm = 0;
+    int cerrar, leerPuntuacion[LONG_PUNTUACION_CSV], solucion = 0, i = 0, lineasTotales = 0, lineas = 0, confirm = 0;
     char nombre[4], buff[LONG_BUFFER], scanResult, data[LONG_BUFFER];
     abrirPuntuacion = fopen("puntuacionTotal.csv", "r");
     if (comprobarAperturaFichero(abrirPuntuacion) == -1)
@@ -152,6 +160,7 @@ int enter(void)
     char ch = 0, ch2 = 0;
     while (ch != '\n')
     {
+        printf("Pulsa ENTER para continuar...");
         ch = getchar();
         ch2 = getchar();
     }
@@ -245,8 +254,12 @@ int guardarPuntuaciones(puntuacion *puntos)
     if (comprobarAperturaFichero(pf) == -1)
         return -1;
 
-    fprintf(pf, "%s,%i,%i,%i,%i,%i,%i\n", puntos->nombre, puntos->totalPartidas, puntos->puntuacionTot, puntos->barcosHundidos, puntos->totalDamageOcasionado, puntos->totalDamageRecibido,
-            puntos->victorias);
+    fprintf(pf, "%s,%i,%i,%i,%i,%i,%i\n", puntos->nombre, puntos->totalPartidas, puntos->puntuacionTot, puntos->barcosHundidos, puntos->totalDamageOcasionado,
+            puntos->totalDamageRecibido, puntos->victorias);
+
+    printf("Puntos: %s,%i,%i,%i,%i,%i,%i\n", puntos->nombre, puntos->totalPartidas, puntos->puntuacionTot, puntos->barcosHundidos, puntos->totalDamageOcasionado,
+            puntos->totalDamageRecibido, puntos->victorias);
+    enter();
 
     cerrar = fclose(pf);
     if (comprobarCierreFichero(cerrar) == -1)
@@ -257,16 +270,37 @@ int guardarPuntuaciones(puntuacion *puntos)
 int verPuntuacion(void)
 {
     int cerrar, datos[6], i, confirm, exit = 0, escape;
-    char users[2000][20], userbuffer[2000], userinput[20];
-    FILE *pf;
+    char users[2000][20], userbuffer[2000], userinput[20], stringBuffer[6000], allUsers[2000][50], allPasses[2000][50];
+    FILE *pf, *pflog;
     escape = 0;
+    for (i = 0; i < 2000; i++)
+        strcpy(allUsers[i], " ");
     while (escape != 1)
     {
         pf = fopen("puntuacionTotal.csv", "r");
+        pflog = fopen("registro.csv", "r");
         if (comprobarAperturaFichero(pf) == -1)
             return -1;
+        if (comprobarAperturaFichero(pflog) == -1)
+            return -1;
+        i = 0;
+        while (fgets(stringBuffer, 6000, pflog) != NULL && i < 2000)
+        {
+            sscanf(stringBuffer, "%[^,],%[^\n]", allUsers[i], allPasses[i]);
+            i++;
+        }
+        cerrar = fclose(pflog);
+        if (comprobarCierreFichero(cerrar) == -1)
+            return 0;
         clearscr();
-        printf("Introduce el nombre del usuario del que deseas ver las puntuaciones.\n");
+        printf("Introduce el nombre del usuario del que deseas ver las puntuaciones.\nUsuarios registrados:\n");
+
+        for (i = 0; i < 2000; i++)
+        {
+            if (strcmp(allUsers[i], " ") != 0)
+                printf("- %s\n", allUsers[i]);
+        }
+
         scanf(" %s", userinput);
         i = 0;
         confirm = 1;
@@ -277,17 +311,20 @@ int verPuntuacion(void)
             if (confirm == 0 && exit == 0)
             {
                 clearscr();
-                printf("Leyenda:\nPJ -> Partidas jugadas\nPG -> Partidas ganadas\nTH -> Total de barcos hundidos\nDO -> Daño ocasionado en el Modo de Batalla\n\
-DR -> Daño recibido en el Modo de Batalla\nPT -> Puntuación total\n\nFicha de puntuaciones para el usuario %s:\nPJ\tPG\tTH\tDO\tDR\tPT\n", userinput);
+                printf("Leyenda:\nPJ -> Partidas jugadas\nPG -> Partidas ganadas\nTH -> Total de barcos hundidos\nDO -> Da%co ocasionado en el Modo de Batalla\n\
+DR -> Da%co recibido en el Modo de Batalla\nPT -> Puntuaci%cn total\n\nFicha de puntuaciones para el usuario %s:\nPJ\tPG\tTH\tDO\tDR\tPT\n", 164, 164, 162, userinput);
                 exit++;
             }
             if (confirm == 0)
+            {
                 printf("%i\t%i\t%i\t%i\t%i\t%i\n", datos[0], datos[5], datos[2], datos[3], datos[4], datos[1]);
+            }
             i++;
         }
         if (exit == 0)
         {
             printf("El usuario indicado no está registrado o no ha jugado ninguna partida.\n");
+            clearscr();
             enter();
         }
         else
@@ -296,6 +333,7 @@ DR -> Daño recibido en el Modo de Batalla\nPT -> Puntuación total\n\nFicha de pu
             if (comprobarCierreFichero(cerrar) == -1)
                 return -1;
             enter();
+            clearscr();
             escape = 1;
         }
     }
@@ -349,12 +387,12 @@ login sesion(void)
     while (exit != 1)
     {
         clearscr();
-        printf("Selecciona una opción:\n\n(1)Iniciar sesión.\n(2)Registrarse.\n");
-        printf("Los usuarios registrados son los siguientes:\n");
+        printf("Selecciona una opci%cn:\n\n(1)Iniciar sesi%cn.\n(2)Registrarse.\n\n", 162, 162);
+        printf("Los usuarios registrados son los siguientes:\n\n");
         i = 0;
         while (strcmp(allUsers[i], " ") != 0 && i < 2000)
         {
-            printf("%i - %s\n",i + 1, allUsers[i]);
+            printf("- %s\n", allUsers[i]);
             i++;
         }
         scanf(" %i", &log);
@@ -381,20 +419,19 @@ login sesion(void)
             }
             else
             {
-                printf("Introduce tu contraseña.\n");
+                printf("Introduce tu contrase%ca.\n", 164);
                 i = 0;
                 scanf(" %s", info.pass);
                 printf("\n");
 
                 if (strcmp(info.pass, info.checkpass) == 0)
                 {
-                    printf("¡Bienvenido, %s!", info.user);
-                    enter();
+                    printf("%cBienvenido, %s!", 173, info.user);
                     return info;
                 }
                 else
                 {
-                    printf("Contraseña incorrecta. Vuelve a intentarlo.\n");
+                    printf("Contrase%ca incorrecta. Vuelve a intentarlo.\n", 164);
                     enter();
                 }
             }
@@ -420,13 +457,13 @@ login sesion(void)
                 }
                 else
                 {
-                    printf("Introduce una contraseña.\n");
+                    printf("Introduce una contrase%ca.\n", 164);
                     scanf(" %s", info.pass);
-                    printf("Introduce de nuevo la contraseña.\n");
+                    printf("Introduce de nuevo la contrase%ca.\n", 164);
                     scanf(" %s", info.checkpass);
                     if (strcmp(info.checkpass, info.pass) != 0)
                     {
-                        printf("Las contraseñas no coinciden. Vuelve a intentarlo.\n");
+                        printf("Las contrase%cas no coinciden. Vuelve a intentarlo.\n", 164);
                         enter();
                     }
                     else
@@ -458,8 +495,7 @@ login sesion(void)
                         cerrar = fclose(abrirPuntuacion);
                         if (comprobarCierreFichero(cerrar) == -1)
                             return info;
-                        printf("Usuario guardado.\n¡Bienvenido, %s!\n", info.user);
-                        enter();
+                        printf("Usuario guardado.\n¡Bienvenido/a, %s!\n\n", info.user);
                         return info;
                     }
                 }
@@ -520,8 +556,8 @@ int sumando(void)
 
 int leerFicheros(login registro, puntuacion *puntos)
 {
-    char buff[20000], usuarios[2000][200], contrasenas[2000][200], nombresPuntuacion[2000][200];
-    int  i = 0, k = 0, sum[4], flag = 0;
+    char buff[20000], usuarios[2000][200], contrasenas[2000][200], nombresPuntuacion[2000][200], buf;
+    int  i = 0, k = 0, sum[4], flag = 0, lineas = 0;
     puntuacion puntosvec[2000];
     desbloqueables bufer[2000];
 
@@ -557,15 +593,29 @@ int leerFicheros(login registro, puntuacion *puntos)
         return 0;
 
     FILE *pf;
+    i = 0;
+//    pf = fopen("puntuacionTotal.csv", "r");
+//    while (fscanf(pf, "%c", &buf) != EOF)
+//    {
+//        if (buf == '\n')
+//            lineas++;
+//        i++;
+//    }
+//    //printf("\nLineas: %i\n", lineas);
+//    cerrar = fclose(pf);
+    if (comprobarCierreFichero(cerrar) == -1)
+        return 0;
+
     pf = fopen("puntuacionTotal.csv", "r");
     if (comprobarAperturaFichero(pf) == -1)
         return 0;
+
     i = 0;
     while (fgets(buff, 2000, pf) != NULL)
     {
         sscanf(buff, "%[^,],%i,%i,%i,%i,%i,%i\n", nombresPuntuacion[i], &puntosvec[i].totalPartidas, &puntosvec[i].puntuacionTot, &puntosvec[i].totalDamageRecibido,
                &puntosvec[i].totalDamageOcasionado, &puntosvec[i].barcosHundidos, &puntosvec[i].victorias);
-        if (strcmp(puntos->nombre, nombresPuntuacion[i]) == 0)
+        if (strcmp(puntos->nombre, nombresPuntuacion[i]) == 0 && i == lineas + 1)
         {
             puntos->totalPartidas = puntosvec[i].totalPartidas;
             puntos->puntuacionTot = puntosvec[i].puntuacionTot;
@@ -576,8 +626,8 @@ int leerFicheros(login registro, puntuacion *puntos)
         }
         i++;
     }
-    printf("\nPuntero -> %s,%i,%i,%i,%i,%i,%i\n", puntos->nombre, puntos->totalPartidas, puntos->puntuacionTot, puntos->totalDamageRecibido, puntos->totalDamageOcasionado,
-           puntos->barcosHundidos, puntos->victorias);
+//    printf("\nPuntero -> %s,%i,%i,%i,%i,%i,%i\n", puntos->nombre, puntos->totalPartidas, puntos->puntuacionTot, puntos->totalDamageRecibido, puntos->totalDamageOcasionado,
+//           puntos->barcosHundidos, puntos->victorias);
     cerrar = fclose(pf);
     if (comprobarCierreFichero(cerrar) == -1)
         return -1;
@@ -595,6 +645,7 @@ int leerFicheros(login registro, puntuacion *puntos)
         i = 0;
 
         strcpy(buff, " ");
+        printf("\nCargando. Espera...");
         while (fgets(buff, 20000, abrirDesbloq) != NULL)//solo copiar datos en estadisticas desde desbloqueables
         {
             for (k = 0; k < 4; k++)
@@ -617,13 +668,12 @@ int leerFicheros(login registro, puntuacion *puntos)
                             bufer[i].objetos[0], bufer[i].objetos[1], bufer[i].objetos[2], bufer[i].objetos[3]);
 
                     strcpy(puntos->rango, bufer[i].nombre);
-
-                    printf("\nBufer escritura en estadisticas.csv:\n%i,%i,%i,%i,%i,%i,%i,%i,%i\n%i,%i,%i,%i,%i,%i,%i,%i,%i\n",
-                            bufer[i].stats.precision, bufer[i].stats.ataque, bufer[i].stats.defensa, bufer[i].stats.velocidad, bufer[i].stats.vida,
-                            bufer[i].objetos[0], bufer[i].objetos[1], bufer[i].objetos[2], bufer[i].objetos[3],
-                            bufer[i].stats.precision + sum[0], bufer[i].stats.ataque + sum[1], bufer[i].stats.defensa + sum[2],
-                            bufer[i].stats.velocidad + sum[3], bufer[i].stats.vida,
-                            bufer[i].objetos[0], bufer[i].objetos[1], bufer[i].objetos[2], bufer[i].objetos[3]);
+//                    printf("\nBufer escritura en estadisticas.csv:\n%i,%i,%i,%i,%i,%i,%i,%i,%i\n%i,%i,%i,%i,%i,%i,%i,%i,%i\n",
+//                            bufer[i].stats.precision, bufer[i].stats.ataque, bufer[i].stats.defensa, bufer[i].stats.velocidad, bufer[i].stats.vida,
+//                            bufer[i].objetos[0], bufer[i].objetos[1], bufer[i].objetos[2], bufer[i].objetos[3],
+//                            bufer[i].stats.precision + sum[0], bufer[i].stats.ataque + sum[1], bufer[i].stats.defensa + sum[2],
+//                            bufer[i].stats.velocidad + sum[3], bufer[i].stats.vida,
+//                            bufer[i].objetos[0], bufer[i].objetos[1], bufer[i].objetos[2], bufer[i].objetos[3]);
                 }
             //
         }

@@ -19,6 +19,9 @@ int modoBatalla(puntuacion *puntos)
     int k = 0, provisionalOBJ[2][4];
     char buff, buffstr[20000];
     mainStruct principal;
+    principal.puntosBatalla.totalDamageOcasionado = 0;
+    principal.puntosBatalla.totalDamageRecibido = 0;
+    principal.puntosBatalla.puntuacionTot = 0;
     principal.contadorStats[0] = (estadisticas){0,0,0,0};
     principal.contadorStats[1] = (estadisticas){0,0,0,0};
     for (i = 0; i < 2; i++)
@@ -66,7 +69,7 @@ int modoBatalla(puntuacion *puntos)
             lineas++;
         i++;
     }
-    printf("\nLineas: %i\n", lineas);
+    //printf("\nLineas: %i\n", lineas);
 
     principal.cerrar = fclose(abrirEstadisticas);
     if (comprobarCierreFichero(principal.cerrar) == -1)
@@ -80,14 +83,14 @@ int modoBatalla(puntuacion *puntos)
     fseek(abrirEstadisticas, SEEK_SET, SEEK_CUR);
     while (fgets(buffstr, 20000, abrirEstadisticas) != NULL)
     {
-        printf("BUFFSTR: %s\n", buffstr);
+        //printf("BUFFSTR: %s\n", buffstr);
         if ((i == lineas - 1 || i == lineas) && k < 2)
         {
             sscanf(buffstr, "%i,%i,%i,%i,%i,%i,%i,%i,%i\n",
                    &principal.usercpu[k].precision, &principal.usercpu[k].ataque, &principal.usercpu[k].defensa, &principal.usercpu[k].velocidad,
                    &principal.usercpu[k].vida, &provisionalOBJ[k][0], &provisionalOBJ[k][1], &provisionalOBJ[k][2], &provisionalOBJ[k][3]);
             k++;
-            printf("Exito\n");
+            //printf("Exito\n");
         }
         i++;
     }
@@ -117,6 +120,9 @@ int modoBatalla(puntuacion *puntos)
 
     while (principal.exit != 0 && principal.exit != 1)
         principal = funcionamientoPrincipal(principal);
+    puntos->puntuacionTot += principal.puntosBatalla.puntuacionTot;
+    puntos->totalDamageOcasionado += principal.puntosBatalla.totalDamageOcasionado;
+    puntos->totalDamageRecibido += principal.puntosBatalla.totalDamageRecibido;
     return principal.exit;
 }
 
@@ -134,14 +140,14 @@ mainStruct funcionamientoPrincipal(mainStruct principal)
 
     if (principal.usercpu[1].vida <= 0)
     {
-        printf("Has ganado. Tienes ahora %i turnos adicionales.", TURNOS_ADICIONALES);
+        printf("Has ganado el combate.");
         enter();
         principal.exit = 1;
         return principal;
     }
     if (principal.usercpu[0].vida <= 0)
     {
-        printf("Has perdido. La CPU tiene ahora %i turnos adicionales.", TURNOS_ADICIONALES);
+        printf("Has perdido el combate.");
         enter();
         principal.exit = 0;
         return principal;
@@ -196,6 +202,8 @@ mainStruct accionesGeneral(mainStruct principal)
     {
     case 1:
         principal.cpudamage = ataque(pUser, pCPU, principal.randseed);
+        principal.puntosBatalla.totalDamageOcasionado += principal.cpudamage;
+        principal.puntosBatalla.puntuacionTot += principal.cpudamage;
         principal.usercpu[1].vida -= principal.cpudamage;
         break;
     case 2:
@@ -282,6 +290,7 @@ mainStruct accionesGeneral(mainStruct principal)
     {
     case 1:
         principal.userdamage = ataque(pCPU, pUser, principal.randseed);
+        principal.puntosBatalla.totalDamageRecibido += principal.userdamage;
         principal.usercpu[0].vida -= principal.userdamage;
         break;
     case 2:
